@@ -1,4 +1,4 @@
-﻿; https://raw.githubusercontent.com/effelCloud/AHK-/main/sonnenuntergang-sonnenaufgang-sunrise-sunset--DEV.0051.ahk
+﻿; https://raw.githubusercontent.com/effelCloud/AHK-/main/sonnenuntergang-sonnenaufgang-sunrise-sunset--DEV.0053.ahk
 ; 1 = ja
 ; 0 = nein
 bildAnzeigen 	:= 0 
