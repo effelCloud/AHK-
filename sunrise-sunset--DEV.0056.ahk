@@ -1,0 +1,4569 @@
+﻿; https://raw.githubusercontent.com/effelCloud/AHK-/main/sonnenuntergang-sonnenaufgang-sunrise-sunset--DEV.0051.ahk
+; 1 = ja
+; 0 = nein
+bildAnzeigen 	:= 0 
+Bildauswahl 	:= 0
+throwLaeis := 1			; GUI auf Monitor rechts
+ShowListViewTrans := 0
+
+
+if Bildauswahl 
+	pic := a_scriptDir "\po.jpg"
+else
+	pic := "O:\untertitel 2023\sunrise sunset sonnenaufgang sonnenuntergang\Neuer Ordner (2)-20231108T211454Z-001\Neuer Ordner (2)\fotos\2018.September.2 12.10.25--familienbande 02.09.2018 2.jpg"
+
+
+SetTimer,UPDATEDSCRIPT,500
+ANow := A_DD "." Month(A_MM) "." a_YYYY " " A_Hour "-" A_Min "-" A_Sec "-" A_MSec
+If !FileExist(A_ScriptDir "\save\")
+FileCreateDir,% A_ScriptDir "\save\"
+FileCopy, % A_ScriptFullPath, % A_ScriptDir "\save\" A_ScriptName " save " ANow " .ahk"
+
+/*
+https://www.google.com/search?q=site%3Aautohotkey.com+alexa+Triggercmd&rlz=1C1CHBD_deDE898DE898&oq=site%3Aautohotkey.com+alexa+Triggercmd&aqs=chrome..69i57j6i58.10224j0j4&sourceid=chrome&ie=UTF-8
+
+Es ist möglich, AutoHotkey zu verwenden, um Alexa zu steuern. Eine Möglichkeit besteht darin, den Windows-Client 
+von Triggercmd zu installieren und Alexa-Befehle als Schalter zu erstellen. Mit Hilfe von Drittprogrammen wie 
+AutoHotkey können Sie dann fast alles steuern, was auf Ihrem Computer ausgeführt wird 1. Hier ist eine Kurzanleitung, 
+die Ihnen helfen kann, Ihren PC mit Alexa zu steuern 
+
+Erstellen Sie einen Account bei Triggercmd 
+
+Aktivieren Sie den Skill “Triggercmd Smart Home” in Alexa 
+
+Installieren Sie den Windows-Client und geben Sie den Key ein, der in Ihrem Account hinterlegt ist 
+
+Nachdem Sie diese Schritte ausgeführt haben, können Sie Befehle erstellen, um Programme oder Parameter auszuführen. 
+Mit AutoHotkey können Sie dann fast alles steuern, was auf Ihrem Computer ausgeführt wird 
+
+*/
+; ////////////////////////////////////////////////////////////////////////////////////	Load_HIDE_and_SHOW_ controls
+LoadThisCcontrols := 0  ; alle controls ins clipboard laden, (hilfe für z.b. [ansicht erweitern])
+			; die daten befinden sich bis das msgbox fenster geschlossen wird, im clipboard
+	if LoadThisCcontrols
+	{
+	thisClipBoard := ""
+	ClipBoardold 	:= clipboard
+		fileRead, getguicontrols,% a_scriptDir "\" a_scriptName
+		
+		loop, parse, getguicontrols, `n 
+			{
+			aloopField := strReplace(a_loopField, "`;")
+			if instr(thisClipBoard, aloopField) || instr(aloopField, "if inStr")
+			continue
+if inStr(aloopfield,"1080")
+continue
+				if inStr(aloopField,"GuiControl,1:    ") && inStr(aloopField,"show")
+				{
+				thisClipBoard .= TRIM(aloopField,"`t") "`n"
+	}}
+thisClipBoard .= "`n"
+		loop, parse, getguicontrols, `n 
+			{
+			aloopField := strReplace(a_loopField, "`;")
+			if instr(thisClipBoard, aloopField) || instr(aloopField, "if inStr")
+			continue
+				if inStr(aloopField,"GuiControl,1:    ") && inStr(aloopField,"hide")
+				{
+				thisClipBoard .= TRIM(aloopField,"`t") "`n"
+	}}
+thisClipBoard .= "`n"
+		loop, parse, getguicontrols, `n 
+			{
+			aloopField := strReplace(a_loopField, "`;")
+			if instr(thisClipBoard, aloopField) || instr(aloopField, "if inStr")
+			continue
+				if inStr(aloopField,"GuiControl,1:    ") && inStr(aloopField,"MoveDraw")
+				{
+				thisClipBoard .= TRIM(aloopField,"`t") "`n"
+	}}
+thisClipBoard .= "`n"
+		loop, parse, getguicontrols, `n 
+			{
+			aloopField := strReplace(a_loopField, "`;")
+			if instr(thisClipBoard, aloopField) || instr(aloopField, "if inStr")
+			continue
+				if inStr(aloopField,"GuiControl,1:    ") && inStr(aloopField,"Font")
+				{
+				thisClipBoard .= TRIM(aloopField,"`t") "`n"
+	}}
+thisClipBoard .= "`n"
+		loop, parse, getguicontrols, `n 
+			{
+			aloopField := strReplace(a_loopField, "`;")
+			if instr(thisClipBoard, aloopField) || instr(aloopField, "if inStr")
+			continue
+				if inStr(aloopField,"GuiControl,1:    ") && inStr(aloopField,"show")
+				{
+				thisClipBoard .= TRIM(aloopField,"`t") "`n"
+	}}
+thisClipBoard .= "`n"
+		loop, parse, getguicontrols, `n 
+			{
+			aloopField := strReplace(a_loopField, "`;")
+			if instr(thisClipBoard, aloopField) || instr(aloopField, "if inStr")
+			continue
+				if inStr(aloopField,"GuiControl,1:    ") && inStr(aloopField,"focus")
+				{
+				thisClipBoard .= TRIM(aloopField,"`t") "`n"
+	}}
+thisClipBoard .= "`n"
+		loop, parse, getguicontrols, `n 
+			{
+			aloopField := strReplace(a_loopField, "`;")
+			if instr(thisClipBoard, aloopField) || instr(aloopField, "if inStr")
+			continue
+				if inStr(aloopField,"GuiControl,1:    ") && inStr(aloopField,"disable")
+				{
+				thisClipBoard .= TRIM(aloopField,"`t") "`n"
+	}}
+thisClipBoard .= "`n"
+		loop, parse, getguicontrols, `n 
+			{
+			aloopField := strReplace(a_loopField, "`;")
+			if instr(thisClipBoard, aloopField) || instr(aloopField, "if inStr")
+			continue
+				if inStr(aloopField,"GuiControl,1:    ") && inStr(aloopField,"enable")
+				{
+				thisClipBoard .= TRIM(aloopField,"`t") "`n"
+	}}
+
+			while instr(thisClipboard,a_space a_space)
+			thisClipboard := strReplace(thisClipboard,a_space a_space,a_space)
+			while instr(thisClipboard,a_tab a_tab)
+			thisClipboard := strReplace(thisClipboard,a_tab a_tab,a_tab)
+
+	ClipBoard 	:= thisClipboard
+msgbox % thisClipBoard 
+	clipboard 	:= clipboardold
+}
+
+; ////////////////////////////////////////////////////////////////////////////////////
+
+
+	; https://www.autohotkey.com/boards/viewtopic.php?p=439038#p439038   
+	; https://sonnenuntergang-sonnenaufgang.info/koeln ; hier findest du die Sonnenzeiten für deinen Standort
+
+	#SingleInstance force
+	;#NoTrayIcon
+	#NoEnv
+	#Persistent
+	FileEncoding, UTF-8
+	SetBatchLines, -1
+	SetTitleMatchMode, 2
+	SetKeyDelay 20
+	SetWorkingDir, %A_ScriptDir%
+
+if((A_PtrSize=8&&A_IsCompiled="")||!A_IsUnicode){ ;32 bit=4  ;64 bit=8
+    SplitPath,A_AhkPath,,dir
+    if(!FileExist(correct:=dir "\AutoHotkeyU32.exe")){
+	    MsgBox error
+	    ExitApp
+    }
+    Run,"%correct%" "%A_ScriptName%",%A_ScriptDir%
+    ExitApp
+    return
+}
+
+
+showHistoryDEVphase := 1
+if showHistoryDEVphase
+{
+	if !fileExist(a_scriptDir "\" A_ScriptName " timeStampall.txt")
+	FileAppend,
+	(
+Programmstart:	28.Okt.2023  05:20:12:553 Uhr	empty	Programmstart	empty	empty	empty	empty	00:00:00	00:00:00	empty	empty	empty
+Sonnenaufgang:	28.Okt.2023  08:15:00:801 Uhr	start	Sonnenaufgang [ 1 ]	thisRISE	empty	empty	empty	00:00:00	00:00:00	empty	empty	empty
+Sonnenuntergang:	28.Okt.2023  18:16:00:653 Uhr	start	Sonnenuntergang [ 1 ]	thisSET	F1	^F10	Delete	03:31:48	03:45:04	empty	empty	empty
+Sondermeldung:	29.Okt.2023  00:00:05:929 Uhr	Hinweis	Beginn: Winterzeit [ MEZ ]	empty	empty	empty	empty	00:00:00	00:00:00	empty	empty	empty
+Sonnenaufgang:	29.Okt.2023  07:16:00:567 Uhr	start	Sonnenaufgang [ 1 ]	thisRISE	empty	empty	empty	00:00:00	00:00:00	empty	empty	empty
+Sonnenuntergang:	29.Okt.2023  17:14:00:653 Uhr	start	Sonnenuntergang [ 1 ]	thisSET	F1	^F10	Delete	00:00:00	03:45:04	empty	empty	empty
+Gefahrenmeldung:	30.Okt.2023  01:22:44:963 Uhr	F10	Sturmwarnung	thisGefahrenmeldung	F10	empty	empty	00:00:00	00:00:00	empty	empty
+Sonnenaufgang:	30.Okt.2023  07:18:00:989 Uhr	start	Sonnenaufgang [ 1 ]	thisRISE	F5	F5	empty	03:15:00	03:15:02	empty	empty	empty
+Sonnenuntergang:	30.Okt.2023  17:13:00:278 Uhr	start	Sonnenuntergang [ 1 ]	thisSET	F4	F4	empty	05:32:41	05:32:41	empty	empty	empty
+Sonnenaufgang:	31.Okt.2023  07:20:00:680 Uhr	start	Sonnenaufgang [ 1 ]	thisRISE	^F10	^F10	empty	05:33:27	05:33:30	empty	empty	empty
+Sonnenuntergang:	31.Okt.2023  17:11:00:368 Uhr	start	Sonnenuntergang [ 1 ]	thisSET	F4	F4	empty	04:32:41	05:32:41	empty	empty	empty
+Sonnenaufgang:	01.Nov.2023  07:22:00:398 Uhr	start	Sonnenaufgang [ 1 ]	thisRISE	empty	empty	empty	00:00:00	00:00:00	empty	empty	empty
+Sonnenuntergang:	01.Nov.2023  17:09:01:057 Uhr	start	Sonnenuntergang [ 1 ]	thisSET	empty	empty	empty	00:00:00	00:00:00	empty	empty	empty
+Sonnenaufgang:	02.Nov.2023  07:23:00:997 Uhr	start	Sonnenaufgang [ 1 ]	thisRISE	empty	empty	empty	00:00:00	00:00:00	empty	empty	empty
+Sonnenuntergang:	02.Nov.2023  17:07:00:969 Uhr	start	Sonnenuntergang [ 1 ]	thisSET	empty	empty	empty	00:00:00	00:00:00	empty	empty	empty
+Sonnenuntergang:	02.Nov.2023  22:01:52:816 Uhr	F2	Sonnenuntergang [ 2 ]	thisSET	F2	F5	empty	00:00:03	03:00:59	empty	empty	empty
+Sonnenaufgang:	03.Nov.2023  07:25:04:506 Uhr	start	Sonnenaufgang [ 1 ]	thisRISE	F2	F5	empty	09:23:15	12:24:11	empty	empty	empty
+Sonnenaufgang:	03.Nov.2023  15:30:34:897 Uhr	F1	Sonnenaufgang [ 2 ]	thisRISE	F1	F2	empty	00:00:00	17:28:45	empty	empty	empty
+Sonnenuntergang:	03.Nov.2023  17:05:00:360 Uhr	start	Sonnenuntergang [ 1 ]	thisSET	empty	empty	empty	00:00:00	00:00:00	empty	empty	empty
+Sonnenaufgang:	04.Nov.2023  07:27:04:283 Uhr	start	Sonnenaufgang [ 1 ]	thisRISE	F4	F4	empty	13:55:13	13:55:14	empty	empty	empty
+Sonnenuntergang:	04.Nov.2023  17:04:04:199 Uhr	start	Sonnenuntergang [ 2 ]	thisSET	F4	F4	empty	01:48:17	01:48:20	empty	empty	empty
+Sonnenaufgang:	05.Nov.2023  07:28:04:523 Uhr	start	Sonnenaufgang [ 2 ]	thisRISE	F4	F4	empty	16:12:15	16:12:18	empty	empty	empty
+Sonnenuntergang:	05.Nov.2023  17:02:03:849 Uhr	start	Sonnenuntergang [ 3 ]	thisSET	F4	F4	empty	01:46:15	01:46:17	empty	empty	empty
+Sonnenaufgang:	06.Nov.2023  07:30:03:624 Uhr	start	Sonnenaufgang [ 3 ]	thisRISE	F4	F4	empty	16:14:14	16:14:17	empty	empty	empty
+Sonnenuntergang:	06.Nov.2023  17:00:03:619 Uhr	start	Sonnenuntergang [ 4 ]	thisSET	F4	F4	empty	01:44:14	01:44:17	empty	empty	empty
+Sonnenaufgang:	07.Nov.2023  07:32:03:872 Uhr	start	Sonnenaufgang [ 4 ]	thisRISE	F4	F4	empty	16:16:15	16:16:17	empty	empty	empty
+Sonnenuntergang:	07.Nov.2023  16:59:00:464 Uhr	start	Sonnenuntergang [ 5 ]	thisSET	F4	F4	empty	01:43:11	01:43:14	empty	empty	empty
+Sonnenaufgang:	07.Nov.2023  20:55:01:438 Uhr	F1	Sonnenaufgang [ 5 ]	thisRISE	F1	F4	empty	00:00:00	05:39:12	empty	empty	empty
+Sonnenaufgang:	07.Nov.2023  20:56:10:473 Uhr	F1	Sonnenaufgang [ 6 ]	thisRISE	F1	F1	empty	00:00:00	00:01:09	empty	empty	empty
+Sonnenaufgang:	08.Nov.2023  07:34:04:344 Uhr	start	Sonnenaufgang [ 7 ]	thisRISE	F1	F1	empty	10:37:53	10:39:03	empty	empty	empty
+Sonnenuntergang:	08.Nov.2023  16:57:03:556 Uhr	start	Sonnenuntergang [ 6 ]	thisSET	F1	F1	empty	20:00:53	20:02:02	empty	empty	empty
+Sonnenaufgang:	09.Nov.2023  07:35:00:793 Uhr	start	Sonnenaufgang [ 1 ]	thisRISE	empty	empty	empty	00:00:00	00:00:00	empty	empty	empty
+Sonnenuntergang:	09.Nov.2023  16:56:00:897 Uhr	start	Sonnenuntergang [ 1 ]	thisSET	empty	empty	empty	00:00:00	00:00:00	empty	empty	empty
+Sonnenaufgang:	10.Nov.2023  07:37:00:922 Uhr	start	Sonnenaufgang [ 1 ]	thisRISE	empty	empty	empty	00:00:00	00:00:00	empty	empty	empty
+Sonnenuntergang:	10.Nov.2023  16:54:00:897 Uhr	start	Sonnenuntergang [ 1 ]	thisSET	empty	empty	empty	00:00:00	00:00:00	empty	empty	empty
+Sonnenaufgang:	11.Nov.2023  07:39:00:478 Uhr	start	Sonnenaufgang [ 1 ]	thisRISE	empty	empty	empty	00:00:00	00:00:00	empty	empty	empty
+Sonnenuntergang:	11.Nov.2023  16:53:00:715 Uhr	start	Sonnenuntergang [ 1 ]	thisSET	empty	empty	empty	00:00:00	00:00:00	empty	empty	empty
+Sonnenaufgang:	12.Nov.2023  07:40:00:385 Uhr	start	Sonnenaufgang [ 1 ]	thisRISE	empty	empty	empty	00:00:00	00:00:00	empty	empty	empty
+Sonnenuntergang:	12.Nov.2023  16:51:01:054 Uhr	start	Sonnenuntergang [ 1 ]	thisSET	empty	empty	empty	00:00:00	00:00:00	empty	empty	empty
+Sonnenaufgang:	13.Nov.2023  07:42:00:276 Uhr	start	Sonnenaufgang [ 1 ]	thisRISE	empty	empty	empty	00:00:00	00:00:00	empty	empty	empty
+Sonnenuntergang:	13.Nov.2023  16:50:01:290 Uhr	start	Sonnenuntergang [ 1 ]	thisSET	empty	empty	empty	00:00:00	00:00:00	empty	empty	empty
+Sonnenaufgang:	14.Nov.2023  07:44:00:300 Uhr	start	Sonnenaufgang [ 1 ]	thisRISE	empty	empty	empty	00:00:00	00:00:00	empty	empty	empty
+Sonnenuntergang:	14.Nov.2023  16:48:19:669 Uhr	start	Sonnenuntergang [ 1 ]	thisSET	empty	empty	empty	00:00:00	00:00:00	empty	empty	empty
+Sonnenaufgang:	15.Nov.2023  07:45:01:059 Uhr	start	Sonnenaufgang [ 1 ]	thisRISE	empty	empty	empty	00:00:00	00:00:00	empty	empty	empty
+Sonnenuntergang:	15.Nov.2023  16:47:02:313 Uhr	start	Sonnenuntergang [ 1 ]	thisSET	empty	empty	empty	00:00:00	00:00:00	empty	empty	empty
+Sonnenaufgang:	16.Nov.2023  07:47:00:878 Uhr	start	Sonnenaufgang [ 1 ]	thisRISE	empty	empty	empty	00:00:00	00:00:00	empty	empty	empty
+Sonnenuntergang:	16.Nov.2023  16:45:02:313 Uhr	start	Sonnenuntergang [ 1 ]	thisSET	empty	empty	empty	00:00:00	00:00:00	empty	empty	empty
+Sonnenaufgang:	17.Nov.2023  07:49:00:197 Uhr	start	Sonnenaufgang [ 1 ]	thisRISE	empty	empty	Right	00:00:00	00:00:00	empty	empty	empty
+Sonnenuntergang:	17.Nov.2023  16:44:02:313 Uhr	start	Sonnenuntergang [ 1 ]	thisSET	empty	empty	empty	00:00:00	00:00:00	empty	empty	empty
+Sonnenaufgang:	18.Nov.2023  07:50:00:491 Uhr	start	Sonnenaufgang [ 1 ]	thisRISE	empty	empty	empty	00:00:00	00:00:00	empty	empty	empty
+Sonnenuntergang:	18.Nov.2023  16:43:00:992 Uhr	start	Sonnenuntergang [ 1 ]	thisSET	empty	empty	empty	00:00:00	00:00:00	empty	empty	empty
+Sonnenaufgang:	19.Nov.2023  07:52:00:285 Uhr	start	Sonnenaufgang [ 1 ]	thisRISE	empty	empty	empty	00:00:00	00:00:00	empty	empty	empty
+Sonnenaufgang:	20.Nov.2023  07:54:01:201 Uhr	start	Sonnenaufgang [ 1 ]	thisRISE	empty	empty	empty	00:00:00	00:00:00	empty	empty	empty
+Sonnenuntergang:	20.Nov.2023  16:41:00:551 Uhr	start	Sonnenuntergang [ 1 ]	thisSET	empty	empty	-	00:00:00	00:00:00	empty	empty	empty
+Sonnenaufgang:	21.Nov.2023  07:55:01:308 Uhr	start	Sonnenaufgang [ 1 ]	thisRISE	empty	empty	empty	00:00:00	00:00:00	empty	empty	empty
+Programmstart:	23.Nov.2023  05:53:50:563 Uhr	empty	Programmstart	empty	empty	empty	empty	00:00:00	00:00:00	empty	empty	empty
+Sonnenaufgang:	23.Nov.2023  05:53:55:940 Uhr	F1	Sonnenaufgang (User) [ 1 ]	thisRISE	F1	empty	F1	00:00:00	00:00:00	empty	empty	empty
+Sonnenaufgang:	23.Nov.2023  07:58:00:608 Uhr	start	Sonnenaufgang (System) [ 2 ]	thisRISE	F1	empty	F1	02:04:02	00:00:00	empty	empty	empty
+Sonnenaufgang:	23.Nov.2023  07:58:03:502 Uhr	start	Sonnenaufgang (System) [ 3 ]	thisRISE	F1	empty	F1	02:04:05	00:00:00	empty	empty	empty
+Sonnenaufgang:	23.Nov.2023  07:58:06:380 Uhr	start	Sonnenaufgang (System) [ 4 ]	thisRISE	F1	empty	F1	02:04:08	00:00:00	empty	empty	empty
+Sonnenaufgang:	23.Nov.2023  07:58:09:491 Uhr	start	Sonnenaufgang (System) [ 5 ]	thisRISE	F1	empty	F1	02:04:11	00:00:00	empty	empty	empty
+Sonnenaufgang:	23.Nov.2023  07:58:12:410 Uhr	start	Sonnenaufgang (System) [ 6 ]	thisRISE	F1	empty	F1	02:04:14	00:00:00	empty	empty	empty
+Sonnenaufgang:	23.Nov.2023  07:58:15:300 Uhr	start	Sonnenaufgang (System) [ 7 ]	thisRISE	F1	empty	F1	02:04:17	00:00:00	empty	empty	empty
+Sonnenaufgang:	23.Nov.2023  07:58:19:101 Uhr	start	Sonnenaufgang (System) [ 8 ]	thisRISE	F1	empty	F1	02:04:20	00:00:00	empty	empty	empty
+Sonnenaufgang:	23.Nov.2023  07:58:22:010 Uhr	start	Sonnenaufgang (System) [ 9 ]	thisRISE	F1	empty	F1	02:04:23	00:00:00	empty	empty	empty
+Sonnenaufgang:	23.Nov.2023  07:58:24:907 Uhr	start	Sonnenaufgang (System) [ 10 ]	thisRISE	F1	empty	F1	02:04:26	00:00:00	empty	empty	empty
+Sonnenaufgang:	23.Nov.2023  07:58:27:921 Uhr	start	Sonnenaufgang (System) [ 11 ]	thisRISE	F1	empty	F1	02:04:29	00:00:00	empty	empty	empty
+Sonnenaufgang:	23.Nov.2023  07:58:30:757 Uhr	start	Sonnenaufgang (System) [ 12 ]	thisRISE	F1	empty	F1	02:04:32	00:00:00	empty	empty	empty
+Sonnenaufgang:	23.Nov.2023  07:58:33:648 Uhr	start	Sonnenaufgang (System) [ 13 ]	thisRISE	F1	empty	F1	02:04:35	00:00:00	empty	empty	empty
+Sonnenaufgang:	23.Nov.2023  07:58:36:466 Uhr	start	Sonnenaufgang (System) [ 14 ]	thisRISE	F1	empty	F1	02:04:38	00:00:00	empty	empty	empty
+Sonnenaufgang:	23.Nov.2023  07:58:39:273 Uhr	start	Sonnenaufgang (System) [ 15 ]	thisRISE	F1	empty	F1	02:04:41	00:00:00	empty	empty	empty
+Sonnenaufgang:	23.Nov.2023  07:58:42:271 Uhr	start	Sonnenaufgang (System) [ 16 ]	thisRISE	F1	empty	F1	02:04:44	00:00:00	empty	empty	empty
+Sonnenaufgang:	23.Nov.2023  07:58:45:085 Uhr	start	Sonnenaufgang (System) [ 17 ]	thisRISE	F1	empty	F1	02:04:46	00:00:00	empty	empty	empty
+Sonnenaufgang:	23.Nov.2023  07:58:47:893 Uhr	start	Sonnenaufgang (System) [ 18 ]	thisRISE	F1	empty	F1	02:04:49	00:00:00	empty	empty	empty
+Sonnenaufgang:	23.Nov.2023  07:58:50:714 Uhr	start	Sonnenaufgang (System) [ 19 ]	thisRISE	F1	empty	F1	02:04:52	00:00:00	empty	empty	empty
+Sonnenaufgang:	23.Nov.2023  07:58:53:523 Uhr	start	Sonnenaufgang (System) [ 20 ]	thisRISE	F1	empty	F1	02:04:55	00:00:00	empty	empty	empty
+Sonnenaufgang:	23.Nov.2023  07:58:56:590 Uhr	start	Sonnenaufgang (System) [ 21 ]	thisRISE	F1	empty	F1	02:04:58	00:00:00	empty	empty	empty
+Sonnenaufgang:	23.Nov.2023  07:58:59:457 Uhr	start	Sonnenaufgang (System) [ 22 ]	thisRISE	F1	empty	F1	02:05:01	00:00:00	empty	empty	empty
+Programmstart:	23.Nov.2023  13:33:42:085 Uhr	empty	Programmstart	empty	empty	empty	empty	00:00:00	00:00:00	empty	empty	empty
+
+),% a_scriptDir "\" A_ScriptName " timeStampall.txt"
+; ),% a_scriptDir "\" A_ScriptName " timeStampall.txt", UTF-8
+}
+
+
+
+	atickCount := a_tickCount
+	GuiLiveTime := (1439.99*60*1000) ; GuiLiveTime bei Guistart 23:59:59 maximale Größe darf nicht überschritten werden, sonst laufen die Zähler nicht korrekt
+	MainArray := []
+
+
+Menu, Ansicht, Add, 1 - Historiemenü , MenuHandler
+Menu, Ansicht, Add, 2 - Hauptansicht , MenuHandler
+Menu, Ansicht, Add, 2 - Triggermenü , MenuHandler
+;Menu, Ansicht, Show
+
+Menu, ButtonMehrMenue, Add, 1 - Historiemenü , MenuHandler
+Menu, ButtonMehrMenue, Add, 2 - HauptButtonMehrMenue , MenuHandler
+Menu, ButtonMehrMenue, Add, 2 - Triggermenü , MenuHandler
+;Menu, ButtonMehrMenue, Show
+
+nMalBlinkenContinue := 1
+
+	outOfOrder := 1
+	MakeList := 1
+	HideGui := 1 ; or dont hide by counter null
+
+	thisListViewAnsichtErweiternProgressModus := 0
+
+
+	NoTimeCounter := 0		; alle counter ein oder ausblenden
+	aindexMOD := 2
+	thisMOD := 3-Mod(3-Mod(aindexMOD,3),3)
+	ToggleShowGuiLiveTime := 0 	; F5::
+	thisToggleFunc := ToggleFunc()
+
+	empty := "Empty"
+
+;	GUISizeToggle := 0
+	GUISizeToggle := !(GUISizeToggle:=!GUISizeToggle)
+
+	LVInsertADD := 0
+
+	  MKPic := 1 ; false  ; screenshot vor und nach mitternacht
+	; MKPic := 1, MKPicCount := 0 	;  = täglich
+	; MKPic := 1 			;  = einmal
+
+	ToggleGUI := 1			; zeige GUI bei Start
+	showOnlyEDIT1Update := 1	; einfache (Tooltip2GUI) Ausgabe
+	showTooltipAlso := 0 		; tooltip und Tooltip2GUI anzeigen
+
+	; erstellt zuerst eine Liste: Timestamp Sonnenaufgang Sonnenuntergang Sonnenstunden
+	ShowMakeList := 0
+
+	; Dieses Script startet bei Sonnenaufgang und Sonnenuntergang je eine Aktion, wie z.B 
+	; Jalousie.-Markiesensteuerung und oder Beleuchtung ein bzw. ausschalten.
+	; “Triggercmd Smart Home” und Alexa bieten weitere Möglichkeiten zum schalten.
+
+	; Bei Sonnenaufgang wird RISEfile gestartet
+	RISEfile		:= A_ScriptDir "\screenshot 2 -direktauslösend 1 sekunde delay .ahk"
+
+	; Bei Sonnenuntergang wird SETfile gestartet
+	SETfile 		:= A_ScriptDir "\screenshot 2 -direktauslösend 1 sekunde delay .ahk"
+
+	; Gefahrenmeldungfile
+	Gefahrenmeldungfile 	:= A_ScriptDir "\screenshot 2 -direktauslösend 1 sekunde delay .ahk"
+
+	; xTriggerfile
+	xTriggerfile 		:= A_ScriptDir "\screenshot 2 -direktauslösend 1 sekunde delay .ahk"
+
+
+showGUI2 := 1
+
+;  msgbox % thisX(23) "`n" thisZoomFactorNormal(29.01)
+
+if showGUI2
+{
+;Gui +AlwaysOnTop -DPIScale hwndGUIHWND 
+Gui -DPIScale hwndGUIHWND 
+;-
+wa:=A_screenwidth,ha:=A_screenHeight,xx:=100
+
+
+MaßNehmen := 0 ; Stellt das Steuerelement als Rechteck dar, das mit der aktuellen Farbe des Fensterrahmens gefüllt ist. Diese Farbe ist standardmäßig schwarz
+
+
+
+;Gui,1:Color,FF9977
+;Gui,1:Color,black, black
+;ListView1Color=Silver
+;ListView2Color=Silver
+;	GuiControl,1: 	+BackgroundFF9977, 	ListView1
+
+ListView1Color=FF9977
+ListView2Color=FF9977
+
+zoomfactor:=((A_ScreenWidth/1920)*(96/A_ScreenDPI))
+;Fs10:= Round(10 * ZoomFactor, 0)
+/*
+; modifiziert thisZoomFactorNormal(20.5111) " cBlue", Verdana
+; modifiziert thisZoomFactorBold(20.5111) " cBlue", Verdana
+Fs8 :=(8*zoomfactor)
+Fs9 :=(9*zoomfactor)
+Fs10 :=(10*zoomfactor)
+Fs105 :=(10.5*zoomfactor)
+Fs11 :=(11*zoomfactor)
+Fs12 :=(12*zoomfactor)
+Fs13 :=(13*zoomfactor)
+Fs14 :=(14*zoomfactor)
+Fs15 :=(15*zoomfactor)
+Fs16 :=(16*zoomfactor)
+*/
+; ////////////////////////////////////////////////////////////////////////////////////	 
+;=============================================================	
+;	color=D4D0C8 
+;	Gui,1:Color,Black,Black
+;	Gui,1:Color,Black,Silver
+;	Gui,1:Color, Silver, Black
+;	Gui,1:add,text,x0 y0 vT1
+;	Gui, Color, silver
+; ////////////////////////////////////////////////////////////////////////////////////						;		Wiederholen
+	
+;	Gui,1:Color,Silver,Black
+;Gui,1:Font, s%fs16% cBlack Bold, Verdana
+	;-
+	ListViewEinUndAusblenden := 1
+
+
+; //////////////////////////////////////////////////////////////////////////////////// 			schriftFarbe 
+schriftFarbe := "blue"
+;thisCcolor := "aqua"
+
+
+
+
+; ////////////////////////////////////////////////////////////////////////////////////	text TextEdit1 TimeStamp
+	if MaßNehmen
+	Gui,1: Add, text , 0x1000 vTextEdit1 ; Maß nehmen
+	else
+	Gui,1: Add, text , 	vTextEdit1 hwndhTextEdit1 center Hidden	 gnMalBlinkenOFF 
+	Gui,1: Font,							% thisZoomFactorBold(17.5111) " cBlue", Verdana ; zoomf (22.5111) (15.01) 
+	GuiControl,1:    MoveDraw, 		TextEdit1,		% thisX(1) thisY(0.9) thisW(28.0) thisH(3.6) ;  default
+	GuiControl,1:    Font, 			TextEdit1		
+;	GuiControl,1: ,  			TextEdit1, 		% A_DDDD a_space A_DD "." Month(A_MM) "." a_YYYY "  " A_Hour ":" A_Min ":" A_Sec " Uhr" ; timestamp
+;	GuiControl,1: ,  			TextEdit1, 		% A_DD "." A_MM "." a_YYYY "  " A_Hour ":" A_Min ":" A_Sec " Uhr" ; timestamp
+	GuiControl,1:    show, 			TextEdit1
+;	GuiControl,1:    hide, 			TextEdit1
+;	GuiControl,1:    focus, 		TextEdit1
+;	GuiControl,1:    disable, 		TextEdit1
+;	GuiControl,1:    enable, 		TextEdit1
+; ////////////////////////////////////////////////////////////////////////////////////	Sonnen Edit Stunden
+;	Gui,1:Color,Black,Black
+	if MaßNehmen
+	Gui,1: Add, text , 0x1000 vSonnenEditStunden ; Maß nehmen
+	else
+	Gui,1: Add, edit , 	vSonnenEditStunden gSonnenEditStunden hwndhSsonnenEditStunden  center Limit2 Number ; BackgroundTrans 
+;	Gui,1: Add, text , 	vSonnenEditStunden gSonnenEditStunden hwndhSsonnenEditStunden  center ; BackgroundTrans 
+	Gui,1: Font,							% thisZoomFactorNormal(10.01)   " cBlack "
+	GuiControl,1:    MoveDraw, 		SonnenEditStunden,	% thisX(1.1) thisY(5.0) thisW(2.9) thisH(2.2) ;  <-- hier doro :-)
+	GuiControl,1:    Font, 			SonnenEditStunden
+	GuiControl,1: ,  			SonnenEditStunden, 		00
+	GuiControl,1:    show, 			SonnenEditStunden
+;	GuiControl,1:    hide, 			SonnenEditStunden
+;	GuiControl,1:    focus, 		SonnenEditStunden
+;	GuiControl,1:    disable, 		SonnenEditStunden
+;	GuiControl,1:    enable, 		SonnenEditStunden
+	GuiControl,1: 	+cBlack, 		SonnenEditStunden
+;	GuiControl,1: 	+Background009977,	SonnenEditStunden
+	GuiControl,1: 	+BackgroundFF9977, 	SonnenEditStunden
+	Gui, Add, UpDown, vSonnenEditStundenUpDown Horz 16 Range0-23, 0
+	GuiControl,1:    MoveDraw, 		SonnenEditStundenUpDown, 			% thisW(2.2) thish(2.20)
+;	Gui,1:Color,silver,black
+; ////////////////////////////////////////////////////////////////////////////////////	Text Stunden
+;Gui, Color, silver
+	if MaßNehmen
+	Gui,1: Add, text , 0x1000 vTextStunden ; Maß nehmen
+	else
+	Gui,1: Add, text , 	vTextStunden Hidden ; center
+	Gui,1: Font,							% thisZoomFactorNormal(9.01)
+	GuiControl,1:    MoveDraw, 		TextStunden,		% thisX(5.65) thisY(5.45) thisW(3.1) thisH(2) "  cBLUE " ;  default
+	GuiControl,1:    Font, 			TextStunden
+	GuiControl,1: ,  			TextStunden, 		Stunden
+	GuiControl,1:    show, 			TextStunden
+;	GuiControl,1:    hide, 			TextStunden
+;	GuiControl,1:    focus, 		TextStunden
+;	GuiControl,1:    disable, 		TextStunden
+;	GuiControl,1:    enable, 		TextStunden
+	GuiControl,1: 	+cBlack, 		TextStunden
+;schriftFarbe := "blue"
+if (schriftFarbe = "blue")
+	GuiControl,1: 	+cBlue, 		TextStunden
+else
+	GuiControl,1: 	+c%thisCcolor%, 		TextStunden
+; ////////////////////////////////////////////////////////////////////////////////////	Sonnen Edit tMinuten
+	if MaßNehmen
+	Gui,1: Add, text , 0x1000 vSonnenEditMinuten ; Maß nehmen
+	else
+	Gui,1: Add, edit ,  vSonnenEditMinuten gSonnenEditMinuten hwndhSsonnenEditMinuten Hidden  center Limit2 Number 
+	Gui,1: Font,							% thisZoomFactorNormal(10.01)   " cBlack "
+	GuiControl,1:    MoveDraw, 		SonnenEditMinuten,	% thisX(8.8) thisY(5) thisW(2.9) thisH(2.2) ;  default
+	GuiControl,1:    Font, 			SonnenEditMinuten
+	GuiControl,1: ,  			SonnenEditMinuten, 	02 
+	GuiControl,1:    show, 			SonnenEditMinuten
+;	GuiControl,1:    hide, 			SonnenEditMinuten
+;	GuiControl,1:    focus, 		SonnenEditMinuten
+;	GuiControl,1:    disable, 		SonnenEditMinuten
+;	GuiControl,1:    enable, 		SonnenEditMinuten
+	GuiControl,1: 	+cBlack, 		SonnenEditStunden
+;schriftFarbe := "blue"
+if (schriftFarbe = "blue")
+	GuiControl,1: 	+cBlue, 		SonnenEditStunden
+else
+	GuiControl,1: 	+c%thisCcolor%, 	SonnenEditStunden
+	Gui, Add, UpDown, vSonnenEditMinutenUpDown Horz 16 Range00-59, 02
+	GuiControl,1:    MoveDraw, 		SonnenEditMinutenUpDown, 			% thisW(2.2) thish(2.20)
+;	GuiControl,1: 	+cBlue, 		SonnenEditMinutenUpDown
+; ////////////////////////////////////////////////////////////////////////////////////	vTextMinuten 
+	if MaßNehmen
+	Gui,1: Add, text , 0x1000 vTextMinuten ; Maß nehmen
+	else
+	Gui,1: Add, text , 	vTextMinuten cBLUE Hidden ; center
+	Gui,1: Font,							% thisZoomFactorNormal(9.01)
+	GuiControl,1:    MoveDraw, 		TextMinuten,		% thisX(13.3) thisY(5.45) thisW(3.39) thisH(2) ;  default
+	GuiControl,1:    Font, 			TextMinuten
+	GuiControl,1: ,  			TextMinuten, 		Minuten
+	GuiControl,1:    show, 			TextMinuten
+;	GuiControl,1:    hide, 			TextMinuten
+;	GuiControl,1:    focus, 		TextMinuten
+;	GuiControl,1:    disable, 		TextMinuten
+;	GuiControl,1:    enable, 		TextMinuten
+	GuiControl,1: 	+cBlack, 		TextMinuten
+;schriftFarbe := "blue"
+if (schriftFarbe = "blue")
+	GuiControl,1: 	+cBlue, 		TextMinuten
+else
+	GuiControl,1: 	+c%thisCcolor%, 	TextMinuten
+; ////////////////////////////////////////////////////////////////////////////////////	ddl1 Trigger auswählen...
+	if MaßNehmen
+	Gui,1: Add, text , 0x1000 vddl1 cBlue  ; Maß nehmen
+	else
+	Gui,1:Add, DDL, r15 vddl1 hwndhDDL1 choose1, 			%a_space%Trigger auswählen...
+	Gui,1: Font,							% thisZoomFactorNormal(10.01)
+	GuiControl,1:    MoveDraw, 		ddl1, 			% thisX(16.7) thisY(5) thisW(12.3) ; thisH(2.2) ;  default
+	GuiControl,1:    Font, 			ddl1
+	GuiControl,1: ,  ddl1, 					 %a_space%vor Sonnenaufgang
+								| nach Sonnenaufgang
+								| vor Sonnenuntergang
+								| nach Sonnenuntergang
+								| nach MEZ > MESZ Wechsel
+								| nach MESZ > MEZ Wechsel
+								| nach Morgen 07 bis 11 Uhr
+								| nach Vormittag 11:00 bis 13 Uhr
+								| nach Mittag 13 bis 15 Uhr
+								| nach Nachmittag 15 bis 18 Uhr
+								| nach Abend 18 bis 22 Uhr
+								| nach Nacht 22 bis 7 Uhr
+								| nach Sturmwarnung
+								| nach Pollenwarnung
+	GuiControl,1:    show, 			ddl1
+;	GuiControl,1:    hide, 			ddl1
+;	GuiControl,1:    focus, 		ddl1
+;	GuiControl,1:    disable, 		ddl1
+;	GuiControl,1:    enable, 		ddl1
+ PostMessage, 0x0153, -1, 21,, ahk_id %hDDL1%  ; Setzt die Höhe des Auswahlfeldes. 	; https://ahkde.github.io/docs/v1/lib/GuiControls.htm#DropDownList
+;PostMessage, 0x0153,  0, 20,, ahk_id %hDDL1%  ; Setzt die Höhe jedes Listeneintrags.
+; ////////////////////////////////////////////////////////////////////////////////////	ddl3 Trigger Datei auswählen...
+	if MaßNehmen
+	Gui,1: Add, text , 0x1000 vddl3 ; Maß nehmen
+	else
+	Gui,1:Add, DDL, r22 vddl3 hwndhDDL3 choose1, 			%a_space%Trigger Datei auswählen...
+	Gui,1: Font,							% thisZoomFactorNormal(9.711) 
+	GuiControl,1:    MoveDraw, 		ddl3, 			% thisX(1.0) thisY(8.5) thisW(28.0) ; thisH(2.2) ;  default
+	GuiControl,1:    Font, 			ddl3
+	GuiControl,1: ,  ddl3, 					 %a_space%Öffnen...
+								| Soundplay Audiodatei #1
+								| Telegram Msg an Service
+								| Telegram Msg an Bereitschaft
+								| Lüftung Raum G einschalten
+								| Lüftung Raum G ausschalten
+								| Heizung einschalten
+								| Heizung ausschalten
+								| Heizung 21 Grad
+								| Markiese Wohnzimmer einfahren
+								| Markiese Wohnzimmer 50 `%
+								| Markiese Wohnzimmer ausfahren
+								| Jalousien Küche rauf
+								| Jalousien Küche 50 `%
+								| Jalousien Küche runter
+								| Beleuchtung Hof Lampe 1B einschalten
+								| Beleuchtung Hof Lampe 1B ausschalten
+								| Steckdose xP-23 (Lager) einschalten
+								| Steckdose xP-23 (Lager) ausschalten
+								| Alarmanlage Zugang 1 aktivieren
+								| Alarmanlage Zugang 1 ausschalten
+
+;	GuiControl,1: ,  ddl3, 					 | 		; DDL leeren  https://www.autohotkey.com/boards/viewtopic.php?style=17&p=366221#p366221 danke just me
+;	GuiControl,1: ,  ddl3, 					 %a_space% 	; DDL leeren  https://www.autohotkey.com/boards/viewtopic.php?style=17&p=366221#p366221 danke just me
+	GuiControl,1:    show, 			ddl3
+;	GuiControl,1:    hide, 			ddl3
+;	GuiControl,1:    focus, 		ddl3
+;	GuiControl,1:    disable, 		ddl3
+;	GuiControl,1:    enable, 		ddl3
+ PostMessage, 0x0153, -1, 21,, ahk_id %hDDL3%  ; Setzt die Höhe des Auswahlfeldes. 	; https://ahkde.github.io/docs/v1/lib/GuiControls.htm#DropDownList
+;PostMessage, 0x0153,  0, 20,, ahk_id %hDDL3%  ; Setzt die Höhe jedes Listeneintrags.
+; ////////////////////////////////////////////////////////////////////////////////////	GroupBoxA Wiederholen (radios)
+	if MaßNehmen
+	Gui,1: Add, text , 0x1000 vGroupBoxAWiederholen cBlue  ; Maß nehmen
+	else
+	Gui,1:Add, GroupBox, vGroupBoxAWiederholen Hidden 
+	Gui,1: Font,									% thisZoomFactorNormal(9.01) ; " cFF9977"
+	GuiControl,1:    MoveDraw, 		GroupBoxAWiederholen, 			% thisX(1.0) thisY(12.1) thisW(28.0) thisH(4.8) ;  default
+	GuiControl,1:    Font, 			GroupBoxAWiederholen
+	GuiControl,1: ,  GroupBoxAWiederholen, 						%a_Space%Wiederholen%a_Space% 
+	GuiControl,1:    show, 			GroupBoxAWiederholen
+;	GuiControl,1:    hide, 			GroupBoxAWiederholen
+;	GuiControl,1:    focus, 		GroupBoxAWiederholen
+;	GuiControl,1:    disable, 		GroupBoxAWiederholen
+;	GuiControl,1:    enable, 		GroupBoxAWiederholen
+;Gui, Color, silver
+;Gui,1:Font, s%fs10% normal,											;		Wiederholen
+;x:=(wa*1)/xx,	y:=(ha*12.1)/xx,	w:=(wa*28)/xx,	h:=(ha*4.8)/xx
+;Gui,1:Add, GroupBox,x%x% y%y% w%w% h%h%  vGroupBoxA,  %a_Space%Wiederholen%a_Space%
+	GuiControl,1: 	+cBlack, 		GroupBoxAWiederholen
+;schriftFarbe := "blue"
+if (schriftFarbe = "blue")
+	GuiControl,1: 	+cBlue, 		GroupBoxAWiederholen
+else
+	GuiControl,1: 	+c%thisCcolor%, 	GroupBoxAWiederholen
+; ////////////////////////////////////////////////////////////////////////////////////	 
+
+
+
+
+
+
+;Gui, Color, silver
+
+
+;Gui,1:Font, s%fs10% normal,
+
+
+
+; ////////////////////////////////////////////////////////////////////////////////////	RadioEinmal 
+
+;MaßNehmen := 0
+
+	if MaßNehmen
+	Gui,1: Add, text , 0x1000 vRadioEinmal ; Maß nehmen
+	else
+	Gui,1: Add, radio, vRadioEinmal hwndHRadioEinmal 
+	Gui,1: Font,									% thisZoomFactorNormal(9.01)
+	GuiControl,1:    MoveDraw, 		RadioEinmal, 				% thisX(1.5) thisY(14.2) thisW(4.0) thisH(2.0) ;  default
+	GuiControl,1:    Font, 			RadioEinmal
+	GuiControl,1: ,  RadioEinmal, 							einmal
+	GuiControl,1:    show, 			RadioEinmal
+;	GuiControl,1:    hide, 			RadioEinmal
+;	GuiControl,1:    focus, 		RadioEinmal
+;	GuiControl,1:    disable, 		RadioEinmal
+;	GuiControl,1:    enable, 		RadioEinmal
+;	GuiControl,1: 	+BackgroundFF9977, 	RadioEinmal
+;	GuiControl,1: 	+Backgroundyellow, 	RadioEinmal
+;	x:=(wa*1.5)/xx,y:=(ha*14.2)/xx
+;	Gui,1:Add, radio, x%x% y%y% vRadioEinmal hwndhRadioEinmal section , einmal
+	GuiControl,1: 	+cBlack, 		RadioEinmal
+;schriftFarbe := "blue"
+if (schriftFarbe = "blue")
+	GuiControl,1: 	+cBlue, 		RadioEinmal
+else
+	GuiControl,1: 	+c%thisCcolor%, 	RadioEinmal
+
+; ////////////////////////////////////////////////////////////////////////////////////	radio täglich										;		Wiederholen
+	if MaßNehmen
+	Gui,1: Add, text , 0x1000 vRadioTäglich ; Maß nehmen
+	else
+	Gui,1: Add, radio, vRadioTäglich hwnhHRadioTäglich checked 
+	Gui,1: Font,									% thisZoomFactorNormal(9.01) 
+	GuiControl,1:    MoveDraw, 		RadioTäglich, 				% thisX(6.3) thisY(14.2) thisW(4.0) thisH(2.0) ;  default
+	GuiControl,1:    Font, 			RadioTäglich
+	GuiControl,1: ,  RadioTäglich, 							täglich
+	GuiControl,1:    show, 			RadioTäglich
+;	GuiControl,1:    hide, 			RadioTäglich
+;	GuiControl,1:    focus, 		RadioTäglich
+;	GuiControl,1:    disable, 		RadioTäglich
+;	GuiControl,1:    enable, 		RadioTäglich
+;	GuiControl,1: 	+BackgroundFF9977, 	RadioTäglich
+;	GuiControl,1: 	+Backgroundyellow, 	RadioTäglich
+;	x:=(wa*6)/xx,y:=(ha*14.2)/xx
+;	Gui,1:Add, radio, x%x% y%y% vRadioTäglich hwndhRadioTäglich checked , täglich
+	GuiControl,1: 	+cBlack, 		RadioTäglich
+;schriftFarbe := "blue"
+if (schriftFarbe = "blue")
+	GuiControl,1: 	+cBlue, 		RadioTäglich
+else
+	GuiControl,1: 	+c%thisCcolor%, 	RadioTäglich
+/*
+	GuiControl,1: 	+cRed, 	RadioEinmal
+	GuiControl,1: 	+cRed, 	RadioTäglich
+	GuiControl,1: 	+cRed, 	RadioWöchendlich
+	GuiControl,1: 	+cRed, 	RadioMonatlich
+	GuiControl,1: 	+cRed, 	RadioJährlich
+	GuiControl,1: 	+cRed, 	GroupBoxAWiederholen
+*/
+; ////////////////////////////////////////////////////////////////////////////////////	radio wöchendlich									;		Wiederholen
+	if MaßNehmen
+	Gui,1: Add, text , 0x1000 vRadioWöchendlich ; Maß nehmen
+	else
+	Gui,1: Add, radio, vRadioWöchendlich hwndHRadioWöchendlich 
+	Gui,1: Font,									% thisZoomFactorNormal(9.01)
+	GuiControl,1:    MoveDraw, 		RadioWöchendlich, 			% thisX(11.0) thisY(14.2) thisW(5.6) thisH(2.0) ;  default
+	GuiControl,1:    Font, 			RadioWöchendlich
+	GuiControl,1: ,  RadioWöchendlich, 							wöchendlich
+	GuiControl,1:    show, 			RadioWöchendlich
+;	GuiControl,1:    hide, 			RadioWöchendlich
+;	GuiControl,1:    focus, 		RadioWöchendlich
+;	GuiControl,1:    disable, 		RadioWöchendlich
+;	GuiControl,1:    enable, 		RadioWöchendlich
+;	GuiControl,1: 	+BackgroundFF9977, 	RadioWöchendlich
+;	GuiControl,1: 	+Backgroundyellow, 	RadioWöchendlich
+;	x:=(wa*10.5)/xx,y:=(ha*14.2)/xx
+;	Gui,1:Add, radio, x%x% y%y% vRadioWöchendlich hwndhRadioWöchendlich , wöchendlich
+
+	GuiControl,1: 	+cBlack, 		RadioWöchendlich
+;schriftFarbe := "blue"
+if (schriftFarbe = "blue")
+	GuiControl,1: 	+cBlue, 		RadioWöchendlich
+else
+	GuiControl,1: 	+c%thisCcolor%, 	RadioWöchendlich
+; ////////////////////////////////////////////////////////////////////////////////////	radio monatlich
+	if MaßNehmen
+	Gui,1: Add, text , 0x1000 vRadioMonatlich ; Maß nehmen
+	else
+	Gui,1: Add, radio, vRadioMonatlich hwndHRadioMonatlich
+	Gui,1: Font,									% thisZoomFactorNormal(9.01)
+	GuiControl,1:    MoveDraw, 		RadioMonatlich, 			% thisX(17.5) thisY(14.2) thisW(4.5) thisH(2.0) ;  default
+	GuiControl,1:    Font, 			RadioMonatlich
+	GuiControl,1: ,  RadioMonatlich, 							monatlich
+	GuiControl,1:    show, 			RadioMonatlich
+;	GuiControl,1:    hide, 			RadioMonatlich
+;	GuiControl,1:    focus, 		RadioMonatlich
+;	GuiControl,1:    disable, 		RadioMonatlich
+;	GuiControl,1:    enable, 		RadioMonatlich
+;	GuiControl,1: 	+BackgroundFF9977, 	RadioMonatlich
+;	GuiControl,1: 	+Backgroundyellow, 	RadioMonatlich
+;	x:=(wa*17.5)/xx,y:=(ha*14.2)/xx
+;	Gui,1:Add, radio, x%x% y%y% vRadioMonatlich hwndhRadioMonatlich , monatlich
+
+	GuiControl,1: 	+cBlack, 		RadioMonatlich
+;schriftFarbe := "blue"
+if (schriftFarbe = "blue")
+	GuiControl,1: 	+cBlue, 		RadioMonatlich
+else
+	GuiControl,1: 	+c%thisCcolor%, 	RadioMonatlich
+; ////////////////////////////////////////////////////////////////////////////////////	radio jährlich
+	if MaßNehmen
+	Gui,1: Add, text , 0x1000 vRadioJährlich ; Maß nehmen
+	else
+	Gui,1: Add, radio, vRadioJährlich hwndHRadioJährlich
+	Gui,1: Font,									% thisZoomFactorNormal(9.01)
+	GuiControl,1:    MoveDraw, 		RadioJährlich, 				% thisX(23.5) thisY(14.2) thisW(4.0) thisH(2.0) ;  default
+	GuiControl,1:    Font, 			RadioJährlich
+	GuiControl,1: ,  RadioJährlich, 							jährlich
+	GuiControl,1:    show, 			RadioJährlich
+;	GuiControl,1:    hide, 			RadioJährlich
+;	GuiControl,1:    focus, 		RadioJährlich
+;	GuiControl,1:    disable, 		RadioJährlich
+;	GuiControl,1:    enable, 		RadioJährlich
+;	GuiControl,1: 	+BackgroundFF9977, 	RadioJährlich
+;	GuiControl,1: 	+Backgroundyellow, 	RadioJährlich
+;	x:=(wa*23.5)/xx,y:=(ha*14.2)/xx
+;	Gui,1:Add, radio, x%x% y%y% vRadioJährlich hwndhRadioJährlich , jährlich
+	GuiControl,1: 	+cBlack, 		RadioJährlich
+;schriftFarbe := "blue"
+if (schriftFarbe = "blue")
+	GuiControl,1: 	+cBlue, 		RadioJährlich
+else
+	GuiControl,1: 	+c%thisCcolor%, 	RadioJährlich
+; ////////////////////////////////////////////////////////////////////////////////////	
+
+;Gui,1:Font,%  thisZoomFactorNormal(16) 
+
+
+;MaßNehmen := 0
+
+
+
+;	color=Aqua
+;	color=Teal
+;	color=Silver
+
+; ////////////////////////////////////////////////////////////////////////////////////	GroupBox Geplante Trigger: (über listview1) 
+	if MaßNehmen
+	Gui,1: Add, text , 0x1000 vGroupBoxÜberListView1 cBlue  ; Maß nehmen
+	else
+	Gui,1:Add, GroupBox, vGroupBoxÜberListView1 hwndHGroupBoxÜberListView1 Hidden 
+	Gui,1: Font,									% thisZoomFactorNormal(9.01)
+	GuiControl,1:    MoveDraw, 		GroupBoxÜberListView1, 			% thisX(1.0) thisY(21.2) thisW(28.0) thisH(2.0) ;  default
+	GuiControl,1:    Font, 			GroupBoxÜberListView1
+	GuiControl,1: ,  GroupBoxÜberListView1, 					%a_Space%Geplante Trigger%a_Space% 
+	GuiControl,1:    show, 			GroupBoxÜberListView1
+;	GuiControl,1:    hide, 			GroupBoxÜberListView1
+;	GuiControl,1:    focus, 		GroupBoxÜberListView1
+;	GuiControl,1:    disable, 		GroupBoxÜberListView1
+;	GuiControl,1:    enable, 		GroupBoxÜberListView1
+	GuiControl,1: 	+cBlack, 		GroupBoxÜberListView1
+;schriftFarbe := "blue"
+if (schriftFarbe = "blue")
+	GuiControl,1: 	+cBlue, 		GroupBoxÜberListView1
+else
+	GuiControl,1: 	+c%thisCcolor%, 	GroupBoxÜberListView1
+; ////////////////////////////////////////////////////////////////////////////////////		edit triggerSuche	
+;Gui, Color, FF9867
+;BGcolor := 009911
+	if MaßNehmen
+	Gui,1: Add, text , 0x1000 vtriggerSuche hwndHtriggerSuche ; Maß nehmen
+	else
+	Gui,1: Add, edit, vtriggerSuche hwndHtriggerSuche -WantReturn 
+;	Gui,1: Add, ComboBox, vtriggerSuche , Rot|Grün|Blau|Schwarz|Weiß
+	Gui,1: Font,									% thisZoomFactorNormal(9.01)  " cBlack "
+	GuiControl,1:    MoveDraw, 		triggerSuche, 				% thisX(1.5) thisY(18.0) thisW(10.5) thisH(2.6) ;  default
+	GuiControl,1:    Font, 			triggerSuche
+;	GuiControl,1: ,  triggerSuche, 							TriggerSuche|2|3
+	GuiControl,1:    show, 			triggerSuche
+;	GuiControl,1:    hide, 			triggerSuche
+;	GuiControl,1:    focus, 		triggerSuche
+;	GuiControl,1:    disable, 		triggerSuche
+;	GuiControl,1:    enable, 		triggerSuche
+;	GuiControl,1: 	+cFF9977, 		triggerSuche
+;	GuiControl,1: 	+Background009977,	triggerSuche
+;	GuiControl,1: 	+Backgroundyellow, 	triggerSuche
+;	GuiControl,1: 	+BackgroundFF9977, 	triggerSuche
+ 	EM_SETCUEBANNER(HtriggerSuche, " Trigger suchen...")
+	GuiControl,1: 	+cBlack, 		triggerSuche
+;schriftFarbe := "blue"
+if (schriftFarbe = "blue")
+	GuiControl,1: 	+cBlue, 		triggerSuche
+else
+	GuiControl,1: 	+c%thisCcolor%, 	triggerSuche
+
+
+; ////////////////////////////////////////////////////////////////////////////////////	button Progress ListView (oben) AnsichErweitern (blinker) 
+	if MaßNehmen
+	Gui,1: Add, text , 0x1000 vthisListViewAnsichtErweiternProgress 	; Maß nehmen
+	else
+	Gui,1: Add, Progress, 	vthisListViewAnsichtErweiternProgress hwndHthisListViewAnsichtErweiternProgress,% outputvar
+;	GuiControl,1:    MoveDraw, 		thisListViewAnsichtErweiternProgress,			% thisX(0) thisY(0) thisW(0) thisH(0) ;  null
+	GuiControl,1:    MoveDraw, 		thisListViewAnsichtErweiternProgress,			% thisX(12.35) thisY(17.8) thisW(9.8) thisH(2.99) ;  Default
+;	GuiControl,1:    MoveDraw, 		thisListViewAnsichtErweiternProgress,			% thisX(12.2) thisY(17.5) thisW(10.4) thisH(3.9) ;  
+;	GuiControl,1:    MoveDraw, 		thisListViewAnsichtErweiternProgress,			% thisX(12.0) thisY(17.3) thisW(10.6) thisH(4.1) ;  big
+	GuiControl,1:    hide, 			thisListViewAnsichtErweiternProgress
+	GuiControl,1:    disable, 		thisListViewAnsichtErweiternProgress
+	GuiControl,1: 	+BackgroundLime, 	thisListViewAnsichtErweiternProgress
+;	GuiControl,1: 	+BackgroundSilver, 	thisListViewAnsichtErweiternProgress
+	Control ExStyle, -0x20000,, % "ahk_id" HthisListViewAnsichtErweiternProgress ; https://www.autohotkey.com/boards/viewtopic.php?p=279363#p279363 by Ragnar <> progress rahmenlos
+;	Control ExStyle, +0x20000,, % "ahk_id" HthisListViewAnsichtErweiternProgress ; test
+;	DllCall("RedrawWindow", uint, Gui1, uint, 0, uint, 0, uint, RDW_INVALIDATE)
+; ////////////////////////////////////////////////////////////////////////////////////	button ListView (oben) AnsichErweitern 
+	if MaßNehmen
+	Gui,1: Add, text , 0x1000 vListViewAnsichErweitern 	; Maß nehmen
+	else
+	Gui,1:Add, button, vListViewAnsichErweitern Hidden gListViewEinUndAusblenden  BackgroundTrans ; 0x200 
+	Gui,1: Font,									% thisZoomFactorNormal(9.011) " cBlack "
+	GuiControl,1:    MoveDraw, 		ListViewAnsichErweitern, 		% thisX(12.5) thisY(18.0) thisW(9.5) thisH(2.6) ;  default
+	GuiControl,1:    Font, 			ListViewAnsichErweitern
+	GuiControl,1: ,  ListViewAnsichErweitern, 							Ansicht erweitern
+	GuiControl,1:    show, 			ListViewAnsichErweitern
+; ////////////////////////////////////////////////////////////////////////////////////	Progress button ansicht erweitern blinkend
+
+
+
+
+; ////////////////////////////////////////////////////////////////////////////////////	button Übernehmen
+	if MaßNehmen
+	Gui,1: Add, text , 0x1000 vUebernehmen	gUebernehmen	; Maß nehmen
+	else
+	Gui,1:Add, button, vÜbernehmen hwndHÜbernehmen Hidden gUebernehmen	
+	Gui,1: Font,									% thisZoomFactorNormal(9.011)
+	GuiControl,1:    MoveDraw, 		Übernehmen, 				% thisX(22.5) thisY(18.0) thisW(5.5) thisH(2.6) ;  default
+	GuiControl,1:    Font, 			Übernehmen
+	GuiControl,1: ,  Übernehmen, 							Übernehmen
+	GuiControl,1:    show, 			Übernehmen
+;	GuiControl,1:    hide, 			Übernehmen
+;	GuiControl,1:    focus, 		Übernehmen
+;	GuiControl,1:    disable, 		Übernehmen
+;	GuiControl,1:    enable, 		Übernehmen
+; ////////////////////////////////////////////////////////////////////////////////////	GroupBox (unter listview1) 
+	if MaßNehmen
+	Gui,1: Add, text , 0x1000 vGroupBoxUnterListView1	; Maß nehmen
+	else
+	Gui,1:Add, GroupBox, vGroupBoxUnterListView1 hwndHGroupBoxUnterListView1 Hidden 
+	Gui,1: Font, 									% thisZoomFactorNormal(9.01)
+	GuiControl,1:    MoveDraw, 		GroupBoxUnterListView1, 		% thisX(1.0) thisY(42.0) thisW(28.0) thisH(4.8) ;  default
+	GuiControl,1:    Font, 			GroupBoxUnterListView1
+;	GuiControl,1: ,  GroupBoxUnterListView1, 					; empty
+	GuiControl,1:    show, 			GroupBoxUnterListView1
+;	GuiControl,1:    hide, 			GroupBoxUnterListView1
+;	GuiControl,1:    focus, 		GroupBoxUnterListView1
+;	GuiControl,1:    disable, 		GroupBoxUnterListView1
+;	GuiControl,1:    enable, 		GroupBoxUnterListView1
+; ////////////////////////////////////////////////////////////////////////////////////	ListView1 (oben) 
+;	color=Aqua
+;	color=Teal
+	ListView1Color=FF9977
+	ListView1Color=silver
+;	ListView1Color=D4D0C8
+;	color=D4D0C8 
+	if MaßNehmen
+	Gui,1: Add, text , 0x1000 vListView1 	; Maß nehmen
+	else
+	Gui,1: Add, listview, vListView1 hwndhListView1 grid background%ListView1Color% cBlack Hidden  +Checked
+									, Aktiv Std:Min
+									| Wiederholen
+									| Trigger
+									| Trigger File
+
+
+	LV_ModifyCol(1,(wa*1.9)/xx)
+	LV_ModifyCol(2,(wa*1.9)/xx)
+	LV_ModifyCol(3,(wa*6)/xx)
+	LV_ModifyCol(4,(wa*14)/xx)
+
+	Gui,1: Font,									% thisZoomFactorNormal(9.01)
+	GuiControl,1:    MoveDraw, 		ListView1, 				% thisX(1.0) thisY(23.0) thisW(28.0) thisH(20.0) ;  default
+	GuiControl,1:    Font, 			ListView1
+	GuiControl,1:    show, 			ListView1
+;	GuiControl,1:    hide, 			ListView1
+;	GuiControl,1:    focus, 		ListView1
+;	GuiControl,1:    disable, 		ListView1
+;	GuiControl,1:    enable, 		ListView1
+;	GuiControl,1: 	+BackgroundFF9977, 	ListView1
+	GuiControl,1: 	+cBlack, 		ListView1
+;schriftFarbe := "blue"
+if (schriftFarbe = "blue")
+	GuiControl,1: 	+cBlue, 		ListView1
+else
+	GuiControl,1: 	+c%thisCcolor%, 	ListView1
+
+if ShowListViewTrans
+{
+	GuiControl,1: 	+cWhite, 		ListView1
+	GuiControl,1:    +BackgroundTrans, 	ListView1
+}
+; ////////////////////////////////////////////////////////////////////////////////////	button mehr... im geplante trigger_listview
+	if MaßNehmen
+	Gui,1: Add, text , 0x1000 vmehr     	; Maß nehmen
+	else
+	Gui,1: Add, button , 	vmehr Hidden	gButtonMehr
+	Gui,1: Font,									% thisZoomFactorNormal(9.011)
+	GuiControl,1:    MoveDraw, 		mehr,					% thisX(25.0) thisY(43.5) thisW(3.5) thisH(2.6) ;  default
+	GuiControl,1:    Font, 			mehr
+	GuiControl,1: ,  			mehr,					mehr...
+	GuiControl,1:    show, 			mehr
+;	GuiControl,1:    hide, 			mehr
+;	GuiControl,1:    focus, 		mehr
+;	GuiControl,1:    disable, 		mehr
+;	GuiControl,1:    enable, 		mehr
+; ////////////////////////////////////////////////////////////////////////////////////	button Markierte Einträge im trigger_listview Löschen 
+	if MaßNehmen
+	Gui,1: Add, text , 0x1000 vMarkierteLöschen ; Maß nehmen
+	else
+	Gui,1: Add, button , 	vMarkierteLöschen Hidden		
+	Gui,1: Font,									% thisZoomFactorNormal(9.011)
+	GuiControl,1:    MoveDraw, 		MarkierteLöschen,			% thisX(17.1) thisY(43.5) thisW(7.6) thisH(2.6) ;  default
+	GuiControl,1:    Font, 			MarkierteLöschen
+	GuiControl,1: ,  			MarkierteLöschen, 			Markierte löschen
+	GuiControl,1:    show, 			MarkierteLöschen
+;	GuiControl,1:    hide, 			MarkierteLöschen
+;	GuiControl,1:    focus, 		MarkierteLöschen
+;	GuiControl,1:    disable, 		MarkierteLöschen
+;	GuiControl,1:    enable, 		MarkierteLöschen
+; ////////////////////////////////////////////////////////////////////////////////////	button trigger_listview Liste exportieren
+	if MaßNehmen
+	Gui,1: Add, text , 0x1000 vListeExportieren ; Maß nehmen
+	else
+	Gui,1: Add, button , 	vListeExportieren Hidden		
+	Gui,1: Font,									% thisZoomFactorNormal(9.011)
+	GuiControl,1:    MoveDraw, 		ListeExportieren,			% thisX(9.3) thisY(43.5) thisW(7.4) thisH(2.6) ;  default
+	GuiControl,1:    Font, 			ListeExportieren
+	GuiControl,1: ,  			ListeExportieren, 			Liste exportieren
+	GuiControl,1:    show, 			ListeExportieren
+;	GuiControl,1:    hide, 			ListeExportieren
+;	GuiControl,1:    focus, 		ListeExportieren
+;	GuiControl,1:    disable, 		ListeExportieren
+;	GuiControl,1:    enable, 		ListeExportieren
+; ////////////////////////////////////////////////////////////////////////////////////	button Liste importieren
+	if MaßNehmen
+	Gui,1: Add, text , 0x1000 vListeImportieren ; Maß nehmen
+	else
+	Gui,1: Add, button , 	vListeImportieren Hidden		
+	Gui,1: Font,									% thisZoomFactorNormal(9.011)
+	GuiControl,1:    MoveDraw, 		ListeImportieren,			% thisX(1.5) thisY(43.5) thisW(7.4) thisH(2.6) ;  default
+	GuiControl,1:    Font, 			ListeImportieren
+	GuiControl,1: ,  			ListeImportieren, 			Liste importieren
+	GuiControl,1:    show, 			ListeImportieren
+;	GuiControl,1:    hide, 			ListeImportieren
+;	GuiControl,1:    focus, 		ListeImportieren
+;	GuiControl,1:    disable, 		ListeImportieren
+;	GuiControl,1:    enable, 		ListeImportieren
+; ////////////////////////////////////////////////////////////////////////////////////  GroupBox Nächste System Aktion
+	if MaßNehmen
+	Gui,1: Add, text , 0x1000 vGroupBoxNächsteSystemAktion	; Maß nehmen
+	else
+	Gui,1:Add, GroupBox, cBLUE vGroupBoxNächsteSystemAktion	Hidden	
+	Gui,1: Font,									% thisZoomFactorNormal(9.01)
+	GuiControl,1:    MoveDraw, 		GroupBoxNächsteSystemAktion, 		% thisX(1.0) thisY(47.5) thisW(28.0) thisH(4.6) ;  default
+	GuiControl,1:    Font, 			GroupBoxNächsteSystemAktion
+	GuiControl,1: ,  GroupBoxNächsteSystemAktion, 					%a_Space%Nächste System Aktion%a_Space%
+	GuiControl,1:    show, 			GroupBoxNächsteSystemAktion
+;	GuiControl,1:    hide, 			GroupBoxNächsteSystemAktion
+;	GuiControl,1:    focus, 		GroupBoxNächsteSystemAktion
+;	GuiControl,1:    disable, 		GroupBoxNächsteSystemAktion
+;	GuiControl,1:    enable, 		GroupBoxNächsteSystemAktion
+	GuiControl,1: 	+cBlack, 		GroupBoxNächsteSystemAktion
+;schriftFarbe := "blue"
+if (schriftFarbe = "blue")
+	GuiControl,1: 	+cBlue, 		GroupBoxNächsteSystemAktion
+else
+	GuiControl,1: 	+c%thisCcolor%, 	GroupBoxNächsteSystemAktion
+; ////////////////////////////////////////////////////////////////////////////////////	text Nächste System Aktion
+	if MaßNehmen
+	Gui,1: Add, text , 0x1000 vNächsteGeplanteSystemAction ; Maß nehmen
+	else
+	Gui,1: Add, text , 	vNächsteGeplanteSystemAction cBLUE Hidden	 center	
+	Gui,1: Font,									% thisZoomFactorNormal(9.01)
+	GuiControl,1:    MoveDraw, 		NächsteGeplanteSystemAction,		% thisX(1.5) thisY(49.5) thisW(26.9) thisH(2) ;  default
+	GuiControl,1:    Font, 			NächsteGeplanteSystemAction
+	GuiControl,1: ,  			NächsteGeplanteSystemAction, 		;Nächste System Aktion
+	GuiControl,1:    show, 			NächsteGeplanteSystemAction
+;	GuiControl,1:    hide, 			NächsteGeplanteSystemAction
+;	GuiControl,1:    focus, 		NächsteGeplanteSystemAction
+;	GuiControl,1:    disable, 		NächsteGeplanteSystemAction
+;	GuiControl,1:    enable, 		NächsteGeplanteSystemAction
+	GuiControl,1: 	+cBlack, 		NächsteGeplanteSystemAction
+;schriftFarbe := "blue"
+if (schriftFarbe = "blue")
+	GuiControl,1: 	+cBlue, 		NächsteGeplanteSystemAction
+else
+	GuiControl,1: 	+c%thisCcolor%, 	NächsteGeplanteSystemAction
+; ////////////////////////////////////////////////////////////////////////////////////	GroupBox LOG: Historie
+	if MaßNehmen
+	Gui,1: Add, text , 0x1000 vGroupBoxLOG	; Maß nehmen
+	else
+	Gui,1:Add, GroupBox, cBLUE vGroupBoxLOG	Hidden	
+	Gui,1: Font,									% thisZoomFactorNormal(9.01)
+	GuiControl,1:    MoveDraw, 		GroupBoxLOG, 				% thisX(1.0) thisY(52.8) thisW(28.0) thisH(2.11) ;  default
+	GuiControl,1:    Font, 			GroupBoxLOG
+	GuiControl,1: ,  GroupBoxLOG, 							%a_Space%Historie%a_Space%
+	GuiControl,1:    show, 			GroupBoxLOG
+;	GuiControl,1:    hide, 			GroupBoxLOG
+;	GuiControl,1:    focus, 		GroupBoxLOG
+;	GuiControl,1:    disable, 		GroupBoxLOG
+;	GuiControl,1:    enable, 		GroupBoxLOG
+	GuiControl,1: 	+cBlack, 		GroupBoxLOG
+;schriftFarbe := "blue"
+if (schriftFarbe = "blue")
+	GuiControl,1: 	+cBlue, 		GroupBoxLOG
+else
+	GuiControl,1: 	+c%thisCcolor%, 	GroupBoxLOG
+; ////////////////////////////////////////////////////////////////////////////////////	GroupBox unter LOGListview
+	if MaßNehmen
+	Gui,1: Add, text , 0x1000 vGroupBoxUnterLOGListview	; Maß nehmen
+	else
+	Gui,1:Add, GroupBox, cBLUE vGroupBoxUnterLOGListview Hidden		
+	Gui,1: Font,									% thisZoomFactorNormal(9.01)
+	GuiControl,1:    MoveDraw, 		GroupBoxUnterLOGListview, 		% thisX(1.0) thisY(73.7) thisW(28.0) thisH(4.8) ;  default
+	GuiControl,1:    Font, 			GroupBoxUnterLOGListview
+;	GuiControl,1: ,  GroupBoxUnterLOGListview, 					; empty
+	GuiControl,1:    show, 			GroupBoxUnterLOGListview
+;	GuiControl,1:    hide, 			GroupBoxUnterLOGListview
+;	GuiControl,1:    focus, 		GroupBoxUnterLOGListview
+;	GuiControl,1:    disable, 		GroupBoxUnterLOGListview
+;	GuiControl,1:    enable, 		GroupBoxUnterLOGListview
+; ////////////////////////////////////////////////////////////////////////////////////	button Log Liste Exportieren
+	if MaßNehmen
+	Gui,1: Add, text , 0x1000 vLogListeExportieren ; Maß nehmen
+	else
+	Gui,1: Add, button , 	vLogListeExportieren hwndHLogListeExportieren gLogListeExportieren Hidden 		
+	Gui,1: Font,									% thisZoomFactorNormal(9.011)
+	GuiControl,1:    MoveDraw, 		LogListeExportieren, 			% thisX(19.5) thisY(75.2) thisW(8.9) thisH(2.6) ;  default
+	GuiControl,1:    Font, 			LogListeExportieren
+	GuiControl,1: ,  LogListeExportieren, 	Logdaten exportieren
+	GuiControl,1:    show, 			LogListeExportieren
+;	GuiControl,1:    hide, 			LogListeExportieren
+;	GuiControl,1:    focus, 		LogListeExportieren
+;	GuiControl,1:    disable, 		LogListeExportieren
+;	GuiControl,1:    enable, 		LogListeExportieren
+; ////////////////////////////////////////////////////////////////////////////////////	button Progress ListView (unten) AnsichErweitern (blinker) 
+; wird .2 punkte größer, hinter dem button angelegt z.b. button thisX(8.9) <> progress thisX(8.7)
+	Gui,1: Add, Progress, 	vLogListeAnsichtErweiternProgress hwndHLogListeAnsichtErweiternProgress,% outputvar
+	GuiControl,1:    MoveDraw, 		LogListeAnsichtErweiternProgress,			% thisX(0) thisY(0) thisW(0) thisH(0) ;  default
+	GuiControl,1:    MoveDraw, 		LogListeAnsichtErweiternProgress,			% thisX(8.99) thisY(75.0) thisW(10.2) thisH(3.0) ;  klein
+;	GuiControl,1:    MoveDraw, 		LogListeAnsichtErweiternProgress,			% thisX(12.2) thisY(17.5) thisW(10.4) thisH(3.9) ;  default
+;	GuiControl,1:    MoveDraw, 		LogListeAnsichtErweiternProgress,			% thisX(12.0) thisY(17.3) thisW(10.6) thisH(4.1) ;  big
+;	GuiControl,1:    hide, 			LogListeAnsichtErweiternProgress
+;	GuiControl,1:    disable, 		LogListeAnsichtErweiternProgress
+	GuiControl,1:    show, 			LogListeAnsichtErweiternProgress
+	GuiControl,1: 	+BackgroundLime, 	LogListeAnsichtErweiternProgress
+;	GuiControl,1: 	+BackgroundSilver, 	LogListeAnsichtErweiternProgress
+;	Control ExStyle, -0x20000,, % "ahk_id" HLogListeAnsichtErweiternProgress ; https://www.autohotkey.com/boards/viewtopic.php?p=279363#p279363 by Ragnar <> progress rahmenlos
+;	Control ExStyle, +0x20000,, % "ahk_id" HLogListeAnsichtErweiternProgress ; test
+;	DllCall("RedrawWindow", uint, Gui1, uint, 0, uint, 0, uint, RDW_INVALIDATE)
+;/* ; ////////////////////////////////////////////////////////////////////////////////////	button Log Liste Ansicht erweitern
+	if MaßNehmen
+	Gui,1: Add, text , 0x1000 vLogListeAnsichtErweitern ; Maß nehmen
+	else
+	Gui,1: Add, button , 	vLogListeAnsichtErweitern hwndHLogListeAnsichtErweitern Hidden 		
+	Gui,1: Font,									% thisZoomFactorNormal(9.011)
+	GuiControl,1:    MoveDraw, 		LogListeAnsichtErweitern, 		% thisX(9.1) thisY(75.2) thisW(9.9) thisH(2.6) ;  default
+	GuiControl,1:    Font, 			LogListeAnsichtErweitern
+	GuiControl,1: ,  LogListeAnsichtErweitern, 					Historie Ansicht erweitern
+	GuiControl,1:    show, 			LogListeAnsichtErweitern
+;	GuiControl,1:    hide, 			LogListeAnsichtErweitern
+;	GuiControl,1:    focus, 		LogListeAnsichtErweitern
+;	GuiControl,1:    disable, 		LogListeAnsichtErweitern
+;	GuiControl,1:    enable, 		LogListeAnsichtErweitern
+;*/ ; ////////////////////////////////////////////////////////////////////////////////////  ListView LOG ListView2
+;	ListView2Color=FF9977
+	ListView2Color=silver
+	if MaßNehmen
+	Gui,1: Add, text , 0x1000 vListView2 	; Maß nehmen
+	else
+	Gui,1: Add, listview, vListView2 hwndhListView2 grid background%ListView2Color% cBlack Hidden  +Checked	
+									, Timestamp
+									 |ThisLabel
+									 |Name
+									 |ThisFunc
+									 |ThisHotkey
+									 |PriorHotkey
+									 |PriorKey
+									 |TimeSinceThisHotkey
+									 |TimeSincePriorHotkey
+									 |GuiControl
+									 |GuiEvent
+									 |EventInfo
+	LV_ModifyCol(1,(wa*1.9)/xx)
+	LV_ModifyCol(2,(wa*1.9)/xx)
+	LV_ModifyCol(3,(wa*6)/xx)
+	LV_ModifyCol(4,(wa*14)/xx)
+
+	Gui,1: Font,									% thisZoomFactorNormal(9.01)
+	GuiControl,1:    MoveDraw, 		ListView2, 					% thisX(1.0) thisY(54.8) thisW(28.0) thisH(20.0) ;  default
+	GuiControl,1:    Font, 			ListView2
+	GuiControl,1:    show, 			ListView2
+;	GuiControl,1:    hide, 			ListView2
+;	GuiControl,1:    focus, 		ListView2
+;	GuiControl,1:    disable, 		ListView2
+;	GuiControl,1:    enable, 		ListView2
+;	GuiControl,1: 	+BackgroundFF9977, 	ListView2
+	GuiControl,1: 	+cBlack, 		ListView2
+	GuiControl,1: 	+cWhite, 		ListView2
+;schriftFarbe := "blue"
+if (schriftFarbe = "blue")
+	GuiControl,1: 	+cBlue, 		ListView2
+else
+	GuiControl,1: 	+c%thisCcolor%, 	ListView2
+if ShowListViewTrans
+{
+	GuiControl,1: 	+cWhite, 		ListView2
+	GuiControl,1:    +BackgroundTrans, 	ListView2
+}
+; ////////////////////////////////////////////////////////////////////////////////////
+
+
+/*
+Gui,1:Font, s%fs10% normal,
+	x:=(wa*30)/xx,	y:=(ha*1)/xx,	w:=(wa*34)/xx,	h:=(ha*15)/xx
+	Gui,1:Add, GroupBox,x%x% y%y% w%w% h%h%  vGroupBoxB,  %a_Space%Sonne%a_Space%
+	x:=(wa*30)/xx,	y:=(ha*17)/xx,	w:=(wa*34)/xx,	h:=(ha*15)/xx
+	Gui,1:Add, GroupBox,x%x% y%y% w%w% h%h%  vGroupBoxC,  %a_Space%Mond%a_Space%
+	x:=(wa*30)/xx,	y:=(ha*33)/xx,	w:=(wa*34)/xx,	h:=(ha*15)/xx
+	Gui,1:Add, GroupBox,x%x% y%y% w%w% h%h%  vGroupBoxD,  %a_Space%Wetter%a_Space%
+	x:=(wa*30)/xx,	y:=(ha*49)/xx,	w:=(wa*34)/xx,	h:=(ha*15)/xx
+	Gui,1:Add, GroupBox,x%x% y%y% w%w% h%h%  vGroupBoxE,  %a_Space%Umwelt%a_Space%
+
+	;-
+;----
+*/
+
+; '''''''''''''''''''''''''''#########################################''''''''''''''''''''''''''''''''''''#######################################'''''''''''''''''''''''######
+; ////////////////////////////////////////////////////////////////////////////////////	ActiveXA
+
+;if Bildauswahl 
+;	pic := a_scriptDir "\po.jpg"
+;else
+;	pic := "O:\untertitel 2023\sunrise sunset sonnenaufgang sonnenuntergang\Neuer Ordner (2)-20231108T211454Z-001\Neuer Ordner (2)\fotos\2018.September.2 12.10.25--familienbande 02.09.2018 2.jpg"
+
+	if MaßNehmen
+	Gui,1: Add, text , 0x1000 vActiveXA ; Maß nehmen
+	else
+;	Gui,1: Add, ActiveX , vActiveXA hwndHActiveXA Hidden w300 h450	0x4000000,		% "mshtml:<img src='" pic "' />" 
+	Gui,1: Add, pic , vActiveXA hwndHActiveXA Hidden center ; w300 h450	
+;	Gui,1: Font,							% thisZoomFactorBold(16.01) " cBlack", Verdana
+; guimaße x:=(wa*29)/xx,	y:=(ha*10)/xx,	w:=(wa*65)/xx,	h:=(ha*80)/xx
+
+;	GuiControl,1:    MoveDraw, 		ActiveXA,		% thisX(0) thisY(0) thisW(65)  thisH(-1) ;  default
+	GuiControl,1:    MoveDraw, 		ActiveXA,		% thisX(30) thisY(28) thisW(34) thisH(50) ;  default
+;	GuiControl,1:    MoveDraw, 		ActiveXA,		% thisX(0) thisY(5) thisW(34) thisH(73) ;  default
+;	GuiControl,1:    Font, 			ActiveXA
+	GuiControl,1: ,  			ActiveXA, 		% pic
+
+;	GuiControl,1:    show, 			ActiveXA
+	if !bildAnzeigen
+	GuiControl,1:    hide, 			ActiveXA
+	else
+	GuiControl,1:    show, 			ActiveXA
+
+;	GuiControl,1:    focus, 		ActiveXA
+;	GuiControl,1:    disable, 		ActiveXA
+;	GuiControl,1:    enable, 		ActiveXA
+;	GuiControl,1: 	+BackgroundFF9977, 	ActiveXA
+;	GuiControl,1: 	+cFF9977, 		ActiveXA
+;	pics := "http://www.animatedgif.net/cartoons/A_7blink_e0.gif"
+;	GuiControl,1: 	, 			ActiveXA,  pics
+;	GuiControl,1: 	, 	%	ahk_ID	HActiveXA,  % "mshtml:<img src='" pics "' />" 
+	pic := a_scriptDir "\laptop 1360x768 dev.jpg"
+	pic := a_scriptDir "\po.jpg"
+;	Breite := thisW(65)
+ 	Breite := 600
+    Höhe := -1  ; "Seitenverhältnis beibehalten" erscheint sinnvoll.
+;     GuiControl,, ActiveXA,  %pic%  ; Bild laden.
+;    GuiControl,, ActiveXA, *w%Breite% *h%Höhe% %pic%  ; Bild laden.
+;    GuiControl,, ActiveXA,% "*w" thisW(333.5) " *h" Höhe a_space pic  ; Bild laden.
+;    GuiControl,, ActiveXA,% "w" thisW(65) " h" Höhe a_space pic  ; Bild laden.
+; ////////////////////////////////////////////////////////////////////////////////////	GroupBox Screen Saver
+	if MaßNehmen
+	Gui,1: Add, text , 0x1000 vGroupBoxScreenSaver     	; Maß nehmen
+	else
+	Gui,1: Add, GroupBox , 	vGroupBoxScreenSaver Hidden	hwndHButtonGroupBoxScreenSaver
+	Gui,1: Font,									% thisZoomFactorNormal(9.011)
+	GuiControl,1:    MoveDraw, 		GroupBoxScreenSaver,					% thisX(30.0) thisY(.5) thisW(34.0) thisH(13.6) ;  default
+	GuiControl,1:    Font, 			GroupBoxScreenSaver
+	GuiControl,1: ,  			GroupBoxScreenSaver,					%a_space%Einstellen...%a_space%
+	GuiControl,1:    show, 			GroupBoxScreenSaver
+	GuiControl,1:    hide, 			GroupBoxScreenSaver
+;	GuiControl,1:    focus, 		GroupBoxScreenSaver
+;	GuiControl,1:    disable, 		GroupBoxScreenSaver
+;	GuiControl,1:    enable, 		GroupBoxScreenSaver
+; ////////////////////////////////////////////////////////////////////////////////////	GroupBox AlertConfig
+	if MaßNehmen
+	Gui,1: Add, text , 0x1000 vAlertConfig     	; Maß nehmen
+	else
+	Gui,1: Add, GroupBox , 	vAlertConfig Hidden	hwndHButtonAlertConfig
+	Gui,1: Font,									% thisZoomFactorNormal(9.011)
+	GuiControl,1:    MoveDraw, 		AlertConfig,					% thisX(53.3) thisY(1.9) thisW(10.0) thisH(10.6) ;  default
+	GuiControl,1:    Font, 			AlertConfig
+	GuiControl,1: ,  			AlertConfig,					%a_space%Alarme && Trigger%a_space%
+	GuiControl,1:    show, 			AlertConfig
+	GuiControl,1:    hide, 			AlertConfig
+;	GuiControl,1:    focus, 		AlertConfig
+;	GuiControl,1:    disable, 		AlertConfig
+;	GuiControl,1:    enable, 		AlertConfig
+; ////////////////////////////////////////////////////////////////////////////////////	button ScreenSaver
+	if MaßNehmen
+	Gui,1: Add, text , 0x1000 vScreenSaver     	; Maß nehmen
+	else
+	Gui,1: Add, button , 	vScreenSaver Hidden	hwndHButtonScreenSaver Left
+	Gui,1: Font,									% thisZoomFactorNormal(9.011)
+	GuiControl,1:    MoveDraw, 		ScreenSaver,					% thisX(30.5) thisY(2.5) thisW(11.5) thisH(2.6) ;  default
+	GuiControl,1:    Font, 			ScreenSaver
+	GuiControl,1: ,  			ScreenSaver,					%a_space%Bildschirmschoner...%a_space%
+	GuiControl,1:    show, 			ScreenSaver
+	GuiControl,1:    hide, 			ScreenSaver
+;	GuiControl,1:    focus, 		ScreenSaver
+;	GuiControl,1:    disable, 		ScreenSaver
+;	GuiControl,1:    enable, 		ScreenSaver
+; ////////////////////////////////////////////////////////////////////////////////////	button Trigger Dateien konfigurieren
+	if MaßNehmen
+	Gui,1: Add, text , 0x1000 vTriggerDateien     	; Maß nehmen
+	else
+	Gui,1: Add, button , 	vTriggerDateien Hidden	hwndHButtonTriggerDateien Left
+	Gui,1: Font,									% thisZoomFactorNormal(9.011)
+	GuiControl,1:    MoveDraw, 		TriggerDateien,					% thisX(30.5) thisY(5.5) thisW(11.5) thisH(2.6) ;  default
+	GuiControl,1:    Font, 			TriggerDateien
+	GuiControl,1: ,  			TriggerDateien,					%a_space%Trigger Dateien konfigurieren...%a_space%
+	GuiControl,1:    show, 			TriggerDateien
+	GuiControl,1:    hide, 			TriggerDateien
+;	GuiControl,1:    focus, 		TriggerDateien
+;	GuiControl,1:    disable, 		TriggerDateien
+;	GuiControl,1:    enable, 		TriggerDateien
+
+
+
+
+
+
+MaßNehmen1200 := 0
+
+; ////////////////////////////////////////////////////////////////////////////////////	SonnenaufgangText SonnenaufgangGUI2Text
+
+	if MaßNehmen || MaßNehmen1200
+	Gui,1: Add, text , 0x1000 vSonnenaufgangGUI2Text ; Maß nehmen
+	else
+	Gui,1: Add, text , 	vSonnenaufgangGUI2Text hwndhSonnenaufgangGUI2Text Left Hidden	; gnMalBlinkenOFF 
+	Gui,1: Font,							% thisZoomFactorBold(20.5111) " cBlue", Verdana 
+	GuiControl,1:    MoveDraw, 		SonnenaufgangGUI2Text,		% thisX(31.5900) thisY(4.9) thisW(11) thisH(2.99) ;  default
+	GuiControl,1:    Font, 			SonnenaufgangGUI2Text
+	GuiControl,1: ,  			SonnenaufgangGUI2Text, 		Nächster in:
+	GuiControl,1:    show, 			SonnenaufgangGUI2Text
+;	GuiControl,1:    hide, 			SonnenaufgangGUI2Text
+;	GuiControl,1:    focus, 		SonnenaufgangGUI2Text
+;	GuiControl,1:    disable, 		SonnenaufgangGUI2Text
+;	GuiControl,1:    enable, 		SonnenaufgangGUI2Text
+	GuiControl,1:    +BackgroundTrans, 	SonnenaufgangGUI2Text
+; ////////////////////////////////////////////////////////////////////////////////////	SonnenaufgangZeit SonnenaufgangGUI2Zeit
+
+	if MaßNehmen || MaßNehmen1200
+	Gui,1: Add, text , 0x1000 vSonnenaufgangGUI2Zeit ; Maß nehmen
+	else
+	Gui,1: Add, text , 	vSonnenaufgangGUI2Zeit hwndhSonnenaufgangGUI2Zeit Left Hidden	; gnMalBlinkenOFF 
+	Gui,1: Font,							% thisZoomFactorBold(20.5111) " cBlue", Verdana 
+	GuiControl,1:    MoveDraw, 		SonnenaufgangGUI2Zeit,		% thisX(43.0) thisY(4.9) thisW(20.1111) thisH(2.99) ;  default
+	GuiControl,1:    Font, 			SonnenaufgangGUI2Zeit
+	GuiControl,1: ,  			SonnenaufgangGUI2Zeit, 		99 Stunden 99 Minuten ; Nächster in:
+	GuiControl,1:    show, 			SonnenaufgangGUI2Zeit
+;	GuiControl,1:    hide, 			SonnenaufgangGUI2Zeit
+;	GuiControl,1:    focus, 		SonnenaufgangGUI2Zeit
+;	GuiControl,1:    disable, 		SonnenaufgangGUI2Zeit
+;	GuiControl,1:    enable, 		SonnenaufgangGUI2Zeit
+	GuiControl,1:    +BackgroundTrans, 	SonnenaufgangGUI2Zeit
+; ////////////////////////////////////////////////////////////////////////////////////	SeitSonnenaufgangText SeitSonnenaufgangGUI2Text
+
+	if MaßNehmen || MaßNehmen1200
+	Gui,1: Add, text , 0x1000 vSeitSonnenaufgangGUI2Text ; Maß nehmen
+	else
+	Gui,1: Add, text , 	vSeitSonnenaufgangGUI2Text hwndhSeitSonnenaufgangGUI2Text Left Hidden	; gnMalBlinkenOFF 
+	Gui,1: Font,							% thisZoomFactorBold(20.5111) " cBlue", Verdana 
+	GuiControl,1:    MoveDraw, 		SeitSonnenaufgangGUI2Text,	% thisX(31.5900) thisY(8.6) thisW(11) thisH(2.99) ;  default
+	GuiControl,1:    Font, 			SeitSonnenaufgangGUI2Text
+	GuiControl,1: ,  			SeitSonnenaufgangGUI2Text, 		Letzter vor:
+	GuiControl,1:    show, 			SeitSonnenaufgangGUI2Text
+;	GuiControl,1:    hide, 			SeitSonnenaufgangGUI2Text
+;	GuiControl,1:    focus, 		SeitSonnenaufgangGUI2Text
+;	GuiControl,1:    disable, 		SeitSonnenaufgangGUI2Text
+;	GuiControl,1:    enable, 		SeitSonnenaufgangGUI2Text
+	GuiControl,1:    +BackgroundTrans, 	SeitSonnenaufgangGUI2Text
+; ////////////////////////////////////////////////////////////////////////////////////	seitSonnenaufgangZeit SonnenaufgangGUI2Zeit
+
+	if MaßNehmen || MaßNehmen1200
+	Gui,1: Add, text , 0x1000 vSeitSonnenaufgangGUI2Zeit ; Maß nehmen
+	else
+	Gui,1: Add, text , 	vSeitSonnenaufgangGUI2Zeit hwndhSeitSonnenaufgangGUI2Zeit Left Hidden	; gnMalBlinkenOFF 
+	Gui,1: Font,							% thisZoomFactorBold(20.5111) " cBlue", Verdana 
+	GuiControl,1:    MoveDraw, 		SeitSonnenaufgangGUI2Zeit,		% thisX(43.0) thisY(8.6) thisW(20.1111) thisH(2.99) ;  default
+	GuiControl,1:    Font, 			SeitSonnenaufgangGUI2Zeit
+	GuiControl,1: ,  			SeitSonnenaufgangGUI2Zeit, 		99 Stunden 99 Minuten ; Letzter vor:
+	GuiControl,1:    show, 			SeitSonnenaufgangGUI2Zeit
+;	GuiControl,1:    hide, 			SeitSonnenaufgangGUI2Zeit
+;	GuiControl,1:    focus, 		SeitSonnenaufgangGUI2Zeit
+;	GuiControl,1:    disable, 		SeitSonnenaufgangGUI2Zeit
+;	GuiControl,1:    enable, 		SeitSonnenaufgangGUI2Zeit
+	GuiControl,1:    +BackgroundTrans, 	SeitSonnenaufgangGUI2Zeit
+; ////////////////////////////////////////////////////////////////////////////////////	
+
+MaßNehmen1264 := 0
+; ////////////////////////////////////////////////////////////////////////////////////	GroupBox Sonne auf
+	if MaßNehmen || MaßNehmen1264
+	Gui,1: Add, text , 0x1000 vGroupBoxSonneAuf     	; Maß nehmen
+	else
+	Gui,1: Add, GroupBox , 	vGroupBoxSonneAuf Hidden	hwndHButtonGroupBoxSonneAuf
+	Gui,1: Font,									% thisZoomFactorBold(22.5111)
+	GuiControl,1:    MoveDraw, 		GroupBoxSonneAuf,					% thisX(30.0) thisY(.5) thisW(34.0) thisH(13.01) ;  default
+	GuiControl,1:    Font, 			GroupBoxSonneAuf
+	GuiControl,1: ,  			GroupBoxSonneAuf,					; %a_space%Sonnenaufgang%a_space%23:99
+	GuiControl,1:    show, 			GroupBoxSonneAuf
+;	GuiControl,1:    hide, 			GroupBoxSonneAuf
+;	GuiControl,1:    focus, 		GroupBoxSonneAuf
+;	GuiControl,1:    disable, 		GroupBoxSonneAuf
+;	GuiControl,1:    enable, 		GroupBoxSonneAuf
+;	GuiControl,1:    +BackgroundTrans, 	GroupBoxSonneAuf
+
+; ////////////////////////////////////////////////////////////////////////////////////	GroupBox Sonne unter
+	if MaßNehmen || MaßNehmen1264
+	Gui,1: Add, text , 0x1000 vGroupBoxSonneUnter     	; Maß nehmen
+	else
+	Gui,1: Add, GroupBox , 	vGroupBoxSonneUnter Hidden	hwndHButtonGroupBoxSonneUnter
+	Gui,1: Font,									% thisZoomFactorBold(22.5111)
+	GuiControl,1:    MoveDraw, 		GroupBoxSonneUnter,					% thisX(30.0) thisY(13.5) thisW(34.0) thisH(13.1) ;  default
+	GuiControl,1:    Font, 			GroupBoxSonneUnter
+	GuiControl,1: ,  			GroupBoxSonneUnter,					; %a_space%Sonnenuntergang%a_space%23:99
+	GuiControl,1:    show, 			GroupBoxSonneUnter
+;	GuiControl,1:    hide, 			GroupBoxSonneUnter
+;	GuiControl,1:    focus, 		GroupBoxSonneUnter
+;	GuiControl,1:    disable, 		GroupBoxSonneUnter
+;	GuiControl,1:    enable, 		GroupBoxSonneUnter
+;	GuiControl,1:    +BackgroundTrans, 	GroupBoxSonneUnter
+
+; ////////////////////////////////////////////////////////////////////////////////////	GroupBox Sonnenstunden GroupBoxSonnenstunden
+	if MaßNehmen || MaßNehmen1264
+	Gui,1: Add, text , 0x1000 vGroupBoxSonnenstunden     	; Maß nehmen
+	else
+	Gui,1: Add, GroupBox , 	vGroupBoxSonnenstunden Hidden	hwndHButtonGroupBoxSonnenstunden
+	Gui,1: Font,									% thisZoomFactorBold(19.6111)  ; (22.5111)
+	GuiControl,1:    MoveDraw, 		GroupBoxSonnenstunden,					% thisX(30.0) thisY(26.9) thisW(34.0) thisH(4.1) ;  default thisY(30.5) 
+	GuiControl,1:    Font, 			GroupBoxSonnenstunden
+	thisSonnenstunden  := "[ gestern: " MainArray["SonnenstundenCalendarDayLTRIM", A_YDay-1] " ]`t`t" MainArray["Sonnenstunden"] " Stunden " MainArray["Sonnenminuten"]
+;	GuiControl,1: ,  			GroupBoxSonnenstunden,					% thisSonnenstunden  
+;	GuiControl,1: ,  			GroupBoxSonnenstunden,					% "Sonnenstunden "  Sonnenstunden Sonnenminuten
+;	GuiControl,1:    +BackgroundGreen	, 			GroupBoxSonnenstunden
+	GuiControl,1:    show, 			GroupBoxSonnenstunden
+;	GuiControl,1:    hide, 			GroupBoxSonnenstunden
+;	GuiControl,1:    focus, 		GroupBoxSonnenstunden
+;	GuiControl,1:    disable, 		GroupBoxSonnenstunden
+;	GuiControl,1:    enable, 		GroupBoxSonnenstunden
+;	GuiControl,1:    +BackgroundTrans, 	GroupBoxSonnenstunden
+; ////////////////////////////////////////////////////////////////////////////////////	SonnenuntergangText SonnenuntergangGUI2Text
+
+	if MaßNehmen || MaßNehmen1200
+	Gui,1: Add, text , 0x1000 vSonnenuntergangGUI2Text ; Maß nehmen
+	else
+	Gui,1: Add, text , 	vSonnenuntergangGUI2Text hwndhSonnenuntergangGUI2Text Left Hidden	; gnMalBlinkenOFF 
+	Gui,1: Font,							% thisZoomFactorBold(20.5111) " cBlue", Verdana 
+	GuiControl,1:    MoveDraw, 		SonnenuntergangGUI2Text,		% thisX(31.5900) thisY(17.8500) thisW(11) thisH(2.99) ;  default
+	GuiControl,1:    Font, 			SonnenuntergangGUI2Text
+	GuiControl,1: ,  			SonnenuntergangGUI2Text, 		Nächster in:
+	GuiControl,1:    show, 			SonnenuntergangGUI2Text
+;	GuiControl,1:    hide, 			SonnenuntergangGUI2Text
+;	GuiControl,1:    focus, 		SonnenuntergangGUI2Text
+;	GuiControl,1:    disable, 		SonnenuntergangGUI2Text
+;	GuiControl,1:    enable, 		SonnenuntergangGUI2Text
+	GuiControl,1:    +BackgroundTrans, 	SonnenuntergangGUI2Text
+; ////////////////////////////////////////////////////////////////////////////////////	SonnenuntergangZeit SonnenuntergangGUI2Zeit
+
+	if MaßNehmen || MaßNehmen1200
+	Gui,1: Add, text , 0x1000 vSonnenuntergangGUI2Zeit ; Maß nehmen
+	else
+	Gui,1: Add, text , 	vSonnenuntergangGUI2Zeit hwndhSonnenuntergangGUI2Zeit Left Hidden	; gnMalBlinkenOFF 
+	Gui,1: Font,							% thisZoomFactorBold(20.5111) " cBlue", Verdana 
+	GuiControl,1:    MoveDraw, 		SonnenuntergangGUI2Zeit,		% thisX(43.0) thisY(17.8500) thisW(20.1111) thisH(2.99) ;  default
+	GuiControl,1:    Font, 			SonnenuntergangGUI2Zeit
+	GuiControl,1: ,  			SonnenuntergangGUI2Zeit, 		99 Stunden 99 Minuten ; Nächster in:
+	GuiControl,1:    show, 			SonnenuntergangGUI2Zeit
+;	GuiControl,1:    hide, 			SonnenuntergangGUI2Zeit
+;	GuiControl,1:    focus, 		SonnenuntergangGUI2Zeit
+;	GuiControl,1:    disable, 		SonnenuntergangGUI2Zeit
+;	GuiControl,1:    enable, 		SonnenuntergangGUI2Zeit
+	GuiControl,1:    +BackgroundTrans, 	SonnenuntergangGUI2Zeit
+; ////////////////////////////////////////////////////////////////////////////////////	SeitSonnenuntergangText SeitSonnenuntergangGUI2Text
+
+	if MaßNehmen || MaßNehmen1200
+	Gui,1: Add, text , 0x1000 vSeitSonnenuntergangGUI2Text ; Maß nehmen
+	else
+	Gui,1: Add, text , 	vSeitSonnenuntergangGUI2Text hwndhSeitSonnenuntergangGUI2Text Left Hidden	; gnMalBlinkenOFF 
+	Gui,1: Font,							% thisZoomFactorBold(20.5111) " cBlue", Verdana 
+	GuiControl,1:    MoveDraw, 		SeitSonnenuntergangGUI2Text,		% thisX(31.5900) thisY(21.5500) thisW(11) thisH(2.99) ;  default
+	GuiControl,1:    Font, 			SeitSonnenuntergangGUI2Text
+	GuiControl,1: ,  			SeitSonnenuntergangGUI2Text, 		Letzter vor:
+	GuiControl,1:    show, 			SeitSonnenuntergangGUI2Text
+;	GuiControl,1:    hide, 			SeitSonnenuntergangGUI2Text
+;	GuiControl,1:    focus, 		SeitSonnenuntergangGUI2Text
+;	GuiControl,1:    disable, 		SeitSonnenuntergangGUI2Text
+;	GuiControl,1:    enable, 		SeitSonnenuntergangGUI2Text
+	GuiControl,1:    +BackgroundTrans, 	SeitSonnenuntergangGUI2Text
+; ////////////////////////////////////////////////////////////////////////////////////	seitSonnenuntergangZeit SonnenuntergangGUI2Zeit
+
+	if MaßNehmen || MaßNehmen1200
+	Gui,1: Add, text , 0x1000 vSeitSonnenuntergangGUI2Zeit ; Maß nehmen
+	else
+	Gui,1: Add, text , 	vSeitSonnenuntergangGUI2Zeit hwndhSeitSonnenuntergangGUI2Zeit Left Hidden	; gnMalBlinkenOFF 
+	Gui,1: Font,							% thisZoomFactorBold(20.5111) " cBlue", Verdana 
+	GuiControl,1:    MoveDraw, 		SeitSonnenuntergangGUI2Zeit,		% thisX(43.0) thisY(21.5500) thisW(20.1111) thisH(2.99) ;  default
+	GuiControl,1:    Font, 			SeitSonnenuntergangGUI2Zeit
+	GuiControl,1: ,  			SeitSonnenuntergangGUI2Zeit, 		99 Stunden 99 Minuten ; Letzter vor:
+	GuiControl,1:    show, 			SeitSonnenuntergangGUI2Zeit
+;	GuiControl,1:    hide, 			SeitSonnenuntergangGUI2Zeit
+;	GuiControl,1:    focus, 		SeitSonnenuntergangGUI2Zeit
+;	GuiControl,1:    disable, 		SeitSonnenuntergangGUI2Zeit
+;	GuiControl,1:    enable, 		SeitSonnenuntergangGUI2Zeit
+	GuiControl,1:    +BackgroundTrans, 	SeitSonnenuntergangGUI2Zeit
+; ////////////////////////////////////////////////////////////////////////////////////	text unter GroupBox Sonnenstunden GroupBoxSonnenstunden
+	if MaßNehmen || MaßNehmen1264
+	Gui,1: Add, text , 0x1000 vTextInGroupBoxSonnenstunden     	; Maß nehmen
+	else
+	Gui,1: Add, text , 	vTextInGroupBoxSonnenstunden Hidden	hwndHButtonTextInGroupBoxSonnenstunden
+	Gui,1: Font,									% thisZoomFactorBold(16.6111)  ; (22.5111)
+	GuiControl,1:    MoveDraw, 		TextInGroupBoxSonnenstunden,		% thisX(30.41900) thisY(35.5)  thisW(33.0) thisH(8.4) ;  default (31.5900) 
+	GuiControl,1:    Font, 			TextInGroupBoxSonnenstunden
+	thisSonnenstunden  := "[ gestern: " MainArray["SonnenstundenCalendarDayLTRIM", A_YDay-1] " ]`t`t" MainArray["Sonnenstunden"] " Stunden " MainArray["Sonnenminuten"]
+;	GuiControl,1: ,  			TextInGroupBoxSonnenstunden,					% thisSonnenstunden  
+	GuiControl,1: ,  			TextInGroupBoxSonnenstunden,	%  isSchaltjahr(A_Year) "`n" TagNachtZeiten() "`n" MainArray["isSchaltjahr_dann_ab_28_februar_A_day_plus_eins"]
+	GuiControl,1:    +BackgroundTrans, 	TextInGroupBoxSonnenstunden
+	GuiControl,1:    show, 			TextInGroupBoxSonnenstunden
+;	GuiControl,1:    hide, 			TextInGroupBoxSonnenstunden
+;	GuiControl,1:    focus, 		TextInGroupBoxSonnenstunden
+;	GuiControl,1:    disable, 		TextInGroupBoxSonnenstunden
+;	GuiControl,1:    enable, 		TextInGroupBoxSonnenstunden
+;	GuiControl,1:    +BackgroundGreen,	TextInGroupBoxSonnenstunden
+	GuiControl,1:    +cMaroon,	TextInGroupBoxSonnenstunden
+	GuiControl,1:    +BackgroundTrans, 	TextInGroupBoxSonnenstunden
+; ////////////////////////////////////////////////////////////////////////////////////	GroupBox unter Sonnenstunden GroupBoxUnterSonnenstunden
+	if MaßNehmen || MaßNehmen1264
+	Gui,1: Add, text , 0x1000 vGroupBoxUnterSonnenstunden     	; Maß nehmen
+	else
+	Gui,1: Add, GroupBox , 	vGroupBoxUnterSonnenstunden Hidden	hwndHGroupBoxUnterSonnenstunden
+	Gui,1: Font,									% thisZoomFactorBold(14.1111)  ; (22.5111)
+	GuiControl,1:    MoveDraw, 		GroupBoxUnterSonnenstunden,					% thisX(30.0) thisY(32.5) thisW(34.0) thisH(12.1) ;  default thisY(30.5) 
+	GuiControl,1:    Font, 			GroupBoxUnterSonnenstunden
+	GuiControl,1: ,  			GroupBoxUnterSonnenstunden,					Test
+	GuiControl,1: ,  			GroupBoxUnterSonnenstunden,				 	%  a_space TagNachtZeiten() a_space 
+;	GuiControl,1:    +BackgroundGreen, 	GroupBoxUnterSonnenstunden
+	GuiControl,1:    show, 			GroupBoxUnterSonnenstunden
+;	GuiControl,1:    hide, 			GroupBoxUnterSonnenstunden
+;	GuiControl,1:    focus, 		GroupBoxUnterSonnenstunden
+;	GuiControl,1:    disable, 		GroupBoxUnterSonnenstunden
+;	GuiControl,1:    enable, 		GroupBoxUnterSonnenstunden
+;	GuiControl,1:    +BackgroundTrans, 	GroupBoxUnterSonnenstunden
+
+; ////////////////////////////////////////////////////////////////////////////////////	
+
+/* 
+
+Gui, +Resize
+Gui, Add, Button, default, Neues Bild &laden
+Gui, Add, Radio, ym+5 x+10 vOption checked, &Originalgröße
+Gui, Add, Radio, ym+5 x+10, &Kompletter Bildschirm
+Gui, Add, Pic, xm vPic
+Gui, Show
+return
+
+ButtonNeuesBildLaden:
+FileSelectFile, Datei,,, Bild auswählen:, Bilder (*.gif; *.jpg; *.bmp; *.png; *.tif; *.ico; *.cur; *.ani; *.exe; *.dll)
+if not Datei
+    return
+Gui, Submit, NoHide ; Speichert die Werte der Radio-Steuerelemente.
+if (Option = 1)  ; Bild mit aktueller Größe anzeigen.
+{
+    Breite := 0
+    Höhe := 0
+}
+else ; Zweites Optionsfeld ausgewählt: Größe des Bildes an Bildschirmgröße anpassen.
+{
+    Breite := A_ScreenWidth - 28  ; Minus 28, um Platz für Rahmen und Innenabstand zu schaffen.
+    Höhe := -1  ; "Seitenverhältnis beibehalten" erscheint sinnvoll.
+}
+GuiControl,, Pic, *w%Breite% *h%Höhe% %Datei%  ; Bild laden.
+Gui, Show, xCenter y0 AutoSize, %Datei%  ; Fenstergröße an Bildgröße anpassen.
+return
+
+GuiClose:
+ExitApp
+*/ 
+; '''''''''''''''''''''''''''#########################################''''''''''''''''''''''''''''''''''''#######################################'''''''''''''''''''''''######
+
+
+; https://www.autohotkey.com/boards/viewtopic.php?p=39229#p39229
+; Bildschirmbreite ermitteln, ZoomFaktor berechnen (100%=1920px)
+; Berechnung der korrigierten Pixel als Variable Ln
+loop, 2000
+	L%A_Index% := Round(A_Index * ZoomFactor, 0)
+
+WinGetPos, X, Y, Width, SysWinHoehe, ahk_class Shell_TrayWnd
+hoehe := L1080 - SysWinHoehe
+
+showGUIzweiFULL := 0
+if showGUIzweiFULL
+{
+	Gui,1: Add, Progress,   Disabled BackgroundSilver	vThisProgress#1a
+	GuiControl,1:    MoveDraw, 		ThisProgress#1a,			% thisX(.5) thisY(.5) thisW(65) thisH(.01) ;  default
+;Gui, 1: -Border
+;gui,show, x0 y0 w%L1920% h%A_screenHeight% ,% strReplace((substr(a_scriptname,-11)),".ahk")
+ gui,show, x0 y0 w%L1920% h%L1080% ,% strReplace((substr(a_scriptname,-11)),".ahk")
+} else { ; https://www.autohotkey.com/board/topic/120289-color-f%C3%BCr-buttons/ by garry
+;	Gui, Color, ffAA99
+;	Gui, Color, black, black
+; loopProgress()							; 
+; thisLoopProgress, 
+	Gui,1: Add, Progress,   BackgroundRed vthisLoopProgress hwndHthisLoopProgress
+	Control ExStyle, -0x20000,, % "ahk_id" HthisLoopProgress ; https://www.autohotkey.com/boards/viewtopic.php?p=279363#p279363 by Ragnar <> progress rahmenlos
+	GuiControl,1:    MoveDraw, 		thisLoopProgress,			% thisX(0) thisY(0) thisW(65) thisH(80) ;  default
+	GuiControl,1:    hide, 			thisLoopProgress
+
+	Gui,1: Add, Progress,   BackgroundRed vThisProgress#1c hwndHThisProgress#1c
+	Control ExStyle, -0x20000,, % "ahk_id" HThisProgress#1c ; https://www.autohotkey.com/boards/viewtopic.php?p=279363#p279363 by Ragnar <> progress rahmenlos
+	GuiControl,1:    MoveDraw, 		ThisProgress#1c,			% thisX(.05) thisY(.5) thisW(.5) thisH(79.1) ;  default
+
+	Gui,1: Add, Progress,   BackgroundRed	vThisProgress#1d hwndHThisProgress#1d
+	Control ExStyle, -0x20000,, % "ahk_id" HThisProgress#1d
+	GuiControl,1:    MoveDraw, 		ThisProgress#1d,			% thisX(64.5) thisY(.5) thisW(.5) thisH(79.1) ;  default
+
+	Gui,1: Add, Progress,   BackgroundRed	vThisProgress#1a hwndHThisProgress#1a
+	Control ExStyle, -0x20000,, % "ahk_id" HThisProgress#1a
+	GuiControl,1:    MoveDraw, 		ThisProgress#1a,			% thisX(.6) thisY(.5) thisW(63.9) thisH(1.01) ;  default
+
+	Gui,1: Add, Progress,   BackgroundRed	vThisProgress#1b hwndHThisProgress#1b
+	Control ExStyle, -0x20000,, % "ahk_id" HThisProgress#1b
+	GuiControl,1:    MoveDraw, 		ThisProgress#1b,			% thisX(.5) thisY(78.5) thisW(63.9) thisH(1.01) ;  default
+
+	GuiControl,1:    hide, 			ThisProgress#1a
+	GuiControl,1:    hide, 			ThisProgress#1b
+	GuiControl,1:    hide, 			ThisProgress#1c
+	GuiControl,1:    hide, 			ThisProgress#1d
+;	Gui, +LastFound
+;	WinSet, TransColor, EEAA99
+;	Gui, Color, default
+
+if throwLaeis		; GUI auf Monitor rechts
+x:=(wa*-65)/xx,	y:=(ha*0)/xx,	w:=(wa*65)/xx,	h:=(ha*80)/xx
+   else
+x:=(wa*29)/xx,	y:=(ha*10)/xx,	w:=(wa*65)/xx,	h:=(ha*80)/xx
+   gui,show,x%x% y%y% w%w% h%h% ,% strReplace((substr(a_scriptname,-11)),".ahk")
+;   gui,show,x-1650 y%y% w%w% h%h% ,% strReplace((substr(a_scriptname,-11)),".ahk")
+}
+; gui,show,x%x% y%y% w%w% h%h% ,TEST	
+;GuiControl,1: Focus,T1			
+GuiControl,1: Focus,ListView2
+;	GuiControl,1:    hide, 			ListView1
+;GuiControl,1: focus, ListeImportieren
+} else {   ; #################################################################################################################################################################################################################################
+sleep 1111
+} ; showGUI2 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+;----------------------------------------------- load history
+;----------------------------------------------- load history
+;msgbox %  A_DefaultListView
+Gui,1:ListView, ListView2 
+	fileRead, thisReloadtimeStamp,  % a_scriptDir "\" A_ScriptName " timeStampall.txt"
+	GuiControl, -Redraw, ListView2
+	Loop, parse, thisReloadtimeStamp,`n
+	{
+	split := strSplit(a_loopfield,a_tab)
+	if a_loopfield {
+	if !LoadListViewFull {
+	if a_loopfield contains Programmstart,exitapp, Uhr	F1	, Uhr	F2	 ; space=TAB
+	continue
+	if inStr(a_loopfield,"exitapp")
+	continue
+	if inStr(a_loopField,"Sturmwarnung") && inStr(a_loopField," Uhr	F10	")
+	continue
+;	if inStr(a_loopField,"Sonnenaufgang") && inStr(a_loopField,"F1")
+;	continue
+;	if inStr(a_loopField,"Sonnenuntergang") && inStr(a_loopField,"F2")
+;	continue
+	}
+
+	split2  := strReplace(split.2,(SubStr(split.2, -7)))	; Uhr
+	split2a := strReplace(split.2,(SubStr(split.2, -28)))	; wochentag
+	split2b  := strReplace(split2,split2a)
+	if split2
+;	x:=LV_Modify(LV_Add("", split2, split.3, split.4 , split.5, split.6, split.7, split.8, split.9, split.10, split.11, split.12), "Vis")
+	x:=LV_Add("", split2, split.3, split.4 , split.5, split.6, split.7, split.8, split.9, split.10, split.11, split.12)
+	LV_Modify(x, "+Focus")
+	LV_Modify(x, "Vis")
+	}
+;	GuiControl, +Redraw, ListView2
+}
+	GuiControl, +Redraw, ListView2
+
+listviewfüllen := 0
+if listviewfüllen
+{
+Gui,1:ListView, ListView1 
+	fileRead, thisReloadtimeStamp,  % a_scriptDir "\" A_ScriptName " timeStampall.txt"
+	GuiControl, -Redraw, ListView1
+	Loop, parse, thisReloadtimeStamp,`n
+	{
+	split := strSplit(a_loopfield,a_tab)
+	if a_loopfield {
+	if !LoadListViewFull {
+	if a_loopfield contains Programmstart,exitapp, Uhr	F1	, Uhr	F2	 ; space=TAB
+	continue
+	if inStr(a_loopfield,"exitapp")
+	continue
+	if inStr(a_loopField,"Sturmwarnung") && inStr(a_loopField," Uhr	F10	")
+	continue
+;	if inStr(a_loopField,"Sonnenaufgang") && inStr(a_loopField,"F1")
+;	continue
+;	if inStr(a_loopField,"Sonnenuntergang") && inStr(a_loopField,"F2")
+;	continue
+	}
+
+	split2  := strReplace(split.2,(SubStr(split.2, -7)))	; Uhr
+	split2a := strReplace(split.2,(SubStr(split.2, -28)))	; wochentag
+	split2b  := strReplace(split2,split2a)
+	if split2
+;	x:=LV_Modify(LV_Add("", split2, split.3, split.4 , split.5, split.6, split.7, split.8, split.9, split.10, split.11, split.12), "Vis")
+	x:=LV_Add("", split2, split.3, split.4 , split.5, split.6, split.7, split.8, split.9, split.10, split.11, split.12)
+	LV_Modify(x, "+Focus")
+	LV_Modify(x, "Vis")
+	}
+;	GuiControl, +Redraw, ListView1
+}
+	GuiControl, +Redraw, ListView1
+	Loop, % LV_GetCount("Columns")
+	LV_ModifyCol(A_Index, "AutoHdr")
+		LV_ModifyCol(4, 0)	; A_ThisFunc
+		LV_ModifyCol(5, 0)	; A_ThisHotkey
+		LV_ModifyCol(6, 0)	; A_PriorHotkey
+		LV_ModifyCol(7, 0)	; A_PriorKey
+		LV_ModifyCol(8, 0)	; A_TimeSinceThisHotkey
+		LV_ModifyCol(9, 0)	; A_TimeSincePriorHotkey
+		LV_ModifyCol(10, 0)	; A_GuiControl
+		LV_ModifyCol(11, 0)	; A_GuiEvent
+		LV_ModifyCol(12, 0)	; A_EventInfo
+Gui,1:ListView, ListView2 
+}
+
+
+
+/*
+;----------------------------------------------- load sonnenuntergang-sonnenaufgang-sunrise-sunset
+Gui, ListView, LV2
+	fileRead, thisReloadSunriseSunsetYYYY,% a_scriptDir "\sonnenuntergang-sonnenaufgang-sunrise-sunset.csv"
+	Loop, parse, thisReloadSunriseSunsetYYYY,`n
+	{
+	split := strSplit(a_loopfield,a_tab)
+	if a_loopfield {
+	if (a_index=1)
+	continue
+	x:=LVaddLine ;= LV_Modify(LV_Add("", ((a_index=1) ? ("") : (a_index-1)), split.1, split.2, split.3, split.4, split.5, split.6), "Vis")
+		LV_ModifyCol(1, "AutoHdr")	; Datum
+		LV_ModifyCol(2, "AutoHdr")	; Sonnenaufgang
+		LV_ModifyCol(3, "AutoHdr")	; Sonnenuntergang
+		LV_ModifyCol(4, "AutoHdr")	; Sonnenstunden
+		LV_ModifyCol(5, "AutoHdr")	; SonnenstundenSpeak
+		LV_ModifyCol(6, "AutoHdr")	; SonnenstundenSpeak
+	LV_Modify(x, "Vis")
+	;msgbox % split.1 "`n" split2 "`n" split2b
+	}}
+;----------------------------------------------- load result ; DayCounter ; 
+Gui, ListView, ListView2
+*/
+
+
+
+
+
+
+
+
+
+		thisATimeSinceThisHotkey := A_TimeSinceThisHotkey
+		ATimeSinceThisHotkey := subStr(ConvertToHHMMSSMS(thisATimeSinceThisHotkey),1,8)
+
+		thisATimeSincePriorHotkey := A_TimeSincePriorHotkey
+		ATimeSincePriorHotkey := subStr(ConvertToHHMMSSMS(thisATimeSincePriorHotkey),1,8)
+
+		if LVInsertADD
+		x:=LV_Insert(1 , Optionen, A_DD "." Month(A_MM) "." a_YYYY "  " A_Hour ":" A_Min ":" A_Sec
+							, (A_ThisLabel?A_ThisLabel:"System")
+							, "Programmstart"
+							, (A_ThisFunc?A_ThisFunc:"empty")
+							, (A_ThisHotkey?A_ThisHotkey:"empty")
+							, (A_PriorHotkey?A_PriorHotkey:"empty")
+							, (A_PriorKey?A_PriorKey:"empty")
+							, (A_TimeSinceThisHotkey?ATimeSinceThisHotkey:"empty")
+							, (A_TimeSincePriorHotkey?ATimeSincePriorHotkey:"empty")
+							, (A_GuiControl?A_GuiControl:"empty")
+							, (A_GuiEvent?A_GuiEvent:"empty")
+							, (A_EventInfo?A_EventInfo:"empty"))
+		else
+		x:=LV_Modify(LV_Add("", A_DD "." Month(A_MM) "." a_YYYY "  " A_Hour ":" A_Min ":" A_Sec
+							, (A_ThisLabel?A_ThisLabel:"System")
+							, "Programmstart"
+							, (A_ThisFunc?A_ThisFunc:"empty")
+							, (A_ThisHotkey?A_ThisHotkey:"empty")
+							, (A_PriorHotkey?A_PriorHotkey:"empty")
+							, (A_PriorKey?A_PriorKey:"empty")
+							, (A_TimeSinceThisHotkey?ATimeSinceThisHotkey:"empty")
+							, (A_TimeSincePriorHotkey?ATimeSincePriorHotkey:"empty")
+							, (A_GuiControl?A_GuiControl:"empty")
+							, (A_GuiEvent?A_GuiEvent:"empty")
+							, (A_EventInfo?A_EventInfo:"empty")), "Vis")
+	LV_Modify(x, "Vis")
+		LVModifyCol()
+		fileAppend,% "Programmstart:`t" A_DD "." Month(A_MM) "." a_YYYY "  " A_Hour ":" A_Min ":" A_Sec ":" A_MSec " Uhr`t"
+							. "empty`t"
+							. "Programmstart`t"
+							. (A_ThisFunc?A_ThisFunc:"empty") "`t"
+							. (A_ThisHotkey?A_ThisHotkey:"empty") "`t"
+							. (A_PriorHotkey?A_PriorHotkey:"empty") "`t"
+							. (A_PriorKey?A_PriorKey:"empty") "`t"
+							. (A_TimeSinceThisHotkey?ATimeSinceThisHotkey:"empty") "`t"
+							. (A_TimeSincePriorHotkey?ATimeSincePriorHotkey:"empty") "`t"
+							. (A_GuiControl?A_GuiControl:"empty") "`t"
+							. (A_GuiEvent?A_GuiEvent:"empty") "`t"
+							. (A_EventInfo?A_EventInfo:"empty") "`n"
+				, % a_scriptDir "\" A_ScriptName " timeStampall.txt"
+
+
+;//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+;	Gui, Show, x110 y31 w565 h%AScreenHeight300%,% a_scriptName a_space hGUIA  
+;guicontrol, hide, edit3 
+;guicontrol, hide, tab3
+	settimer, toolTip, 300
+	if !MakeList
+	settimer, start, -1
+
+;/////////////////////////////////////////////////////////////////////############################################################################
+;/////////////////////////////////////////////////////////////////////############################################################################
+;/////////////////////////////////////////////////////////////////////############################################################################
+
+; todo
+isLeapYear := 0 ; is schaltjahr if isLeapYear 
+
+
+
+if isLeapYear 
+{  ; isLeapYear 
+   if MakeList
+   { ; SunriseSunsetSchaltjahr(mm,dd)
+		try filedelete,% a_scriptDir "\sonnenuntergang-sonnenaufgang-sunrise-sunset.csv"
+			for thisMonth, month in strSplit("31,29,31,30,31,30,31,31,30,31,30,31",",") {  ; is schaltjahr if isLeapYear 
+				loop,% month 
+				{
+				thisDay++
+				if (thisDay>=31) && (thisMonth=12)
+				continue
+				AMM := thisMonth, ADD := thisDay
+				gosub start
+			;	sleep, 10  ; test
+				}
+				thisDay:=0
+			} 
+
+		fileAppend,% thisres,% a_scriptDir "\sonnenuntergang-sonnenaufgang-sunrise-sunset.csv"
+		if ShowMakeList
+		try run,% a_scriptDir "\sonnenuntergang-sonnenaufgang-sunrise-sunset.csv"
+   }  ; MakeList
+} else { ; isLeapYear }
+   if MakeList
+   {  ; SunriseSunset(mm,dd)
+		try filedelete,% a_scriptDir "\sonnenuntergang-sonnenaufgang-sunrise-sunset.csv"
+			for thisMonth, month in strSplit("31,28,31,30,31,30,31,31,30,31,30,31",",") {
+				loop,% month 
+				{
+				if !month
+				continue
+				thisDay++
+				AMM := thisMonth, ADD := thisDay
+				gosub start
+			;	sleep, 1 ; test
+				}
+				thisDay:=0
+			} 
+		fileAppend,% thisres,% a_scriptDir "\sonnenuntergang-sonnenaufgang-sunrise-sunset.csv"
+		if ShowMakeList
+		try run,% a_scriptDir "\sonnenuntergang-sonnenaufgang-sunrise-sunset.csv"
+   }  ; MakeList
+
+}  ; isLeapYear }
+;/////////////////////////////////////////////////////////////////////############################################################################
+;/////////////////////////////////////////////////////////////////////############################################################################
+;/////////////////////////////////////////////////////////////////////############################################################################
+
+
+
+; 	if (DayCounter>=365) ; if isLeapYear ; isLeapYear := 0
+;	if (DayCounter=365)
+;	if (thisDay>=31) && (thisMonth=12)
+	if (thisDay>=0) && (thisMonth=12)
+	MakeList := false
+	if !MakeList
+	settimer, start, -1
+	if !MakeList
+	outOfOrder := 0
+;	setTimer, F1, -25000 	; disable Gui Counter
+	setTimer, F5, -500 	; disable Gui Counter
+	setTimer, ^F5, -500 	; ebable debugInfo
+
+
+
+;	MsgBox % TagNachtZeiten() "`n" LastSunday(A_YYYY "03") "`n" LastSunday(A_YYYY "10")
+
+	; https://www.autohotkey.com/boards/viewtopic.php?p=439828#p439828 by amateur+   Schaltjahrberechnung
+;	MsgBox,,, % daysInYear := Mod(A_Year, 4) || ! Mod(A_Year, 100) & Mod(A_Year, 400) ? ("Jahr hat: " 365 " Tage") : ("Jahr hat: " 366 " Tage (Schaltjahr)"), 3
+	
+
+thisTimer#1 := (.5*60*1000)
+;		setTimer, apiGefahrenmeldung, -5000
+;		setTimer, apixTrigger, -10000
+
+	;	Gefahrenmeldung("Gefahrenmeldung") ; test
+
+
+;//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+;//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+; isSchaltjahrTrueFalse()
+Gui, ListView, LV2
+Gui, listview, default
+; https://www.autohotkey.com/boards/viewtopic.php?p=387176#p387176 <>  ListView 
+; RowsPerPage := DllCall("SendMessage", "Ptr", HW01, "UInt", 0x1028, "Ptr", 0, "Ptr", 0, "Ptr")
+
+/*
+	testTMP272 := 0 					; 2 default
+	if (testTMP272=1) 				; 1
+	{
+
+	isSchaltjahrTrueFalse := 1 ; morgen
+
+	   xModify#1 :=  (isSchaltjahrTrueFalse=0)
+			? (A_YDay)
+			: (isSchaltjahrTrueFalse=1)
+			? (A_YDay+1)
+			: ""
+	} 
+	else 
+	if (testTMP272=2) ; heute 			; 2 default
+	{
+	xModify#1 :=  (isSchaltjahrTrueFalse()=0)
+			? (A_YDay)			; kein Schaltjahr
+			: (isSchaltjahrTrueFalse()=1)
+			? (A_YDay+1)			; Schaltjahr ( plus 1 day )
+			: ""
+	} 
+	else 
+	if (testTMP272=3) ; test 			; 3
+	{
+	xModify#1 :=  (isSchaltjahrTrueFalse()=0)
+			? (A_YDay+59)
+			: (isSchaltjahrTrueFalse()=1)
+			? (A_YDay+10)
+			: ""
+	}
+*/
+	; 28.02 = a_day = Tag 59 ; wenn schaltjahr dann ab 28.februar plus ein tag
+ 	xModify#1 :=  MainArray["isSchaltjahr_dann_ab_28_februar_A_day_plus_eins"] := 	 ((A_YDay>=59) && (isSchaltjahrTrueFalse()=1))
+											? (A_YDay+1)
+											: (isSchaltjahrTrueFalse()=0)
+											? (A_YDay)
+											: ""
+;//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+;----------------------------------------------- load sonnenuntergang-sonnenaufgang-sunrise-sunset
+Gui, ListView, LV2
+Gui, listview, default
+	GuiControl, -Redraw, LV2
+;	fileRead, thisReloadSunriseSunsetYYYY,% a_scriptDir "\sonnenuntergang-sonnenaufgang-sunrise-sunset.csv"
+	Loop, parse, thisReloadSunriseSunsetYYYY,`n
+	{
+	split := strSplit(a_loopfield,a_tab)
+	if a_loopfield {
+	if (a_index=1)
+	continue
+	x:=LV_Modify(LV_Add("", ((a_index=1) ? ("") : (a_index-1)), split.1, split.2, split.3, split.4, split.5, split.6), "Vis")
+		LV_ModifyCol(1, "AutoHdr")	; Datum
+		LV_ModifyCol(2, "AutoHdr")	; Sonnenaufgang
+		LV_ModifyCol(3, "AutoHdr")	; Sonnenuntergang
+		LV_ModifyCol(4, "AutoHdr")	; Sonnenstunden
+		LV_ModifyCol(5, "AutoHdr")	; SonnenstundenSpeak
+		LV_ModifyCol(6, "AutoHdr")	; SonnenstundenSpeak
+;	LV_Modify(x, "Vis")
+	;msgbox % split.1 "`n" split2 "`n" split2b
+	}}
+;----------------------------------------------- load result ; DayCounter ; 
+	GuiControl, +Redraw, LV2
+
+LV_Modify((xModify#1+(RowsPerPage/2)), "Vis")
+LV_Modify(xModify#1-6, "Vis")
+LV_Modify(xModify#1, "+Focus")
+LV_Modify(xModify#1, "+Select")
+LV_Modify(xModify#1, "focus")
+;send, {Tab}
+Gui, ListView, ListView2
+; send, {TAB}
+ send, {DOWN}
+
+;	Gui, Show, x110 y31 w565 h%AScreenHeight300%,% a_scriptName a_space hGUIA  
+;//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+if showMsgBoxTest#854a
+msgbox,,% a_lineNumber, % "showMsgBoxTest#854a = " showMsgBoxTest#854a "`n" test#854a
+
+;settimer, sekundenTrigger, 1000
+;settimer, Sondermeldung, -5000
+;setTimer, ^F10, -100			; GUI maximal vergrößern für debug view
+
+
+
+
+
+; clipboard := MainArray["nextScheduledAction"]
+settimer, showhideListView1, 500
+settimer, BeimStartUebernehmen, -100
+
+thisListViewAnsichtErweiternProgressModus := 1  ; blinken aus für zurück zum hauptmenü oben
+settimer, BlinkenFuerthisListViewAnsichtErweiternProgress, -1
+
+
+return 	; firstreturn
+
+SonnenEditStunden:
+SonnenEditMinuten:
+return
+gui,1: submit, nohide
+GuiControlGet, SonnenEditMinuten
+msgbox % SonnenEditMinuten
+thisSonnenEditMinuten := (SonnenEditMinuten+1)
+ControlSetText, SonnenEditMinuten,% thisSonnenEditMinuten
+return
+
+EM_SETCUEBANNER(HWND, Text) {
+   ; EM_SETCUEBANNER = 0x1501 -> msdn.microsoft.com/en-us/library/bb761639(v=vs.85).aspx
+return DllCall("SendMessage", "Ptr", HWND, "UInt", 0x1501, "Ptr", True, "WStr", Text, "Ptr")
+}
+
+LogListeExportieren:
+gui,1: submit, nohide
+app   = C:\Windows\System32\notepad.exe
+first = cr
+Run, %app%
+WinWaitActive, ahk_exe %app%,, 5
+;If ErrorLevel
+; MsgBox, 48, Error, An error occurred while waiting for the window.
+ControlSetText, Edit1, %first%
+return
+
+ButtonAdd:
+Gui, Submit , NoHide
+MsgBox,262144,, % TextEdit1 "`n"
+	. SonnenEditStunden "`n"
+	. SonnenEditMinuten "`n"
+	. trim(ddl1) "`n"
+	. trim(ddl3) "`n"
+	. RadioEinmal "`n"
+	. RadioTäglich 
+return
+showhideListView1:
+gui, submit, nohide
+;GuiControlGet, ListViewEinUndAusblenden
+;ListViewEinUndAusblenden := (ListViewEinUndAusblenden:=!ListViewEinUndAusblenden)
+Return
+
+RadioRnRoll:
+return
+	GuiControl,1: 	+cRed, 	RadioEinmal
+	GuiControl,1: 	+cRed, 	RadioTäglich
+	GuiControl,1: 	+cRed, 	RadioWöchendlich
+	GuiControl,1: 	+cRed, 	RadioMonatlich
+	GuiControl,1: 	+cRed, 	RadioJährlich
+sleep, 2500
+	GuiControl,1: 	+cBlue, RadioEinmal
+	GuiControl,1: 	+cBlue, RadioTäglich
+	GuiControl,1: 	+cBlue, RadioWöchendlich
+	GuiControl,1: 	+cBlue, RadioMonatlich
+	GuiControl,1: 	+cBlue, RadioJährlich
+return
+
+
+ListViewEinUndAusblenden: 	
+gui, submit, nohide
+thisListViewAnsichtErweiternProgressModus := (thisListViewAnsichtErweiternProgressModus:=!thisListViewAnsichtErweiternProgressModus)
+;GuiControlGet, ListViewEinUndAusblenden
+ListViewEinUndAusblenden := (ListViewEinUndAusblenden:=!ListViewEinUndAusblenden)
+if !ListViewEinUndAusblenden
+{
+inclRadio := 0
+if inclRadio
+{
+	GuiControl,1:    hide, 			GroupBoxAWiederholen 										; ListViewEinUndAusblenden 1080
+	GuiControl,1:    hide, 			RadioEinmal 											; ListViewEinUndAusblenden 1080
+	GuiControl,1:    hide, 			RadioTäglich 											; ListViewEinUndAusblenden 1080
+	GuiControl,1:    hide, 			RadioWöchendlich 										; ListViewEinUndAusblenden 1080
+	GuiControl,1:    hide, 			RadioMonatlich 											; ListViewEinUndAusblenden 1080
+	GuiControl,1:    hide, 			RadioJährlich 											; ListViewEinUndAusblenden 1080
+}
+/*
+	GuiControl,1: 	+cRed, 	RadioEinmal
+	GuiControl,1: 	+cRed, 	RadioTäglich
+	GuiControl,1: 	+cRed, 	RadioWöchendlich
+	GuiControl,1: 	+cRed, 	RadioMonatlich
+	GuiControl,1: 	+cRed, 	GroupBoxAWiederholen
+	GuiControl,1: 	+cRed, 	RadioJährlich
+	GuiControl,1: 	+cRed, 	GroupBoxÜberListView1
+*/
+	GuiControl,1:    hide, 			GroupBoxUnterListView1										; ListViewEinUndAusblenden 1080
+	GuiControl,1:    hide, 			ListView1											; ListViewEinUndAusblenden 1080
+	GuiControl,1:    hide, 			GroupBoxNächsteSystemAktion									; ListViewEinUndAusblenden 1080
+	GuiControl,1:    hide, 			NächsteGeplanteSystemAction									; ListViewEinUndAusblenden 1080
+	GuiControl,1:    hide, 			GroupBoxLOG											; ListViewEinUndAusblenden 1080
+	GuiControl,1:    hide, 			GroupBoxUnterLOGListview									; ListViewEinUndAusblenden 1080
+	GuiControl,1:    hide, 			LogListeExportieren										; ListViewEinUndAusblenden 1080
+	GuiControl,1:    hide, 			ListView2												; ListViewEinUndAusblenden 1080
+	GuiControl,1: ,  ListViewAnsichErweitern, 							zurück zum Hauptmenü				; ListViewEinUndAusblenden 1080
+
+	GuiControl,1:    MoveDraw, 		ListView1, 				% thisX(1.0) thisY(23.0) thisW(28.0) thisH(51.8) 	; ListViewEinUndAusblenden 1080
+	GuiControl,1:    show, 			ListView1
+	GuiControl,1:    MoveDraw, 		GroupBoxUnterListView1, 		% thisX(1.0) thisY(73.7) thisW(28.0) thisH(4.8) 	; ListViewEinUndAusblenden 1080
+	GuiControl,1:    show, 			GroupBoxUnterListView1
+	GuiControl,1:    MoveDraw, 		mehr,					% thisX(25.0) thisY(75.2) thisW(3.5) thisH(2.6) 	; ListViewEinUndAusblenden 1080
+	GuiControl,1:    MoveDraw, 		MarkierteLöschen,			% thisX(17.1) thisY(75.2) thisW(7.6) thisH(2.6) 	; ListViewEinUndAusblenden 1080
+	GuiControl,1:    MoveDraw, 		ListeExportieren,			% thisX(9.3) thisY(75.2) thisW(7.4) thisH(2.6) 		; ListViewEinUndAusblenden 1080
+	GuiControl,1:    MoveDraw, 		ListeImportieren,			% thisX(1.5) thisY(75.2) thisW(7.4) thisH(2.6) 		; ListViewEinUndAusblenden 1080
+;	GuiControl,1: 	+BackgroundFF8987, 	ListView1
+;	setTimer, AlarmBlinken, -1
+;	setTimer, RadioRnRoll, -1
+	ListView1Color=silver
+	ListView2Color=silver
+
+	Control ExStyle, -0x20000,, % "ahk_id" HthisListViewAnsichtErweiternProgress ; https://www.autohotkey.com/boards/viewtopic.php?p=279363#p279363 by Ragnar <> progress rahmenlos *
+;	GuiControl,1:    MoveDraw, 		thisListViewAnsichtErweiternProgress,			% thisX(12.2) thisY(17.5) thisW(10.4) thisH(3.9) ;  default
+	GuiControl,1:    MoveDraw, 		thisListViewAnsichtErweiternProgress,			% thisX(12.35) thisY(17.8) thisW(9.8) thisH(2.99) ;  klein
+;	GuiControl,1:    MoveDraw, 		thisListViewAnsichtErweiternProgress,			% thisX(12.4) thisY(17.8) thisW(9.71) thisH(2.99) ;  default
+
+;	Control ExStyle, -0x20000,, % "ahk_id" HthisListViewAnsichtErweiternProgress ; https://www.autohotkey.com/boards/viewtopic.php?p=279363#p279363 by Ragnar <> progress rahmenlos
+
+;	GuiControl,1: ,  TextStunden, % outputvar
+
+;	thisListViewAnsichtErweiternProgressModus := 1 ; blinken aus
+	GuiControl,1:    show, 			thisListViewAnsichtErweiternProgress
+	GuiControl,1:    hide, 			LogListeAnsichtErweiternProgress
+
+	GuiControl,1: 	+BackgroundLime, 	thisListViewAnsichtErweiternProgress
+;	GuiControl,1:    show, 			LogListeAnsichtErweitern
+	GuiControl,1:    hide, 			LogListeAnsichtErweitern
+; settimer, BlinkenFuerthisListViewAnsichtErweiternProgress, off
+	WinSet, Redraw
+	GuiControl, +Redraw, ListView2
+	GuiControl, +Redraw, ListView1
+	nMalBlinkenContinue := 1
+	 nMalBlinken(2)
+} else {
+	GuiControl,1:    MoveDraw, 		mehr,					% thisX(25.0) thisY(43.5) thisW(3.5) thisH(2.6)		;  ElseListViewEinUndAusblenden 1080
+	GuiControl,1:    MoveDraw, 		MarkierteLöschen,			% thisX(17.1) thisY(43.5) thisW(7.6) thisH(2.6) 	;  ElseListViewEinUndAusblenden 1080
+	GuiControl,1:    MoveDraw, 		ListeExportieren,			% thisX(9.3) thisY(43.5) thisW(7.4) thisH(2.6) 		;  ElseListViewEinUndAusblenden 1080
+	GuiControl,1:    MoveDraw, 		ListeImportieren,			% thisX(1.5) thisY(43.5) thisW(7.4) thisH(2.6)		;  ElseListViewEinUndAusblenden 1080
+	GuiControl,1:    MoveDraw, 		GroupBoxUnterListView1,			% thisX(1.0) thisY(42.0) thisW(28.0) thisH(4.8) 	;  ElseListViewEinUndAusblenden 1080
+	GuiControl,1:    MoveDraw, 		ListView1, 				% thisX(1.0) thisY(23.0) thisW(28.0) thisH(20.0) 	;  ElseListViewEinUndAusblenden 1080
+	GuiControl,1: ,  ListViewAnsichErweitern, 							Ansicht erweitern
+	GuiControl,1:    show, 			GroupBoxÜberListView1 										;  ElseListViewEinUndAusblenden 1080
+	GuiControl,1:    show, 			Übernehmen 											;  ElseListViewEinUndAusblenden 1080
+	GuiControl,1:    show, 			GroupBoxUnterListView1 										;  ElseListViewEinUndAusblenden 1080
+	GuiControl,1:    show, 			mehr 												;  ElseListViewEinUndAusblenden 1080								;  ElseListViewEinUndAusblenden
+	GuiControl,1:    show, 			MarkierteLöschen 										;  ElseListViewEinUndAusblenden 1080
+	GuiControl,1:    show, 			ListeExportieren 										;  ElseListViewEinUndAusblenden 1080
+	GuiControl,1:    show, 			ListeImportieren 										;  ElseListViewEinUndAusblenden 1080
+	GuiControl,1:    show, 			GroupBoxNächsteSystemAktion 									;  ElseListViewEinUndAusblenden 1080
+	GuiControl,1:    show, 			NächsteGeplanteSystemAction 									;  ElseListViewEinUndAusblenden 1080
+	GuiControl,1:    show, 			GroupBoxLOG 											;  ElseListViewEinUndAusblenden 1080
+	GuiControl,1:    show, 			GroupBoxUnterLOGListview 									;  ElseListViewEinUndAusblenden 1080
+	GuiControl,1:    show, 			LogListeExportieren 										;  ElseListViewEinUndAusblenden 1080
+	GuiControl,1:    show, 			ListView2 												;  ElseListViewEinUndAusblenden 1080
+	GuiControl,1: 	+cBlue, RadioEinmal
+	GuiControl,1: 	+cBlue, RadioTäglich
+	GuiControl,1: 	+cBlue, RadioWöchendlich
+	GuiControl,1: 	+cBlue, RadioMonatlich
+	GuiControl,1: 	+cBlue, RadioJährlich
+Blue = Blue ; test
+	GuiControl,1: 	+c%Blue%, GroupBoxAWiederholen
+	GuiControl,1: 	+cBlue, GroupBoxÜberListView1
+if inclRadio
+{
+	GuiControl,1:    show, 			GroupBoxAWiederholen 										; ElseListViewEinUndAusblenden 1080
+	GuiControl,1:    show, 			RadioEinmal 											; ElseListViewEinUndAusblenden 1080
+	GuiControl,1:    show, 			RadioTäglich											; ElseListViewEinUndAusblenden 1080
+	GuiControl,1:    show, 			RadioWöchendlich										; ElseListViewEinUndAusblenden 1080
+	GuiControl,1:    show, 			RadioMonatlich											; ElseListViewEinUndAusblenden 1080
+	GuiControl,1:    show, 			RadioJährlich											; ElseListViewEinUndAusblenden 1080
+}
+;	GuiControl,1: 	+BackgroundFF9977, 	ListView1
+;	GuiControl,1: 	+BackgroundSilver, 	ListView1
+;	setTimer, AlarmBlinken, -1
+;	setTimer, RadioRnRoll, -1
+	WinSet, Redraw
+
+	GuiControl,1:    MoveDraw, 		thisListViewAnsichtErweiternProgress,			% thisX(0) thisY(0) thisW(0) thisH(0) ;  null
+;	thisListViewAnsichtErweiternProgressModus := 0
+	GuiControl,1:    disable, 		thisListViewAnsichtErweiternProgress
+
+	GuiControl,1:    hide, 			thisListViewAnsichtErweiternProgress
+	GuiControl,1:    show, 			LogListeAnsichtErweiternProgress
+
+;	GuiControl,1: 	+BackgroundLime, 	thisListViewAnsichtErweiternProgress
+	GuiControl,1: 	+BackgroundDefault, 	thisListViewAnsichtErweiternProgress
+
+	GuiControl,1:    show, 			LogListeAnsichtErweitern
+;	GuiControl,1:    hide, 			LogListeAnsichtErweitern
+
+; settimer, BlinkenFuerthisListViewAnsichtErweiternProgress, off
+
+	GuiControl, +Redraw, ListView2
+	GuiControl, +Redraw, ListView1
+	nMalBlinkenContinue := 1
+ 	 nMalBlinken(2)
+	ListView1Color=silver
+	ListView2Color=silver
+}
+;Menu, Ansicht, Show
+return
+
+BlinkenFuerthisListViewAnsichtErweiternProgress:
+  if thisListViewAnsichtErweiternProgressModus
+  {
+	loop
+	{
+		GuiControl,1:    show, 			thisListViewAnsichtErweiternProgress
+	sleep, 500
+		GuiControl,1:    hide, 			thisListViewAnsichtErweiternProgress
+	sleep, 500
+	} 
+} else {
+	;msgbox,4096,% a_linenumber,% a_index,.1
+	if thisListViewAnsichtErweiternProgressModus
+	settimer, BlinkenFuerthisListViewAnsichtErweiternProgress, -1
+;settimer, BlinkenFuerthisListViewAnsichtErweiternProgress, off
+}
+return
+
+
+	loopProgress() {
+	global
+	GuiControl,1:    	 hide, 		GroupBoxLOG 
+	GuiControl,1:    	 hide, 		GroupBoxNächsteSystemAktion 
+	GuiControl,1:    	 hide, 		GroupBoxÜberListView1 
+	GuiControl,1:    	 hide, 		GroupBoxUnterListView1
+	GuiControl,1:    	 hide, 		GroupBoxUnterLOGListview
+	GuiControl,1:    	 hide, 		ListeExportieren 
+	GuiControl,1:    	 hide, 		ListeImportieren 
+	GuiControl,1:    	 hide, 		ListView1
+	GuiControl,1:    	 hide, 		LogListeExportieren 
+	GuiControl,1:    	 hide, 		ListView2
+	GuiControl,1:    	 hide, 		MarkierteLöschen 
+	GuiControl,1:    	 hide, 		mehr 
+	GuiControl,1:    	 hide, 		NächsteGeplanteSystemAction 
+	GuiControl,1: 	 	 hide, 		TextEdit1
+	GuiControl,1:    	 hide, 		Übernehmen 
+	GuiControl,1:    	 show, 		thisLoopProgress
+
+	items := 20
+	Loop, % items
+	{	
+		GuiControl,1:, 	thisLoopProgress, % Round(100 * A_Index / items)
+	Sleep, 30
+	}
+
+	GuiControl,1:    	 hide, 		thisLoopProgress
+	GuiControl,1:    	 show, 		GroupBoxLOG 
+	GuiControl,1:    	 show, 		GroupBoxNächsteSystemAktion 
+	GuiControl,1:    	 show, 		GroupBoxÜberListView1 
+	GuiControl,1:    	 show, 		GroupBoxUnterListView1
+	GuiControl,1:    	 show, 		GroupBoxUnterLOGListview
+	GuiControl,1:    	 show, 		ListeExportieren 
+	GuiControl,1:    	 show, 		ListeImportieren 
+	GuiControl,1:    	 show, 		ListView1
+	GuiControl,1:    	 show, 		LogListeExportieren 
+	GuiControl,1:    	 show, 		ListView2
+	GuiControl,1:    	 show, 		MarkierteLöschen 
+	GuiControl,1:    	 show, 		mehr 
+	GuiControl,1:    	 show, 		NächsteGeplanteSystemAction 
+	GuiControl,1: 	 	 show, 		TextEdit1
+	GuiControl,1:    	 show, 		Übernehmen 
+	WinSet, Redraw
+	}
+
+
+
+
+
+
+ButtonMehr:
+Menu, ButtonMehrMenue, Show
+return
+
+MenuHandler:
+MsgBox,4096,% a_linenumber, %A_ThisMenu% %A_ThisMenuItemPos%
+Return
+
+;WinSet, Redraw
+
+nMalBlinkenOFF:
+gui,submit,nohide
+nMalBlinkenContinue := (nMalBlinkenContinue:=!nMalBlinkenContinue)
+;; nMalBlinken(1)
+return
+
+	nMalBlinken(n) {
+	global
+	Loop % n
+	{
+	if !nMalBlinkenContinue
+	break
+else
+	{
+	setTimer, AlarmBlinken, -1
+	sleep, 300
+	}}}
+
+AlarmBlinken:
+	GuiControl,1:    show,			ThisProgress#1a
+	GuiControl,1:    show,			ThisProgress#1b
+;	GuiControl,1:    show,			ThisProgress#1c
+;	GuiControl,1:    show,			ThisProgress#1d
+	sleep, 100
+	GuiControl,1:    hide, 			ThisProgress#1a
+	GuiControl,1:    hide, 			ThisProgress#1b
+	GuiControl,1:    hide, 			ThisProgress#1c
+	GuiControl,1:    hide, 			ThisProgress#1d
+WinSet, Redraw
+Return
+;//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+;Gui +OwnDialogs  ; Den Benutzer zwingen, das folgende Dialogfenster zu schließen, bevor er das Hauptfenster nutzen kann.
+Sondermeldung:   ; heute beginn sommer,- winterzeit
+;-----------------------------------------------
+sondermeldungSommerWinterZeitAnzeige := MainArray["SommerWinterZeitAnzeigeOhneEnter"]
+;-----------------------------------------------
+; sondermeldung mez <> mesz wechsel
+
+	; nur einmal im listview eintragen
+	fileRead, thisReloadtimeStamp,  % a_scriptDir "\" A_ScriptName " timeStampall.txt"
+	Loop, parse, thisReloadtimeStamp,`n
+	{
+	split := strSplit(a_loopfield,a_tab)
+	if a_loopfield {
+	if a_loopfield contains %sondermeldungSommerWinterZeitAnzeige%
+	sondermeldungSommerWinterZeitAnzeige := ""
+	}}
+
+if sondermeldungSommerWinterZeitAnzeige
+{
+		thisATimeSinceThisHotkey := A_TimeSinceThisHotkey
+		ATimeSinceThisHotkey := subStr(ConvertToHHMMSSMS(thisATimeSinceThisHotkey),1,8)
+
+		thisATimeSincePriorHotkey := A_TimeSincePriorHotkey
+		ATimeSincePriorHotkey := subStr(ConvertToHHMMSSMS(thisATimeSincePriorHotkey),1,8)
+
+		if LVInsertADD
+		LV_Insert(1 , Optionen, A_DD "." Month(A_MM) "." a_YYYY "  " A_Hour ":" A_Min ":" A_Sec
+							, ("Hinweis")
+							, (sondermeldungSommerWinterZeitAnzeige)
+							, (A_ThisFunc?A_ThisFunc:"empty")
+							, (A_ThisHotkey?A_ThisHotkey:"empty")
+							, (A_PriorHotkey?A_PriorHotkey:"empty")
+							, (A_PriorKey?A_PriorKey:"empty")
+							, (A_TimeSinceThisHotkey?ATimeSinceThisHotkey:"empty")
+							, (A_TimeSincePriorHotkey?ATimeSincePriorHotkey:"empty")
+							, (A_GuiControl?A_GuiControl:"empty")
+							, (A_GuiEvent?A_GuiEvent:"empty")
+							, (A_EventInfo?A_EventInfo:"empty"))
+		else
+		LV_Modify(LV_Add("", A_DD "." Month(A_MM) "." a_YYYY "  " A_Hour ":" A_Min ":" A_Sec
+							, ("Hinweis")
+							, (sondermeldungSommerWinterZeitAnzeige)
+							, (A_ThisFunc?A_ThisFunc:"empty")
+							, (A_ThisHotkey?A_ThisHotkey:"empty")
+							, (A_PriorHotkey?A_PriorHotkey:"empty")
+							, (A_PriorKey?A_PriorKey:"empty")
+							, (A_TimeSinceThisHotkey?ATimeSinceThisHotkey:"empty")
+							, (A_TimeSincePriorHotkey?ATimeSincePriorHotkey:"empty")
+							, (A_GuiControl?A_GuiControl:"empty")
+							, (A_GuiEvent?A_GuiEvent:"empty")
+							, (A_EventInfo?A_EventInfo:"empty")), "Vis")
+		LVModifyCol()
+		fileAppend,% "Sondermeldung:`t" A_DD "." Month(A_MM) "." a_YYYY "  " A_Hour ":" A_Min ":" A_Sec ":" A_MSec " Uhr`t"
+							. "Hinweis`t"
+							. sondermeldungSommerWinterZeitAnzeige "`t"
+							. (A_ThisFunc?A_ThisFunc:"empty") "`t"
+							. (A_ThisHotkey?A_ThisHotkey:"empty") "`t"
+							. (A_PriorHotkey?A_PriorHotkey:"empty") "`t"
+							. (A_PriorKey?A_PriorKey:"empty") "`t"
+							. (A_TimeSinceThisHotkey?ATimeSinceThisHotkey:"empty") "`t"
+							. (A_TimeSincePriorHotkey?ATimeSincePriorHotkey:"empty") "`t"
+							. (A_GuiControl?A_GuiControl:"empty") "`t"
+							. (A_GuiEvent?A_GuiEvent:"empty") "`t"
+							. (A_EventInfo?A_EventInfo:"empty") "`n"
+				, % a_scriptDir "\" A_ScriptName " timeStampall.txt"
+}
+
+;msgbox % sondermeldungSommerWinterZeitAnzeige
+	return
+
+
+
+
+
+
+
+;//////////////////////////////////////////////////////////////////////////////////////////////////////// convolution
+
+LV_ADDListViewTrigger() {
+	global
+	Gui,1:ListView, ListView1 
+	GuiControl, -Redraw, ListView1
+	ADDListViewTriggerSplit := strSplit(ADDListViewTrigger,"`t")
+	x:=LV_Modify(LV_Add("", ADDListViewTriggerSplit*), "Vis")
+;	x:=LV_Add("", ADDListViewTriggerSplit*)
+	LV_Modify(x, "+Focus")
+	LV_Modify(x, "Vis")
+	GuiControl, +Redraw, ListView1
+	Loop, % LV_GetCount("Columns")
+	LV_ModifyCol(A_Index, "AutoHdr")
+;		LV_ModifyCol(4, 0)	; A_ThisFunc
+		LV_ModifyCol(5, 0)	; A_ThisHotkey
+		LV_ModifyCol(6, 0)	; A_PriorHotkey
+		LV_ModifyCol(7, 0)	; A_PriorKey
+		LV_ModifyCol(8, 0)	; A_TimeSinceThisHotkey
+		LV_ModifyCol(9, 0)	; A_TimeSincePriorHotkey
+		LV_ModifyCol(10, 0)	; A_GuiControl
+		LV_ModifyCol(11, 0)	; A_GuiEvent
+		LV_ModifyCol(12, 0)	; A_EventInfo
+	GuiControl, +Redraw, ListView1
+	Gui,1:ListView, ListView2 
+return x
+}
+
+
+apiGefahrenmeldung:
+Gefahrenmeldung("Gefahrenmeldung") ; test
+return
+
+apixTrigger:
+xTrigger("xTrigger") ; test
+return
+
+
+; ########################################################################						###############################################
+; ########################################################################		Start				###############################################
+; ########################################################################						###############################################
+; ########################################################################						###############################################
+; ########################################################################						###############################################
+start:	;									###############################################
+; ########################################################################						###############################################
+; ########################################################################						###############################################
+; ########################################################################						###############################################
+; ########################################################################						###############################################
+; ########################################################################						###############################################
+; isLeapYear := 0
+	if isLeapYear ; schaltjahr
+		{
+		if MakeList
+		x:=strSplit(SunriseSunsetSchaltjahr(AMM,ADD),"`t")
+		else
+		x:=strSplit(SunriseSunsetSchaltjahr(A_MM,A_DD),"`t") 
+		} else {
+		if MakeList
+		x:=strSplit(SunriseSunset(AMM,ADD),"`t") 
+		else
+		x:=strSplit(SunriseSunset(A_MM,A_DD),"`t") 
+		}
+
+
+
+; sorgt dafür das die Zeiten auch nach dem Ereignis für den jweiligen KALENDERTAG erhalten bleiben
+ 	Sonnenaufgang 	:= ConvertToMilliseconds((MainArray["thisCalendarDaySunRise",A_DD,A_MM]) ":" 00 "`," 000)
+			 - ConvertToMilliseconds(A_Hour ":" A_Min ":" 00 "`," 000)
+ 	Sonnenuntergang := ConvertToMilliseconds((MainArray["thisCalendarDaySunSet",A_DD,A_MM])  ":" 00 "`," 000)
+			 - ConvertToMilliseconds(A_Hour ":" A_Min ":" 00 "`," 000)
+ 	Sonnenstunden 	:= ConvertToMilliseconds(x.2 ":" 00 "`," 000)
+			 - ConvertToMilliseconds(x.1 ":" 00 "`," 000)
+
+	MainArray["STATSSonnenstundengesternMilliseconds"] := ConvertToMilliseconds(MainArray["SonnenstundenCalendarDay", A_YDay-1] ":" 00 "`," 000)
+	MainArray["STATSSonnenstundenThisDayMilliseconds"]   := ConvertToMilliseconds(MainArray["SonnenstundenCalendarDay", A_YDay]   ":" 00 "`," 000)
+
+	MainArray["SonnentagLaengenBerechnung"] := MainArray["STATSSonnenstundengesternMilliseconds"]
+						>  MainArray["STATSSonnenstundenThisDayMilliseconds"]
+						? "Tage werden kürzer"
+						: "Tage werden länger" 
+	MainArray["NachtLaengenBerechnung"] := MainArray["STATSSonnenstundengesternMilliseconds"]
+						>  MainArray["STATSSonnenstundenThisDayMilliseconds"]
+						? "Nächte werden länger"
+						: "Nächte werden kürzer" 
+
+	StimeStd := StimeStdNoLTRIM := subStr(ConvertToHHMMSSMS(Sonnenstunden),1,2)
+	StimeStd := LTRIM(StimeStd,0)
+	StimeMIN := StimeMINnoLTRIM := subStr(ConvertToHHMMSSMS(Sonnenstunden),4,2)
+	StimeMIN := LTRIM(StimeMIN,0)
+
+	SAstd 	 := SAstdNoLTRIM := subStr(ConvertToHHMMSSMS(Sonnenaufgang),1,2)
+	SAstd 	 := LTRIM(SAstd,0)
+	SAmin	 := SAminNoLTRIM := subStr(ConvertToHHMMSSMS(Sonnenaufgang),4,2)
+	SAmin	 := LTRIM(SAmin,0)
+	SUstd	 := SUstdNoLTRIM := subStr(ConvertToHHMMSSMS(Sonnenuntergang),1,2)
+	SUstd 	 := LTRIM(SUstd,0)
+	SUmin	 := SUminNoLTRIM := subStr(ConvertToHHMMSSMS(Sonnenuntergang),4,2)
+	SUmin	 := LTRIM(SUmin,0)
+
+	MainArray["Stunden bis zum nächsten Sonnenaufgang"]	:= ((SAstd=1)
+								? "  " SAstd " Stunde    "
+								: (SAstd>1) && (SAstd<10)
+								? "  " SAstd " Stunden "
+								: (SAstd>=10)
+								? SAstd " Stunden "
+								: "") 
+	MainArray["Minuten bis zum nächsten Sonnenaufgang"]	:= ((SAmin=1)
+								? "  " SAmin " Minute"
+								: (SAmin>1) && (SAmin<10)
+								? "  " SAmin " Minuten"
+								: (SAmin>=10)
+								? SAmin " Minuten"
+								: (SAstd="") && (SAmin="")
+								? thisRISE(RISEfile)
+								: "")
+	MainArray["Stunden bis zum nächsten Sonnenuntergang"]	:= ((SUstd=1)
+								? "  " SUstd " Stunde    "
+								: (SUstd>1) && (SUstd<10)
+								? "  " SUstd " Stunden "
+								: (SUstd>=10)
+								? SUstd " Stunden "
+								: "") 
+	MainArray["Minuten bis zum nächsten Sonnenuntergang"]	:= ((SUmin=1)
+								? "  " SUmin " Minute"
+								: (SUmin>1) && (SUmin<10)
+								? "  " SUmin " Minuten"
+								: (SUmin>=10)
+								? SUmin " Minuten"
+								: (SUstd="") && (SUmin="")
+								? thisSET(SETfile)
+								: "")
+
+	MainArray["Zeit seit letztem Sonnenuntergang"]	 := 	  ConvertToMilliseconds(A_Hour ":" A_Min ":" A_Sec "," A_MSec)
+								- ConvertToMilliseconds(MainArray["thisCalendarDaySunSet",A_DD,A_MM] ":" 00 "`," 000)
+	MainArray["Zeit seit letztem Sonnenaufgang"]	 := 	  ConvertToMilliseconds(A_Hour ":" A_Min ":" A_Sec "," A_MSec)
+								- ConvertToMilliseconds(MainArray["thisCalendarDaySunRise",A_DD,A_MM] ":" 00 "`," 000)
+
+	DelaySAstd 	 := DelaySAstdNoLTRIM := subStr(ConvertToHHMMSSMS(MainArray["Zeit seit letztem Sonnenaufgang"]),1,2)
+	DelaySAstd 	 := LTRIM(DelaySAstd,0)
+	DelaySAmin	 := DelaySAminNoLTRIM := subStr(ConvertToHHMMSSMS(MainArray["Zeit seit letztem Sonnenaufgang"]),4,2)
+	DelaySAmin	 := LTRIM(DelaySAmin,0)
+	DelaySUstd	 := DelaySUstdNoLTRIM := subStr(ConvertToHHMMSSMS(MainArray["Zeit seit letztem Sonnenuntergang"]),1,2)
+	DelaySUstd 	 := LTRIM(DelaySUstd,0)
+	DelaySUmin	 := DelaySUminNoLTRIM := subStr(ConvertToHHMMSSMS(MainArray["Zeit seit letztem Sonnenuntergang"]),4,2)
+	DelaySUmin	 := LTRIM(DelaySUmin,0)
+
+	MainArray["Stunden seit letztem Sonnenaufgang"]		:= ((DelaySAstd=1)
+								? "  " DelaySAstd " Stunde    "
+								: (DelaySAstd>1) && (DelaySAstd<10)
+								? "  " DelaySAstd " Stunden "
+								: (DelaySAstd>=10)
+								? DelaySAstd " Stunden "
+								: "") 
+	MainArray["Minuten seit letztem Sonnenaufgang"]		:= ((DelaySAmin=1)
+								? "  " DelaySAmin " Minute"
+								: (DelaySAmin>1) && (DelaySAmin<10)
+								? "  " DelaySAmin " Minuten"
+								: (DelaySAmin>=10)
+								? DelaySAmin " Minuten"
+								: "")
+	MainArray["Stunden seit letztem Sonnenuntergang"]	:= ((DelaySUstd=1)
+								? "  " DelaySUstd " Stunde    "
+								: (DelaySUstd>1) && (DelaySUstd<10)
+								? "  " DelaySUstd " Stunden "
+								: (DelaySUstd>=10)
+								? DelaySUstd " Stunden "
+								: "") 
+	MainArray["Minuten seit letztem Sonnenuntergang"]	:= ((DelaySUmin=1)
+								? "  " DelaySUmin " Minute"
+								: (DelaySUmin>1) && (DelaySUmin<10)
+								? "  " DelaySUmin " Minuten"
+								: (DelaySUmin>=10)
+								? DelaySUmin " Minuten"
+								: "")
+
+	MainArray["Zeit seit letztem SonnenuntergangHHMM"]	 := 	subStr(ConvertToHHMMSSMS(MainArray["Zeit seit letztem Sonnenuntergang"]),1,5) 	
+	MainArray["Zeit seit letztem SonnenaufgangHHMM"]	 := 	subStr(ConvertToHHMMSSMS(MainArray["Zeit seit letztem Sonnenaufgang"]),1,5) 	 
+
+	MainArray["Aktuelle Zeit"] 	:= A_DDDD a_space A_DD "." Month(A_MM) "." a_YYYY "  " A_Hour ":" A_Min ":" A_Sec ; " Uhr" ; timestamp
+;	MainArray["Aktuelle Zeit"] 	:= A_DD "." A_MM "." a_YYYY "  " A_Hour ":" A_Min ":" A_Sec " Uhr"
+
+
+
+
+entwederOder#1 := 0  ; test
+If entwederOder#1                   ; wenn sonnenuntergang > sonnenaufgang
+{
+	MainArray["tagOderNacht"] :=				  ConvertToMilliseconds(SUstd ":" SUmin ":" 00 "`," 000)		; beispiel 8:8
+								> ConvertToMilliseconds(SAstd ":" SAmin ":" 00 "`," 000)	
+								? "nacht" 
+								: "tag"
+	MainArray["nightOrDay"]	 := 				  ConvertToMilliseconds(SUstd ":" SUmin ":" 00 "`," 000)
+								< ConvertToMilliseconds(SAstd ":" SAmin ":" 00 "`," 000)
+								? "Day" 
+								: "Night"
+} else {
+	MainArray["tagOderNacht"] :=				  ConvertToMilliseconds(SUstdNoLTRIM ":" SUminNoLTRIM ":" 00 "`," 000) ; beispiel 08:08
+								> ConvertToMilliseconds(SAstdNoLTRIM ":" SAminNoLTRIM ":" 00 "`," 000)	
+								? "nacht" 
+								: "tag"
+	MainArray["nightOrDay"]	 := 				  ConvertToMilliseconds(SUstdNoLTRIM ":" SUminNoLTRIM ":" 00 "`," 000)
+								< ConvertToMilliseconds(SAstdNoLTRIM ":" SAminNoLTRIM ":" 00 "`," 000)
+								? "Day" 
+								: "Night"
+
+	MainArray["nextScheduledAction_"] :=			  ConvertToMilliseconds(SUstdNoLTRIM ":" SUminNoLTRIM ":" 00 "`," 000)
+								< ConvertToMilliseconds(SAstdNoLTRIM ":" SAminNoLTRIM ":" 00 "`," 000)
+								? "Trigger Sonnenuntergang " MainArray["Sonnenuntergang"] " Uhr in "
+								. MainArray["Stunden bis zum nächsten Sonnenuntergang"]		
+								. MainArray["Minuten bis zum nächsten Sonnenuntergang"]	
+								: "Trigger Sonnenaufgang " MainArray["Sonnenaufgang"] " Uhr in "
+								. MainArray["Stunden bis zum nächsten Sonnenaufgang"]
+								. MainArray["Minuten bis zum nächsten Sonnenaufgang"]
+
+	MainArray["nextScheduledAction"] :=			  ConvertToMilliseconds(SUstdNoLTRIM ":" SUminNoLTRIM ":" 00 "`," 000)
+								< ConvertToMilliseconds(SAstdNoLTRIM ":" SAminNoLTRIM ":" 00 "`," 000)
+								? "Trigger Sonnenuntergang " MainArray["Sonnenuntergang"] " Uhr in "
+								. MainArray["Stunden bis zum nächsten Sonnenuntergang"]		
+								. MainArray["Minuten bis zum nächsten Sonnenuntergang"]	
+								: ConvertToMilliseconds(SUstdNoLTRIM ":" SUminNoLTRIM ":" 00 "`," 000)
+								> ConvertToMilliseconds(SAstdNoLTRIM ":" SAminNoLTRIM ":" 00 "`," 000)
+								? "Trigger Sonnenaufgang " MainArray["Sonnenaufgang"] " Uhr in "
+								. MainArray["Stunden bis zum nächsten Sonnenaufgang"]
+								. MainArray["Minuten bis zum nächsten Sonnenaufgang"]
+								: "0 Stunden 0 Minuten"
+}
+
+
+	MainArray["thisRISECounter"] 	:= thisRISECounter ? thisRISECounter : 0
+	MainArray["thisSETCounter"] 	:= thisSETCounter  ? thisSETCounter  : 0
+	MainArray["thisGefahrenmeldungCounter"] := thisGefahrenmeldungCounter ? thisGefahrenmeldungCounter : 0
+	MainArray["thisxTriggerCounter"] := thisxTriggerCounter ? thisxTriggerCounter : 0
+	MainArray["GUI DefaultTime"] 	:= thisSTARTCountTimeout()
+	MainArray["GUI Timeout"] 	:= thisGUITimeout()
+	MainArray["GUI UPTime"] 	:= thisUPCountTimeout()
+	MainArray["GUI LiveTimes"] 	:= "`nLiveTimes:`t`t{"
+					. MainArray["LIVETIME TimeStamp"]				; TimeStamp
+					. MainArray["LIVETIME downCount"]		 		; downCount
+					. MainArray["LIVETIME UPCount"]					; UPCount
+ 					.  "}"
+	MainArray["Sonnenaufgang"] 	:= x.1
+	MainArray["Sonnenuntergang"] 	:= x.2
+	MainArray["Sonnenstunden"] 	:= StimeStd
+	MainArray["Sonnenminuten"] 	:= ((StimeMIN=1)
+					? "  " StimeMIN " Minute"
+					: (StimeMIN>1) && (StimeMIN<10)
+					? "  " StimeMIN " Minuten"
+					: (StimeMIN>=10)
+					? StimeMIN " Minuten"
+					: "") 
+	MainArray["SonnenminutenExport"] := ((StimeMIN=1)
+					 ? " " StimeMIN " Minute"
+					 : (StimeMIN>1) && (StimeMIN<10)
+					 ? " " StimeMIN " Minuten"
+					 : (StimeMIN>=10)
+					 ? StimeMIN " Minuten"
+					 : "") 
+
+MainArray["schaltjahrTriggerHeuteStunde"] 		:= (SubStr(MainArray["Sonnenaufgang"], 2, 1))
+MainArray["schaltjahrTriggerGesternStunde"] 		:= (SubStr(MainArray["SonnenaufgangCalendarDay", A_YDay-1], 2, 1))
+	MainArray["SommerWinterZeitAnzeige"] 		:=    !(MainArray["schaltjahrTriggerHeuteStunde"]  
+							     =  MainArray["schaltjahrTriggerGesternStunde"])
+								? "Beginn: " thisJahresZeit()  "`n"
+								: ""
+
+MainArray["schaltjahrTriggerHeuteStunde"] 		:= (SubStr(MainArray["Sonnenaufgang"], 2, 1))
+MainArray["schaltjahrTriggerGesternStunde"] 		:= (SubStr(MainArray["SonnenaufgangCalendarDay", A_YDay-1], 2, 1))
+	MainArray["SommerWinterZeitAnzeigeOhneEnter"] 	:=    !(MainArray["schaltjahrTriggerHeuteStunde"]  
+							     =  MainArray["schaltjahrTriggerGesternStunde"])
+								? "Beginn: " thisJahresZeit()
+								: ""
+;msgbox % MainArray["SommerWinterZeitAnzeige"] 
+
+; ///////////////////////////////////////////////////////////////////////////////////// ; aktionen die nach 00 uhr gestartet werden
+; ///////////////////////////////////////////////////////////////////////////////////// ; aktionen die nach 00 uhr gestartet werden
+	 MKPic := 1, MKPicCount := 0 	;  = täglich
+	; MKPic := 1 			;  = einmal
+	if MKPic
+	{
+		MainArray["sollZeitVorZwölf"] 	:= 23 ":" 59 ":" 55
+		MainArray["sollZeitNachZwölf"] 	:= 00 ":" 00 ":" 01
+
+		MainArray["istZeitvorZwölf"] 	:= A_Hour ":" A_Min ":" A_Sec
+		MainArray["istZeitnachZwölf"] 	:= A_Hour ":" A_Min ":" A_Sec
+
+			if (MainArray["sollZeitVorZwölf"] 
+				= MainArray["istZeitvorZwölf"])
+			|| (MainArray["sollZeitNachZwölf"]
+				= MainArray["istZeitnachZwölf"]) 
+			{
+	; 28.02 = a_day = Tag 59 ; wenn schaltjahr dann ab 28.februar plus ein tag
+ 	xModify#1 :=  MainArray["isSchaltjahr_dann_ab_28_februar_A_day_plus_eins"] := 	 ((A_YDay>=59) && (isSchaltjahrTrueFalse()=1))
+											? (A_YDay+1)
+											: (isSchaltjahrTrueFalse()=0)
+											? (A_YDay)
+											: ""
+			RowsPerPage := DllCall("SendMessage", "Ptr", HW01, "UInt", 0x1028, "Ptr", 0, "Ptr", 0, "Ptr")
+			Gui, ListView, LV2					; nach mitternacht LV2 nächste zeile +focus & +Select
+			Gui, listview, default
+			LV_Modify((xModify#1+(RowsPerPage/2)), "Vis")
+			LV_Modify(xModify#1-6, "Vis")
+			LV_Modify(xModify#1, "+Focus")
+			LV_Modify(xModify#1, "+Select")
+			LV_Modify(xModify#1, "focus")
+			;send, {Tab}
+			thisRISECounter := 0  ; nach mitternacht die counter für sonnenauf,- untergang in liestview 1zurücksetzen
+			thisSETCounter := 0
+			try run,%  A_ScriptDir "\screenshot 2 -direktauslösend 1 sekunde delay .ahk"
+			MKPicCount++
+			}
+		if (MKPicCount=2)
+		MKPic := false
+	}
+; ///////////////////////////////////////////////////////////////////// ; aktionen die nach xx:xx uhr gestartet werden
+	; Trigger#1 := 1, Trigger#1Count := 0 	;  = täglich
+	; Trigger#1 := 1 			;  = einmal
+	if Trigger#1
+	{
+		MainArray["sollZeitVorZwölf"] 	:= 23 ":" 59 ":" 55
+		MainArray["sollZeitNachZwölf"] 	:= 00 ":" 00 ":" 01
+
+		MainArray["istZeitvorZwölf"] 	:= A_Hour ":" A_Min ":" A_Sec
+		MainArray["istZeitnachZwölf"] 	:= A_Hour ":" A_Min ":" A_Sec
+
+			if (MainArray["sollZeitVorZwölf"] 
+				= MainArray["istZeitvorZwölf"])
+			|| (MainArray["sollZeitNachZwölf"]
+				= MainArray["istZeitnachZwölf"]) 
+			{
+	; 28.02 = a_day = Tag 59 ; wenn schaltjahr dann ab 28.februar plus ein tag
+ 	xModify#1 :=  MainArray["isSchaltjahr_dann_ab_28_februar_A_day_plus_eins"] := 	 ((A_YDay>=59) && (isSchaltjahrTrueFalse()=1))
+											? (A_YDay+1)
+											: (isSchaltjahrTrueFalse()=0)
+											? (A_YDay)
+											: ""
+			RowsPerPage := DllCall("SendMessage", "Ptr", HW01, "UInt", 0x1028, "Ptr", 0, "Ptr", 0, "Ptr")
+			Gui, ListView, LV2					; nach mitternacht LV2 nächste zeile +focus & +Select
+			Gui, listview, default
+			LV_Modify((xModify#1+(RowsPerPage/2)), "Vis")
+			LV_Modify(xModify#1-6, "Vis")
+			LV_Modify(xModify#1, "+Focus")
+			LV_Modify(xModify#1, "+Select")
+			LV_Modify(xModify#1, "focus")
+			;send, {Tab}
+			thisRISECounter := 0  ; nach mitternacht die counter für sonnenauf,- untergang in liestview 1zurücksetzen
+			thisSETCounter := 0
+			try run,%  A_ScriptDir "\screenshot 2 -direktauslösend 1 sekunde delay .ahk"
+			Trigger#1Count++
+			}
+		if (Trigger#1Count=2)
+		Trigger#1 := false
+	}
+; ///////////////////////////////////////////////////////////////////// ; aktionen die nach xx:xx uhr gestartet werden
+
+	MainArray["presets", "Trigger#2", "beschreibung"] 		:= "Eine Stunde vor Sonnenuntergeng Heizung ON"
+	MainArray["presets", "Trigger#2", "triggerFile"] 		:= A_ScriptDir "\screenshot 2 -direktauslösend 1 sekunde delay .ahk"
+	MainArray["presets", "Trigger#2", "triggerZeit"] 		:= 01 ":" 00 ":" 00 ; std min sec
+	MainArray["presets", "Trigger#2", "triggerModus"] 		:= "VorSonnenUntergang" a_tab "NachSonnenUntergang" a_tab "VorSonnenAufgang" a_tab "NachSonnenAufgang"
+	MainArray["presets", "Trigger#2", "triggerMonatTrueTorZeit"] 	:= 09 a_tab 10 a_tab 11 a_tab 12 a_tab 01 a_tab 02 a_tab 03
+	MainArray["presets", "Trigger#2", "triggerMonatFalseTorZeit"] 	:= 04 a_tab 05 a_tab 06 a_tab 07 a_tab 08
+test#854a := ""
+showMsgBoxTest#854a := 0
+for all, triggers in MainArray["presets", "Trigger#2"]
+test#854a .= all a_tab triggers "`n"
+;msgbox,,% a_lineNumber, % "showMsgBoxTest#854a = " showMsgBoxTest#854a "`n" test#854a
+
+	; thisTime := A_DD "." A_MM "." a_YYYY "  " A_Hour ":" A_Min ":" A_Sec
+	; Trigger#2 := 1, Trigger#2Count := 0 	;  = täglich
+	; Trigger#2 := 1 			;  = einmal
+	if Trigger#2
+	{
+		MainArray["istZeit"] 	:= A_Hour ":" A_Min ":" A_Sec
+		MainArray["sollZeit"] 	:= 00 ":" 10 ":" 01
+
+			if (MainArray["istZeit"] = (MainArray["presets", "Trigger#2", "triggerZeit"]))
+			{
+			if !inStr(Trigger#2all, A_DD "." A_MM "." a_YYYY a_space MainArray["sollZeit"])
+				{
+				try run,%  MainArray["presets", "Trigger#2", "triggerFile"]
+				Trigger#2Count++
+				Trigger#2all .= A_DD "." A_MM "." a_YYYY a_space MainArray["sollZeit"] "`n"
+			}}
+		if (Trigger#2Count=2)
+		Trigger#2 := false
+	}
+
+; /////////////////////////////////////////////////////////////////////////////////////
+;GuiControlGet, AusgabeVar, Focus
+;msgboa_space 
+; /////////////////////////////////////////////////////////////////////////////////////	updateGuiControl 	thisUpdate		Nächste System Aktion [NächsteGeplanteSystemAction]
+			thisNextScheduledAction := MainArray["nextScheduledAction"]
+			while instr(thisNextScheduledAction,a_space a_space)
+			thisNextScheduledAction := strReplace(thisNextScheduledAction,a_space a_space,a_space)
+			if !(LastNextScheduledAction=thisNextScheduledAction)
+			{
+	GuiControl,1: , 			NächsteGeplanteSystemAction,		% thisNextScheduledAction
+	GuiControl,1: ,  			SonnenaufgangGUI2Zeit, 			%  MainArray["Stunden bis zum nächsten Sonnenaufgang"]
+											 . MainArray["Minuten bis zum nächsten Sonnenaufgang"]
+	GuiControl,1: ,  			SeitSonnenaufgangGUI2Zeit, 		% MainArray["Stunden seit letztem Sonnenaufgang"]  
+									   		. MainArray["Minuten seit letztem Sonnenaufgang"]
+	GuiControl,1: ,  			SonnenuntergangGUI2Zeit, 		% MainArray["Stunden bis zum nächsten Sonnenuntergang"]		
+									 		. MainArray["Minuten bis zum nächsten Sonnenuntergang"]	
+	GuiControl,1: ,  			SeitSonnenuntergangGUI2Zeit, 		% MainArray["Stunden seit letztem Sonnenuntergang"]
+									     		. MainArray["Minuten seit letztem Sonnenuntergang"]
+	GuiControl,1: ,  			GroupBoxSonneAuf,			% " Sonnenaufgang   " MainArray["Sonnenaufgang"] a_space
+	GuiControl,1: ,  			GroupBoxSonneUnter,			% " Sonnenuntergang " MainArray["Sonnenuntergang"] a_space
+
+
+
+	thisSonnenstunden  := "[ gestern: " MainArray["SonnenstundenCalendarDayLTRIM", A_YDay-1] " ]`t`t" MainArray["Sonnenstunden"] " Stunden " MainArray["Sonnenminuten"]
+	GuiControl,1: ,  			GroupBoxSonnenstunden,					% " Sonnenstunden " MainArray["Sonnenstunden"] " Stunden " MainArray["Sonnenminuten"] a_space 
+;	GuiControl,1: ,  			GroupBoxSonnenstunden,					% "Sonnenstunden "  MainArray["SonnenstundenCalendarDayLTRIM", A_YDay] "`n" test
+
+;		MainArray["SonnenstundenCalendarDayLTRIM", A_YDay]  := StimeStd ":" StimeMINNoLTRIM ; A_YDay-1
+
+	GuiControl,1: ,  			TextInGroupBoxSonnenstunden,	%  "Tag: " MainArray["isSchaltjahr_dann_ab_28_februar_A_day_plus_eins"] " Woche: " SubStr(A_YWeek, -1) "`n"
+										. isSchaltjahr(A_Year) "`n" 
+									;	. TagNachtZeiten() "`n" 
+								;		.  "Aktuell: " JahresZeitSommerOderWinterZeit() " MEZ"
+	GuiControl,1: ,  			GroupBoxUnterSonnenstunden,					% a_space TagNachtZeiten() a_space 
+			}
+			LastNextScheduledAction := thisNextScheduledAction
+; /////////////////////////////////////////////////////////////////////////////////////
+; GroupBoxUnterSonnenstunden
+; /////////////////////////////////////////////////////////////////////////////////////
+; /////////////////////////////////////////////////////////////////////////////////////
+
+
+
+; ersteGUI
+
+ if !MakeList   ; evaluation utilization
+ {
+; thisGuiUpdate := DEBUGINFO() "`n" thisGuiTimeOutDownCounter()
+ thisGuiUpdate := thisGuiTimeOutDownCounter() "`n" DEBUGINFO() MainArray["SommerWinterZeitAnzeige"]
+	 . "" ; thisGuiTimeOutDownCounter()
+	. "nächste geplante Aktion:`t" MainArray["nextScheduledAction"] ; a_tab MainArray["SonnentagLaengenBerechnung"] " <> " MainArray["NachtLaengenBerechnung"] ; tage werden länger oder kürzer
+;	. "`n`nSonnenaufgang:`t" 		MainArray["Sonnenaufgang"] " Uhr  [ gestern " MainArray["SonnenaufgangCalendarDay", A_YDay-1] " ]" a_space MainArray["SonnentagLaengenBerechnung"]
+;	. "`nSonnenuntergang:`t"	MainArray["Sonnenuntergang"] " Uhr  [ gestern " MainArray["SonnenuntergangCalendarDay", A_YDay-1] " ]" a_space MainArray["NachtLaengenBerechnung"]
+;	. "`nSonnenstunden:`t" 	"[ gestern: " MainArray["SonnenstundenCalendarDayLTRIM", A_YDay-1] " ]`t`t" MainArray["Sonnenstunden"] " Stunden " MainArray["Sonnenminuten"]
+	. "`n`n" isSchaltjahr(A_Year) 
+	. "`nTag: " MainArray["isSchaltjahr_dann_ab_28_februar_A_day_plus_eins"] " - Woche: " 
+;	. SubStr(A_YWeek, 1, 4) a_space 
+;	. SubStr(A_YWeek, -1) a_space " - Es ist " TagNachtZeiten()
+	. SubStr(A_YWeek, -1) a_space " - " TagNachtZeiten()
+	. "`n`nSonnenaufgang:`t" 		MainArray["Sonnenaufgang"] " Uhr  [ gestern " MainArray["SonnenaufgangCalendarDay", A_YDay-1] " ]" a_space MainArray["SonnentagLaengenBerechnung"]
+	. "`nSonnenuntergang:`t"	MainArray["Sonnenuntergang"] " Uhr  [ gestern " MainArray["SonnenuntergangCalendarDay", A_YDay-1] " ]" a_space MainArray["NachtLaengenBerechnung"]
+	. "`nSonnenstunden:`t" 	"[ gestern: " MainArray["SonnenstundenCalendarDayLTRIM", A_YDay-1] " ]`t`t" MainArray["Sonnenstunden"] " Stunden " MainArray["Sonnenminuten"]
+;	. "`nSchaltjahr: " isSchaltjahr(A_Year) 
+;	. "`n" isSchaltjahrTrueFalse()
+	. "`n`nZeit bis zum nächsten Sonnenaufgang:`t`t" 
+			. MainArray["Stunden bis zum nächsten Sonnenaufgang"]
+			. MainArray["Minuten bis zum nächsten Sonnenaufgang"]
+	. "`nZeit seit letztem Sonnenaufgang:`t`t" MainArray["Stunden seit letztem Sonnenaufgang"]  
+	. MainArray["Minuten seit letztem Sonnenaufgang"]
+	. "`nZeit bis zum nächsten Sonnenuntergang:`t" 
+			. MainArray["Stunden bis zum nächsten Sonnenuntergang"]		
+			. MainArray["Minuten bis zum nächsten Sonnenuntergang"]	
+	. "`nZeit seit letztem Sonnenuntergang:`t`t" 
+	. MainArray["Stunden seit letztem Sonnenuntergang"]
+	. MainArray["Minuten seit letztem Sonnenuntergang"]
+;	. (LVaddLine)?("`n" LVaddLine "`n"):("`n"empty`n")
+;	. MainArray["SommerWinterZeitTrigger"] ; togglet im sekundentakt
+;	. "`n" MainArray["isSchaltjahr_dann_ab_28_februar_A_day_plus_eins"] 
+	} else {
+		DayCounter++
+ thisGuiUpdate := "Aktuelle Zeit: " A_DD "." Month(A_MM) "." a_YYYY " " A_Hour ":" A_Min ":" A_Sec " Uhr"
+		. ((MakeList=1)
+		? "`nListe wird erstellt...`nDatum:`t" ADD "." Month(AMM) "." a_YYYY "`nTag:`t" DayCounter
+		: "") 
+		firstLine := "Datum`tSonnenaufgang`tSonnenuntergang`tSonnenstunden`tSonnenstundenSpeak"
+		if (DayCounter=1)
+		fileAppend,% firstLine "`n",% a_scriptDir "\sonnenuntergang-sonnenaufgang-sunrise-sunset.csv"
+		thisres .= ADD "." 
+			. Month(AMM) "`t"
+			. x.1 "`t"
+			. x.2 "`t"
+			. StimeStdnoLTRIM ":"
+			. StimeMINnoLTRIM "`t"
+			. strReplace((MainArray["Sonnenstunden"] " Stunden " MainArray["SonnenminutenExport"]), "  ", " ") "`n"
+
+		MainArray["thisCalendarDaySunRise",ADD,AMM] := MainArray["Sonnenaufgang"]
+		MainArray["thisCalendarDaySunSet", ADD,AMM] := MainArray["Sonnenuntergang"]
+
+		MainArray["SonnenstundenCalendarDay", DayCounter]  	:= StimeStdnoLTRIM ":" StimeMINnoLTRIM
+
+		MainArray["SonnenaufgangCalendarDay", DayCounter]  	:= MainArray["Sonnenaufgang"]
+		MainArray["SonnenuntergangCalendarDay", DayCounter]  	:= MainArray["Sonnenuntergang"]
+
+		MainArray["SonnenstundenCalendarDayLTRIM", DayCounter]  := StimeStd ":" StimeMINNoLTRIM
+		}
+
+	if !MakeList
+	settimer, start, -900
+;	if !MakeList
+	return
+;////////////////////////////////////////////////////////////////////////////////////////////////////////
+; https://www.autohotkey.com/boards/viewtopic.php?p=389921#p389921
+WM_CTLCOLORSTATIC(Hello, World, wp, lp) {
+   hDC := wp
+   for k, v in [Hello, World] {
+      if (lp = v.hwnd) {
+         DllCall("SetTextColor", "Ptr", hDC, "UInt", v.textColor)
+         DllCall("SetBkColor"  , "Ptr", hDC, "UInt", v.backColor)
+         Return DllCall("GetStockObject", "Int", NULL_BRUSH := 0x5, "Ptr")
+      }
+   }
+}
+;////////////////////////////////////////////////////////////////////////////////////////////////////////
+isSchaltjahr(AYear) {
+;global
+return daysInYear := Mod(AYear, 4) || ! Mod(AYear, 100) & Mod(AYear, 400) 
+;			? ("Das Jahr " AYear " hat: " 365 " Tage ( kein Schaltjahr ) `n" NextSchaltjahrDIGIT()) 
+;			: ("Das Jahr " AYear " hat: " 366 " Tage ( Schaltjahr ) `n" NextSchaltjahrDIGIT())
+			? ("Das Jahr " AYear " hat: " 365 " Tage - kein Schaltjahr`n" NextSchaltjahrDIGIT()) 
+			: ("Das Jahr " AYear " hat: " 366 " Tage - Schaltjahr`n" NextSchaltjahrDIGIT())
+}
+
+NextSchaltjahrDIGIT() {
+loop
+{
+; ayear := (2024 + a_index) ; test
+  ayear := (a_year + a_index)
+schaltjahr := Mod(AYear, 4) || ! Mod(AYear, 100) & Mod(AYear, 400) ? (0) : (1)
+if schaltjahr 
+;return daysInYear := Mod(AYear, 4) || ! Mod(AYear, 100) & Mod(AYear, 400) ? (0) : ("[ nächstes Schaltjahr: " AYear " ]")
+return daysInYear := Mod(AYear, 4) || ! Mod(AYear, 100) & Mod(AYear, 400) ? (0) : ("nächstes Schaltjahr: " AYear)
+}}
+;////////////////////////////////////////////////////////////////////////////////////////////////////////
+; zoomfactor:=((A_ScreenWidth/1920)*(96/A_ScreenDPI))
+;/////////////////////////////////////////////////////
+thisZoomFactor(factor) {
+global
+return (factor*((A_ScreenWidth/1920)*(96/A_ScreenDPI)))
+}
+;////////////////////////////////////////////////////////////////////////////////////////////////////////
+thisZoomFactorBold(factor) {
+global
+return "s" (factor*zoomfactor) " bold "
+}
+;////////////////////////////////////////////////////////////////////////////////////////////////////////
+thisZoomFactorNormal(factor) {
+global
+return "s" (factor*zoomfactor) " normal " 
+}
+;////////////////////////////////////////////////////////////////////////////////////////////////////////
+; wa:=A_screenwidth,ha:=A_screenHeight,xx:=100
+;///////////////////////////////////////////////
+thisX(factor) {
+global
+return	" x" (wa*factor)/xx
+}
+;////////////////////////////////////////////////////////////////////////////////////////////////////////
+thisY(factor) {
+global
+return	" y" (ha*factor)/xx 
+}
+;////////////////////////////////////////////////////////////////////////////////////////////////////////
+thisW(factor) {
+global
+return	" w" (wa*factor)/xx
+}
+;////////////////////////////////////////////////////////////////////////////////////////////////////////
+thisH(factor) {
+global
+return	" h" (ha*factor)/xx 
+}
+;////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+isSchaltjahrTrueFalse() {
+global
+ayear := (a_year)
+return daysInYear 	:= Mod(AYear, 4) || ! Mod(AYear, 100) & Mod(AYear, 400) ? (0) : (1)
+}
+;////////////////////////////////////////////////////////////////////////////////////////////////////////
+DEBUGINFO() {
+global
+if showDebuginfo
+return "Status: rise#: " MainArray["thisRISECounter"] 
+	. " - set#: " MainArray["thisSETCounter"]
+	. " - alert#: " MainArray["thisGefahrenmeldungCounter"] " - " 
+	. "MOD#:" thisToggleFunc thisMOD 
+	. " - [ Strg && F5 ] toggleHide`n"
+}
+^F5::
+showDebuginfo := (showDebuginfo:=!showDebuginfo)
+return
+;////////////////////////////////////////////////////////////////////////////////////////////////////////
+sekundenTrigger:
+if sekundenTriggerToggle := (sekundenTriggerToggle:=!sekundenTriggerToggle)
+{
+MainArray["schaltjahrTriggerHeuteStunde"] 	:= (SubStr(MainArray["Sonnenaufgang"], 2, 1))
+MainArray["schaltjahrTriggerGesternStunde"] 	:= (SubStr(MainArray["SonnenaufgangCalendarDay", A_YDay-1], 2, 1))
+	MainArray["SommerWinterZeitTrigger"] :=    !(MainArray["schaltjahrTriggerHeuteStunde"]  
+						=  MainArray["schaltjahrTriggerGesternStunde"])
+	? "`nSondermeldung:`tHeute beginnt die " thisJahresZeit()  ; MainArray["schaltjahrTriggerHeuteStunde"] a_tab MainArray["schaltjahrTriggerGesternStunde"]
+	: ""
+} else {
+MainArray["SommerWinterZeitTrigger"] := ""
+}
+return
+;////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+;////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+guiclose:
+
+		thisATimeSinceThisHotkey := A_TimeSinceThisHotkey
+		ATimeSinceThisHotkey := subStr(ConvertToHHMMSSMS(thisATimeSinceThisHotkey),1,8)
+
+		thisATimeSincePriorHotkey := A_TimeSincePriorHotkey
+		ATimeSincePriorHotkey := subStr(ConvertToHHMMSSMS(thisATimeSincePriorHotkey),1,8)
+
+		fileAppend,% "Exitapp:`t" A_DD "." Month(A_MM) "." a_YYYY "  " A_Hour ":" A_Min ":" A_Sec ":" A_MSec " Uhr`t"
+							. "`t"
+							. "Exitapp`t"
+							. A_ThisFunc "`t"
+							. A_ThisHotkey "`t"
+							. A_PriorHotkey "`t"
+							. A_PriorKey "`t"
+							. ATimeSinceThisHotkey "`t"
+							. ATimeSincePriorHotkey "`t"
+							. A_GuiControl "`t"
+							. A_GuiEvent "`t"
+							. A_EventInfo "`n"
+				, % a_scriptDir "\" A_ScriptName " timeStampall.txt"
+reload
+exitapp
+return
+
+GeplanteTrigger:
+;reload
+msgbox,4096,% "Zeile:`t" a_lineNumber, Test geplanter Trigger, 4
+return
+;////////////////////////////////////////////////////////////////////////////////////////////////////////
+F1::
+; nMalBlinkenContinue := 1
+; nMalBlinken(5)
+thisRISE(RISEfile)
+return
+	thisGuiUpdate := ""
+	NoTimeCounter := 0
+	thisToggleFunc := 1
+	thisMOD := 2
+	ToggleGUI := 0
+	if ToggleGUI := (ToggleGUI:=!ToggleGUI)
+		{
+		atickCount := a_tickCount
+		GuiLiveTime:=(1.29*60*1000) ; 59 sec
+		thisGUITimeout()
+		thisRISE(RISEfile)
+		Gui, Show
+	} 
+return
+;////////////////////////////////////////////////////////////////////////////////////////////////////////
+	F2::
+	; nMalBlinkenContinue := 1
+	; nMalBlinken(5)
+	thisSET(SETfile)
+	GuiControl, +Redraw, ListView1
+	GuiControl, +Redraw, ListView2
+	winset, redraw
+	return
+	thisGuiUpdate := ""
+	NoTimeCounter := 0
+	thisToggleFunc := 1
+	thisMOD := 2
+	ToggleGUI := 0
+	if ToggleGUI := (ToggleGUI:=!ToggleGUI)
+		{
+		atickCount := a_tickCount
+		GuiLiveTime:=(.09*60*1000) ; 59 sec
+		thisGUITimeout()
+		thisSET(SETfile)
+		Gui, Show
+	} 
+return
+;////////////////////////////////////////////////////////////////////////////////////////////////////////
+F3::
+	nMalBlinkenContinue := 1
+; nMalBlinken(5)
+	thisGuiUpdate := ""
+	NoTimeCounter := 0
+	thisToggleFunc := 1
+	thisMOD := 2
+	ToggleGUI := 0
+	if ToggleGUI := (ToggleGUI:=!ToggleGUI)
+		{
+		atickCount := a_tickCount
+		GuiLiveTime:=(1439.99*60*1000) ; 59 sec
+		thisGUITimeout()
+	;       > alexa file <
+		Gui, Show
+	}
+return
+;////////////////////////////////////////////////////////////////////////////////////////////////////////
+F4::                                                             ; Toggle Gui
+	nMalBlinkenContinue := 1
+; nMalBlinken(5)
+;	GuiControl, +Redraw, ListView2
+;	GuiControl, +Redraw, LV2
+	thisGuiUpdate := ""
+	if ToggleGUI := (ToggleGUI:=!ToggleGUI)
+		{
+		atickCount := a_tickCount
+		GuiLiveTime:=(1439.99*60*1000)
+		thisGUITimeout()
+		Gui, Show
+	} else {
+		atickCount := a_tickCount
+		GuiLiveTime:=(.009*60*1000)
+		thisGUITimeout()
+}
+return
+;//////////////////////////////////////////////////////////////////////////////////////////////////////// 
+F5:: 
+	nMalBlinkenContinue := 1
+; nMalBlinken(5)
+;	GuiControl, +Redraw, ListView2
+;	GuiControl, +Redraw, LV2
+	aindexMOD++
+
+	thisMaxCount := 3 ; tripleChoice
+	thisMOD := thisMaxCount-Mod(thisMaxCount-Mod(aindexMOD,thisMaxCount),thisMaxCount)  ; zählt dauernd 1 2 3 1 2 3 1 2 3 1... usw
+
+	if x := (thisMOD=1)
+	NoTimeCounter := 0, ToggleShowGuiLiveTime := 1, thisToggleFunc := ToggleFunc()
+
+	if x := (thisMOD=2)
+	NoTimeCounter := 0, ToggleShowGuiLiveTime := 0, thisToggleFunc := ToggleFunc()
+
+	if x := (thisMOD=3)
+	NoTimeCounter := 1
+
+	;if x := (thisMOD=4)
+	;NoTimeCounter := 0, thisToggleFunc := 1, thisMOD := 2
+return
+
+ToggleFunc() {
+global thisToggleFunc := 1
+return thisToggleFunc:=!thisToggleFunc
+}
+;////////////////////////////////////////////////////////////////////////////////////////////////////////
+F10::
+; nMalBlinkenContinue := 1
+; nMalBlinken(1)
+WinSet, Redraw
+;	GuiControl, -Redraw, ListView2
+LVModifyCol()
+;	GuiControl, +Redraw, ListView2
+;	GuiControl, +Redraw, LV2
+
+for all, vars in MainArray
+;res .= all a_tab (isObject(vars) ? whatVars(vars) : vars) "`n"
+ res .= all a_tab "  :  " a_tab (isObject(vars) ? "Object" : vars) "`n"
+Gui +OwnDialogs  ; msgBox immer im vordergrund ../viewtopic.php?p=544035#p544035
+;MsgBox,,, % res,3
+res := ""
+;try run,% a_scriptDir "\sonnenuntergang-sonnenaufgang-sunrise-sunset.csv"
+Gefahrenmeldung("Gefahrenmeldung") ; test
+;sleep, 2000
+;Gefahrenmeldung("xTrigger") ; test
+ 	 GuiControl,1:    show, 			thisLoopProgress
+ 	 loopProgress()
+ 	 GuiControl,1:    hide, 			thisLoopProgress
+return
+
+whatVars(vars) {
+for all, var in vars
+x .= all a_tab var "`n"
+sort, x
+return 
+}
+;//////////////////////////////////////////////////////////////////////////////////////////////////////// 
+uebernehmen:
+Gui, Submit, NoHide
+;msgbox test
+thisListViewAnsichtErweiternProgressModus := !(thisListViewAnsichtErweiternProgressModus:=!thisListViewAnsichtErweiternProgressModus)
+; 	loopProgress()
+	nMalBlinkenContinue := 1
+	nMalBlinken(2)
+	Winset, redraw
+	GuiControl, +Redraw, ListView1
+	GuiControl, +Redraw, ListView2
+return
+if thisADDListViewTrigger
+{
+ADDListViewTrigger := thisADDListViewTrigger
+LV_ADDListViewTrigger()
+}
+return
+
+F12::
+ADDListViewTrigger := ("00:01" a_tab "täglich" a_tab "vor Sonnenuntergang" a_tab "Soundplay Datei# F12")
+LV_ADDListViewTrigger()
+return
+
+BeimStartUebernehmen:
+ADDListViewTrigger := ("00:02" a_tab "täglich" a_tab "vor Sonnenuntergang" a_tab "Soundplay Datei# 2")
+LV_ADDListViewTrigger()
+ADDListViewTrigger := ("00:03" a_tab "täglich" a_tab "vor Sonnenuntergang" a_tab "Markiese einfahren")
+LV_ADDListViewTrigger()
+ADDListViewTrigger := ("00:01" a_tab "täglich" a_tab "nach Sturmwarnung" a_tab "Soundplay Datei# 3")
+LV_ADDListViewTrigger()
+ ;	 GuiControl,1:    show, 			thisLoopProgress
+ ;	 loopProgress()
+ ;	 GuiControl,1:    hide, 			thisLoopProgress
+return
+
+
+^F10::
+ 	loopProgress()
+	nMalBlinkenContinue := 1
+	nMalBlinken(6)
+	Winset, redraw
+	GuiControl, +Redraw, ListView1
+	GuiControl, +Redraw, ListView2
+;nMalBlinkenContinue := 1
+; nMalBlinken(60)
+return
+;GuiControl,, EDIT2a,% MainArray["SommerWinterZeitAnzeige"]
+;	GuiControl, +Redraw, ListView2
+;	GuiControl, +Redraw, LV2
+
+GUISizeToggle := (GUISizeToggle:=!GUISizeToggle)
+if GUISizeToggle
+{
+	GuiControl, -Redraw, ListView2
+	AScreenHeight300 := (A_ScreenHeight-300)
+	AScreenWidth180  := (A_ScreenWidth-220)
+	AScreenWidth200  := (A_ScreenWidth-200)
+	GuiControl, Move,ListView2, w%AScreenWidth180%  r7
+	GuiControl, +Redraw, ListView2
+
+	Gui, Show, w%AScreenWidth200%  h%AScreenHeight300%
+LVModifyCol()
+} else {
+	GuiControl, -Redraw, ListView2
+	AScreenHeight300 := (A_ScreenHeight-300)
+	GuiControl, Move,ListView2, w545 r7
+;	Gui, Show, w565 h%AScreenHeight300%
+x:=(wa*10)/xx,y:=(ha*10)/xx,w:=(wa*65)/xx,h:=(ha*80)/xx
+;gui,show,x%x% y%y% w%w% h%h% ,TEST		
+gui,show,x%x% y%y% w%w% h%h% ,TEST
+LVModifyCol()
+	GuiControl, +Redraw, ListView2
+}
+;	Gui, Show, x110 y31 h%AScreenHeight300%,% a_scriptName a_space hGUIA  
+x:=(wa*10)/xx,y:=(ha*10)/xx,w:=(wa*65)/xx,h:=(ha*80)/xx
+gui,show,x%x% y%y% w%w% h%h% ,TEST	
+return
+
+
+if GUISizeToggle____________test_______
+{
+AScreenWidth180 := (A_ScreenWidth-220)
+	AScreenWidth200 := (A_ScreenWidth-200)
+	GuiControl, Move,ListView2, w%AScreenWidth180%  r7
+	Loop, % LV_GetCount("Columns")
+	LV_ModifyCol(A_Index, "AutoHdr")
+;	Gui, Show, w%AScreenWidth200%  h%AScreenHeight300%
+x:=(wa*10)/xx,y:=(ha*10)/xx,w:=(wa*65)/xx,h:=(ha*80)/xx
+gui,show,x%x% y%y% w%w% h%h% ,TEST	
+} else {
+	AScreenHeight300 := (A_ScreenHeight-300)
+	GuiControl, Move,ListView2, w545 r7
+		LV_ModifyCol(1, 220)	; Timestamp
+		LV_ModifyCol(2, 70)	; Action
+		LV_ModifyCol(3, 130)	; Name
+		LV_ModifyCol(4, 90)	; A_ThisFunc
+		LV_ModifyCol(5, 0)	; A_ThisHotkey
+		LV_ModifyCol(6, 0)	; A_PriorHotkey
+		LV_ModifyCol(7, 0)	; A_PriorKey
+		LV_ModifyCol(8, 0)	; A_TimeSinceThisHotkey
+		LV_ModifyCol(9, 0)	; A_TimeSincePriorHotkey
+		LV_ModifyCol(10, 0)	; A_GuiControl
+		LV_ModifyCol(11, 0)	; A_GuiEvent
+		LV_ModifyCol(12, 0)	; A_EventInfo
+;	Gui, Show, w565 h%AScreenHeight300%
+x:=(wa*10)/xx,y:=(ha*10)/xx,w:=(wa*65)/xx,h:=(ha*80)/xx
+gui,show,x%x% y%y% w%w% h%h% ,TEST
+}
+
+for all, vars in MainArray
+;res .= all a_tab (isObject(vars) ? whatVars(vars) : vars) "`n"
+ res .= all a_tab "  :  " a_tab (isObject(vars) ? "Object" : vars) "`n"
+Gui +OwnDialogs  ; msgBox immer im vordergrund ../viewtopic.php?p=544035#p544035
+;MsgBox,,, % res,3
+res := ""
+;try run,% a_scriptDir "\sonnenuntergang-sonnenaufgang-sunrise-sunset.csv"
+;Gefahrenmeldung("Gefahrenmeldung") ; test
+;sleep, 2000
+Gefahrenmeldung("xTrigger") ; test
+return
+;////////////////////////////////////////////////////////////////////////////////////////////////////////
+toolTip:
+GuiControl,, TextEdit1 ,% MainArray["Aktuelle Zeit"]
+
+return
+
+if ToggleGUI
+{
+if showOnlyEDIT1Update
+{
+if (thisGuiUpdateEdit1OLD!=thisGuiUpdate)
+GuiControl,, EDIT1,% thisGuiUpdate
+
+;if sekundenTriggerToggle
+;if !(thisGuiUpdateEdit1OLD=thisGuiUpdate)
+GuiControl,, EDIT2,% MainArray["Aktuelle Zeit"]
+GuiControl,, TextEdit1 ,% MainArray["Aktuelle Zeit"]
+;else
+;if !(thisGuiUpdateEdit1OLD=thisGuiUpdate)
+;GuiControl,, EDIT2,% MainArray["SommerWinterZeitAnzeige"] 
+
+if (thisGuiUpdateEdit3OLD!=thisGuiTimeOutDownCounter())
+GuiControl,, EDIT3,% thisGuiTimeOutDownCounter()
+sleep, 1
+
+thisGuiUpdateEdit1OLD := thisGuiUpdate
+thisGuiUpdateEdit3OLD := thisGuiTimeOutDownCounter()
+
+thisGuiUpdatex := strReplace(thisGuiUpdate,"nächsten Sonnenaufgang:`t`t","nächsten Sonnenaufgang:`t")
+if showTooltipAlso
+tooltip,% thisGuiUpdatex
+}} else {
+ToolTip
+Gui, Show, hide 
+}
+return
+;////////////////////////////////////////////////////////////////////////////////////////////////////////
+ToolTipTimeout(min:=1) {
+global
+ToggleGUI := 1
+sleep,% (min*60*1000)
+ToggleGUI := 0
+}
+;////////////////////////////////////////////////////////////////////////////////////////////////////////
+GUItimeout(min:=.055) {
+global
+;    ToggleGUI := 1
+GuiControl,Text,% hthisTEXTid, %thisGUIUpdate%
+Gui, Show
+sleep,% (min*60*1000)
+;sleep,% GuiLiveTime:=(min*60*1000)
+Gui, Show, hide
+settimer, start, -1
+;    ToggleGUI := 0
+}
+;////////////////////////////////////////////////////////////////////////////////////////////////////////
+;////////////////////////////////////////////////////////////////////////////////////////////////////////
+thisGuiTimeOutDownCounter() {   						; F5::
+global
+if NoTimeCounter
+{
+;;thisGuiUpdate := ""
+thisToggleFunc := 1
+thisMOD := 3
+NoTimeCounter := 1
+atickcount := a_tickcount
+GuiLiveTime:=(1439.99*60*1000)
+  return "GUI Timeout:`t`tdisabled - enable: [ F3 ] mnimize: [ F4 ] switch: [ F5 ]"
+}
+if ToggleShowGuiLiveTime
+return    "GUI DefaultTime:`t" thisSTARTCountTimeout()  " - switch [ F5 ]"
+;	.  "`nGUI Timeout:`t`t" thisGUITimeout()
+	. "`nGUI UPTime:`t`t" thisUPCountTimeout()
+else
+return  thisGUITimeout()  " - switch [ F5 ]"
+}
+
+thisGUITimeout() {
+ global 
+ atickcountB := a_tickcount-atickcount
+ thisdownCount := subStr(ConvertToHHMMSSMS(GuiLiveTime-atickcountB),1,8) 	; downCount
+	thisdownCountStd := subStr(thisdownCount,1,2)
+	thisdownCountStd := LTRIM(thisdownCountStd,0)
+	thisdownCountMIN := subStr(thisdownCount,4,2)
+	thisdownCountMIN := LTRIM(thisdownCountMIN,0)
+	thisdownCountSEC := subStr(thisdownCount,7,2)
+	thisdownCountSEC := LTRIM(thisdownCountSEC,0)
+if (thisdownCountStd="") && (thisdownCountMIN="") && (thisdownCountSEC="")
+{
+if HideGui
+Gui, Show, hide
+sleep, 1
+}else{
+thisGuiTimeoutDIGIT :=  (thisdownCountSTD<1) && (thisdownCountMIN<1) 
+			? thisdownCountSEC
+			:  ""
+if thisGuiTimeoutDIGIT   ; wenn nur noch sekunden
+{
+ return   	 "`nGUI Timeout:`t`t"
+		. ((thisdownCountSTD=1)
+		? "  " thisdownCountSTD " Stunde "
+		: (thisdownCountSTD>1) && (thisdownCountSTD<10)
+		? "  " thisdownCountSTD " Stunden "
+		: (thisdownCountSTD>=10)
+		? thisdownCountSTD " Stunden "
+		: "") 
+		. ((thisdownCountMIN=1)
+		? thisdownCountMIN " Minute "
+		: (thisdownCountMIN>1) && (thisdownCountMIN<10)
+		? "  " thisdownCountMIN " Minuten "
+		: (thisdownCountMIN>=10)
+		? thisdownCountMIN " Minuten "
+		: "") 
+		. ((thisdownCountSEC=1)
+		? thisdownCountSEC " Sekunde"
+		: (thisdownCountSEC>1) && (thisdownCountSEC<10) || (thisdownCountSEC>=10)
+		? thisdownCountSEC " Sekunden - hold alive [ F3 ]"
+		: "") 
+} else {
+return "`nGUI Timeout:`t`t"
+		. ((thisdownCountSTD=1)
+		? "  " thisdownCountSTD " Stunde "
+		: (thisdownCountSTD>1) && (thisdownCountSTD<10)
+		? "  " thisdownCountSTD " Stunden "
+		: (thisdownCountSTD>=10)
+		? thisdownCountSTD " Stunden "
+		: "") 
+		. ((thisdownCountMIN=1)
+		? thisdownCountMIN " Minute "
+		: (thisdownCountMIN>1) && (thisdownCountMIN<10)
+		? "  " thisdownCountMIN " Minuten "
+		: (thisdownCountMIN>=10)
+		? thisdownCountMIN " Minuten "
+		: "") 
+		. ((thisdownCountSEC=1)
+		? thisdownCountSEC " Sekunde"
+		: (thisdownCountSEC>1) && (thisdownCountSEC<10) || (thisdownCountSEC>=10)
+		? thisdownCountSEC " Sekunden" 
+		: "") 
+}}}
+;////////////////////////////////////////////////////////////////////////////////////////////////////////
+;////////////////////////////////////////////////////////////////////////////////////////////////////////
+thisUPCountTimeout() {
+ global 
+ atickcountC := a_tickcount-atickcount
+ thisUPCount := subStr(ConvertToHHMMSSMS(atickcountC),1,8) 	; UPCount
+	thisUPCountStd := subStr(thisUPCount,1,2)
+	thisUPCountStd := LTRIM(thisUPCountStd,0)
+	thisUPCountMIN := subStr(thisUPCount,4,2)
+	thisUPCountMIN := LTRIM(thisUPCountMIN,0)
+	thisUPCountSEC := subStr(thisUPCount,7,2)
+	thisUPCountSEC := LTRIM(thisUPCountSEC,0)
+	MainArray["LIVETIME TimeStamp"]	:= subStr(ConvertToHHMMSSMS(GuiLiveTime),1,8)
+	MainArray["LIVETIME downCount"]	:= subStr(ConvertToHHMMSSMS(GuiLiveTime-atickcountB),1,8)
+	MainArray["LIVETIME UPCount"] 	:= subStr(ConvertToHHMMSSMS(atickcountC),1,8)
+ return   	((thisUPCountSTD=1)
+		? "  " thisUPCountSTD " Stunde "
+		: (thisUPCountSTD>1) && (thisUPCountSTD<10)
+		? "  " thisUPCountSTD " Stunden "
+		: (thisUPCountSTD>=10)
+		? thisUPCountSTD " Stunden "
+		: "") 
+		. ((thisUPCountMIN=1)
+		? thisUPCountMIN " Minute "
+		: (thisUPCountMIN>1) && (thisUPCountMIN<10)
+		? "  " thisUPCountMIN " Minuten "
+		: (thisUPCountMIN>=10)
+		? thisUPCountMIN " Minuten "
+		: "") 
+		. ((thisUPCountSEC=1)
+		? thisUPCountSEC " Sekunde"
+		: (thisUPCountSEC>1) && (thisUPCountSEC<10) || (thisUPCountSEC>=10)
+		? thisUPCountSEC " Sekunden"
+		: "") 
+ 		. "`nLiveTimes:`t`t{ "
+		. MainArray["LIVETIME TimeStamp"] " / "	; TimeStamp
+		. MainArray["LIVETIME downCount"] " / "	; downCount
+		. MainArray["LIVETIME UPCount"] 	; UPCount
+		.  " }"
+}
+;////////////////////////////////////////////////////////////////////////////////////////////////////////
+thisSTARTCountTimeout() {
+ global 
+; atickcountB := a_tickcount-atickcount
+ thisStartTime := subStr(ConvertToHHMMSSMS(GuiLiveTime),1,8) 	; TimeStamp
+	thisStartTimeStd := subStr(thisStartTime,1,2)
+	thisStartTimeStd := LTRIM(thisStartTimeStd,0)
+	thisStartTimeMIN := subStr(thisStartTime,4,2)
+	thisStartTimeMIN := LTRIM(thisStartTimeMIN,0)
+	thisStartTimeSEC := subStr(thisStartTime,7,2)
+	thisStartTimeSEC := LTRIM(thisStartTimeSEC,0)
+ return   	((thisStartTimeSTD=1)
+		? "  " thisStartTimeSTD " Stunde "
+		: (thisStartTimeSTD>1) && (thisStartTimeSTD<10)
+		? "  " thisStartTimeSTD " Stunden "
+		: (thisStartTimeSTD>=10)
+		? thisStartTimeSTD " Stunden "
+		: "") 
+		. ((thisStartTimeMIN=1)
+		? thisStartTimeMIN " Minute "
+		: (thisStartTimeMIN>1) && (thisStartTimeMIN<10)
+		? "  " thisStartTimeMIN " Minuten "
+		: (thisStartTimeMIN>=10)
+		? thisStartTimeMIN " Minuten "
+		: "") 
+		. ((thisStartTimeSEC=1)
+		? thisStartTimeSEC " Sekunde"
+		: (thisStartTimeSEC>1) && (thisStartTimeSEC<10) || (thisStartTimeSEC>=10)
+		? thisStartTimeSEC " Sekunden"
+		: "") 
+}
+;////////////////////////////////////////////////////////////////////////////////////////////////////////
+Month(thisMonth) {
+		Month := strSplit("Jan,Feb,Mrz,Apr,Mai,Jun,Jul,Aug,Sep,Okt,Nov,Dez",",")
+		return Month[thisMonth]
+}
+;////////////////////////////////////////////////////////////////////////////////////////////////////////
+;////////////////////////////////////////////////////////////////////////////////////////////////////////			; Direktive thisRISE(RISEfile)
+; der USER kann den trigger (F1) ohne einschränkung mehrmals betätigen
+; wenn der user auslösetaste betätigt hat, kann der trigger nach diesem zeitpunkt nur einmal vom system gesetzt werden
+	thisRISE(RISEfile) {
+			global
+	if outOfOrder
+		return
+		ToggleGUI := 0
+		NoTimeCounter := 1 ; unterbindet GUI Timeout
+		if ToggleGUI := (ToggleGUI:=!ToggleGUI)
+		{
+		  if (NoTimeCounter=0)
+		  {
+		  atickCount := a_tickCount
+		  GuiLiveTime:=(.299*60*1000)
+		  Gui, Show
+		  thisGUITimeout()
+		}}
+	if !inStr(timeStampRISEall, A_DD "." Month(A_MM) "." a_YYYY " Sonnenaufgang " A_Hour ":" A_Min) && (A_ThisLabel="start") {			; nur ein SYSTEM trigger täglich möglich
+		thisF1Counter := F1Counter()
+		try run,% RISEfile,, hide, AusgabeVarPID
+		timeStampRISEall .= A_DD "." Month(A_MM) "." a_YYYY " Sonnenaufgang " A_Hour ":" A_Min ":" A_Sec "`n"
+
+		thisATimeSinceThisHotkey := A_TimeSinceThisHotkey
+		ATimeSinceThisHotkey := subStr(ConvertToHHMMSSMS(thisATimeSinceThisHotkey),1,8)
+
+		thisATimeSincePriorHotkey := A_TimeSincePriorHotkey
+		ATimeSincePriorHotkey := subStr(ConvertToHHMMSSMS(thisATimeSincePriorHotkey),1,8)
+
+	GuiControl, -Redraw, ListView2
+		fileAppend,% "Sonnenaufgang:`t" A_DD "." Month(A_MM) "." a_YYYY "  " A_Hour ":" A_Min ":" A_Sec ":" A_MSec " Uhr`t"
+							. (A_ThisLabel?A_ThisLabel:"System") "`t"
+							. "Sonnenaufgang (system) [ " thisF1Counter " ]`t"
+							. (A_ThisFunc?A_ThisFunc:"empty") "`t"
+							. (A_ThisHotkey?A_ThisHotkey:"empty") "`t"
+							. (A_PriorHotkey?A_PriorHotkey:"empty") "`t"
+							. (A_PriorKey?A_PriorKey:"empty") "`t"
+							. (A_TimeSinceThisHotkey?ATimeSinceThisHotkey:"empty") "`t"
+							. (A_TimeSincePriorHotkey?ATimeSincePriorHotkey:"empty") "`t"
+							. (A_GuiControl?A_GuiControl:"empty") "`t"
+							. (A_GuiEvent?A_GuiEvent:"empty") "`t"
+							. (A_EventInfo?A_EventInfo:"empty") "`n"
+				, % a_scriptDir "\" A_ScriptName " timeStampall.txt"
+		if LVInsertADD
+		LV_Insert(1 , Optionen, A_DD "." Month(A_MM) "." a_YYYY "  " A_Hour ":" A_Min ":" A_Sec
+							, (A_ThisLabel?A_ThisLabel:"System")
+							, ("Sonnenaufgang (system) [ " thisF1Counter " ]")
+							, (A_ThisFunc?A_ThisFunc:"empty")
+							, (A_ThisHotkey?A_ThisHotkey:"empty")
+							, (A_PriorHotkey?A_PriorHotkey:"empty")
+							, (A_PriorKey?A_PriorKey:"empty")
+							, (A_TimeSinceThisHotkey?ATimeSinceThisHotkey:"empty")
+							, (A_TimeSincePriorHotkey?ATimeSincePriorHotkey:"empty")
+							, (A_GuiControl?A_GuiControl:"empty")
+							, (A_GuiEvent?A_GuiEvent:"empty")
+							, (A_EventInfo?A_EventInfo:"empty"))
+		else
+		LV_Modify(LV_Add("", A_DD "." Month(A_MM) "." a_YYYY "  " A_Hour ":" A_Min ":" A_Sec
+							, (A_ThisLabel?A_ThisLabel:"System")
+							, ("Sonnenaufgang (system) [ " thisF1Counter " ]")
+							, (A_ThisFunc?A_ThisFunc:"empty")
+							, (A_ThisHotkey?A_ThisHotkey:"empty")
+							, (A_PriorHotkey?A_PriorHotkey:"empty")
+							, (A_PriorKey?A_PriorKey:"empty")
+							, (A_TimeSinceThisHotkey?ATimeSinceThisHotkey:"empty")
+							, (A_TimeSincePriorHotkey?ATimeSincePriorHotkey:"empty")
+							, (A_GuiControl?A_GuiControl:"empty")
+							, (A_GuiEvent?A_GuiEvent:"empty")
+							, (A_EventInfo?A_EventInfo:"empty")), "Vis")
+		LVModifyCol()
+		GuiControl, +Redraw, ListView2
+		thisRISECounter++
+
+ 	loopProgress()
+	nMalBlinkenContinue := 1
+	nMalBlinken(6)
+	Winset, redraw
+	GuiControl, +Redraw, ListView1
+	GuiControl, +Redraw, ListView2
+
+	return " `tSUNRISE" 
+	} else {
+	if (A_ThisLabel="F1") {
+		thisF1Counter := F1Counter()
+		try run,% RISEfile,, hide, AusgabeVarPID
+		timeStampRISEall .= A_DD "." Month(A_MM) "." a_YYYY " Sonnenaufgang " A_Hour ":" A_Min ":" A_Sec "`n"
+
+		thisATimeSinceThisHotkey := A_TimeSinceThisHotkey
+		ATimeSinceThisHotkey := subStr(ConvertToHHMMSSMS(thisATimeSinceThisHotkey),1,8)
+
+		thisATimeSincePriorHotkey := A_TimeSincePriorHotkey
+		ATimeSincePriorHotkey := subStr(ConvertToHHMMSSMS(thisATimeSincePriorHotkey),1,8)
+	GuiControl, -Redraw, ListView2
+		fileAppend,% "Sonnenaufgang:`t" A_DD "." Month(A_MM) "." a_YYYY "  " A_Hour ":" A_Min ":" A_Sec ":" A_MSec " Uhr`t"
+							. (A_ThisLabel?A_ThisLabel:"System") "`t"
+							. ("Sonnenaufgang (User) [ " thisF1Counter " ]") "`t"
+							. (A_ThisFunc?A_ThisFunc:"empty") "`t"
+							. (A_ThisHotkey?A_ThisHotkey:"empty") "`t"
+							. (A_PriorHotkey?A_PriorHotkey:"empty") "`t"
+							. (A_PriorKey?A_PriorKey:"empty") "`t"
+							. (A_TimeSinceThisHotkey?ATimeSinceThisHotkey:"empty") "`t"
+							. (A_TimeSincePriorHotkey?ATimeSincePriorHotkey:"empty") "`t"
+							. (A_GuiControl?A_GuiControl:"empty") "`t"
+							. (A_GuiEvent?A_GuiEvent:"empty") "`t"
+							. (A_EventInfo?A_EventInfo:"empty") "`n"
+				, % a_scriptDir "\" A_ScriptName " timeStampall.txt"
+		if LVInsertADD
+		LV_Insert(1 , Optionen, A_DD "." Month(A_MM) "." a_YYYY "  " A_Hour ":" A_Min ":" A_Sec
+							, (A_ThisLabel?A_ThisLabel:"System")
+							, ("Sonnenaufgang (User) [ " thisF1Counter " ]")
+							, (A_ThisFunc?A_ThisFunc:"empty")
+							, (A_ThisHotkey?A_ThisHotkey:"empty")
+							, (A_PriorHotkey?A_PriorHotkey:"empty")
+							, (A_PriorKey?A_PriorKey:"empty")
+							, (A_TimeSinceThisHotkey?ATimeSinceThisHotkey:"empty")
+							, (A_TimeSincePriorHotkey?ATimeSincePriorHotkey:"empty")
+							, (A_GuiControl?A_GuiControl:"empty")
+							, (A_GuiEvent?A_GuiEvent:"empty")
+							, (A_EventInfo?A_EventInfo:"empty"))
+		else
+		LV_Modify(LV_Add("", A_DD "." Month(A_MM) "." a_YYYY "  " A_Hour ":" A_Min ":" A_Sec
+							, (A_ThisLabel?A_ThisLabel:"System")
+							, ("Sonnenaufgang (User) [ " thisF1Counter " ]")
+							, (A_ThisFunc?A_ThisFunc:"empty")
+							, (A_ThisHotkey?A_ThisHotkey:"empty")
+							, (A_PriorHotkey?A_PriorHotkey:"empty")
+							, (A_PriorKey?A_PriorKey:"empty")
+							, (A_TimeSinceThisHotkey?ATimeSinceThisHotkey:"empty")
+							, (A_TimeSincePriorHotkey?ATimeSincePriorHotkey:"empty")
+							, (A_GuiControl?A_GuiControl:"empty")
+							, (A_GuiEvent?A_GuiEvent:"empty")
+							, (A_EventInfo?A_EventInfo:"empty")), "Vis")
+		LVModifyCol()
+		GuiControl, -Redraw, ListView2
+		thisRISECounter++
+
+ 	loopProgress()
+	nMalBlinkenContinue := 1
+	nMalBlinken(6)
+	Winset, redraw
+	GuiControl, +Redraw, ListView1
+	GuiControl, +Redraw, ListView2
+
+		return " `tSUNRISE"
+	} else { 															; nur ein trigger täglich möglich
+	if !inStr(timeStampRISEall, A_DD "." Month(A_MM) "." a_YYYY " Sonnenaufgang " A_Hour ":" A_Min) && (A_ThisLabel="start") {
+		thisF1Counter := F1Counter()
+		try run,% RISEfile,, hide, AusgabeVarPID
+		timeStampRISEall .= A_DD "." Month(A_MM) "." a_YYYY " Sonnenaufgang " A_Hour ":" A_Min ":" A_Sec "`n"
+
+		thisATimeSinceThisHotkey := A_TimeSinceThisHotkey
+		ATimeSinceThisHotkey := subStr(ConvertToHHMMSSMS(thisATimeSinceThisHotkey),1,8)
+
+		thisATimeSincePriorHotkey := A_TimeSincePriorHotkey
+		ATimeSincePriorHotkey := subStr(ConvertToHHMMSSMS(thisATimeSincePriorHotkey),1,8)
+	GuiControl, -Redraw, ListView2
+		fileAppend,% "Sonnenaufgang:`t" A_DD "." Month(A_MM) "." a_YYYY "  " A_Hour ":" A_Min ":" A_Sec ":" A_MSec " Uhr`t"
+							. (A_ThisLabel?A_ThisLabel:"System") "`t"
+							. ("Sonnenaufgang (System) [ " thisF1Counter " ]") "`t" ; wenn vorher User F1 gedrückt hat
+							. (A_ThisFunc?A_ThisFunc:"empty") "`t"
+							. (A_ThisHotkey?A_ThisHotkey:"empty") "`t"
+							. (A_PriorHotkey?A_PriorHotkey:"empty") "`t"
+							. (A_PriorKey?A_PriorKey:"empty") "`t"
+							. (A_TimeSinceThisHotkey?ATimeSinceThisHotkey:"empty") "`t"
+							. (A_TimeSincePriorHotkey?ATimeSincePriorHotkey:"empty") "`t"
+							. (A_GuiControl?A_GuiControl:"empty") "`t"
+							. (A_GuiEvent?A_GuiEvent:"empty") "`t"
+							. (A_EventInfo?A_EventInfo:"empty") "`n"
+				, % a_scriptDir "\" A_ScriptName " timeStampall.txt"
+		if LVInsertADD
+		LV_Insert(1 , Optionen, A_DD "." Month(A_MM) "." a_YYYY "  " A_Hour ":" A_Min ":" A_Sec
+							, (A_ThisLabel?A_ThisLabel:"System")
+							, ("Sonnenaufgang (System) [ " thisF1Counter " ]")
+							, (A_ThisFunc?A_ThisFunc:"empty")
+							, (A_ThisHotkey?A_ThisHotkey:"empty")
+							, (A_PriorHotkey?A_PriorHotkey:"empty")
+							, (A_PriorKey?A_PriorKey:"empty")
+							, (A_TimeSinceThisHotkey?ATimeSinceThisHotkey:"empty")
+							, (A_TimeSincePriorHotkey?ATimeSincePriorHotkey:"empty")
+							, (A_GuiControl?A_GuiControl:"empty")
+							, (A_GuiEvent?A_GuiEvent:"empty")
+							, (A_EventInfo?A_EventInfo:"empty"))
+		else
+		LV_Modify(LV_Add("", A_DD "." Month(A_MM) "." a_YYYY "  " A_Hour ":" A_Min ":" A_Sec
+							, (A_ThisLabel?A_ThisLabel:"System")
+							, ("Sonnenaufgang (System) [ " thisF1Counter " ]")
+							, (A_ThisFunc?A_ThisFunc:"empty")
+							, (A_ThisHotkey?A_ThisHotkey:"empty")
+							, (A_PriorHotkey?A_PriorHotkey:"empty")
+							, (A_PriorKey?A_PriorKey:"empty")
+							, (A_TimeSinceThisHotkey?ATimeSinceThisHotkey:"empty")
+							, (A_TimeSincePriorHotkey?ATimeSincePriorHotkey:"empty")
+							, (A_GuiControl?A_GuiControl:"empty")
+							, (A_GuiEvent?A_GuiEvent:"empty")
+							, (A_EventInfo?A_EventInfo:"empty")), "Vis")
+		LVModifyCol()
+		GuiControl, -Redraw, ListView2
+		thisRISECounter++
+
+ 	loopProgress()
+	nMalBlinkenContinue := 1
+	nMalBlinken(6)
+	Winset, redraw
+	GuiControl, +Redraw, ListView1
+	GuiControl, +Redraw, ListView2
+
+		return " `tSUNRISE"
+}}}}
+
+F1Counter() {
+static  thisF1Counter
+thisF1Counter++
+return thisF1Counter
+}
+
+;////////////////////////////////////////////////////////////////////////////////////////////////////////			; Direktive thisSET(SETfile)
+
+; der USER kann den trigger (F2) ohne einschränkung mehrmals betätigen
+; wenn der user auslösetaste betätigt hat, kann der trigger nach diesem zeitpunkt nur einmal vom system gesetzt werden
+	thisSET(SETfile) {
+			global
+	if outOfOrder
+		return
+		ToggleGUI := 0
+		NoTimeCounter := 1 ; unterbindet GUI Timeout
+		if ToggleGUI := (ToggleGUI:=!ToggleGUI)
+		{
+		  if (NoTimeCounter=0)
+		  {
+		  atickCount := a_tickCount
+		  GuiLiveTime:=(.299*60*1000)
+		  Gui, Show
+		  thisGUITimeout()
+		}}
+	if !inStr(timeStampSETall, A_DD "." Month(A_MM) "." a_YYYY " Sonnenuntergang " A_Hour ":" A_Min) && (A_ThisLabel="start") {			; nur ein SYSTEM trigger täglich möglich
+		thisF2Counter := F2Counter()
+		try run,% SETfile,, hide, AusgabeVarPID
+		timeStampSETall .= A_DD "." Month(A_MM) "." a_YYYY " Sonnenuntergang " A_Hour ":" A_Min ":" A_Sec "`n"
+
+		thisATimeSinceThisHotkey := A_TimeSinceThisHotkey
+		ATimeSinceThisHotkey := subStr(ConvertToHHMMSSMS(thisATimeSinceThisHotkey),1,8)
+
+		thisATimeSincePriorHotkey := A_TimeSincePriorHotkey
+		ATimeSincePriorHotkey := subStr(ConvertToHHMMSSMS(thisATimeSincePriorHotkey),1,8)
+
+	GuiControl, -Redraw, ListView2
+		fileAppend,% "Sonnenuntergang:`t" A_DD "." Month(A_MM) "." a_YYYY "  " A_Hour ":" A_Min ":" A_Sec ":" A_MSec " Uhr`t"
+							. (A_ThisLabel?A_ThisLabel:"System") "`t"
+							. "Sonnenuntergang (system) [ " thisF2Counter " ]`t"
+							. (A_ThisFunc?A_ThisFunc:"empty") "`t"
+							. (A_ThisHotkey?A_ThisHotkey:"empty") "`t"
+							. (A_PriorHotkey?A_PriorHotkey:"empty") "`t"
+							. (A_PriorKey?A_PriorKey:"empty") "`t"
+							. (A_TimeSinceThisHotkey?ATimeSinceThisHotkey:"empty") "`t"
+							. (A_TimeSincePriorHotkey?ATimeSincePriorHotkey:"empty") "`t"
+							. (A_GuiControl?A_GuiControl:"empty") "`t"
+							. (A_GuiEvent?A_GuiEvent:"empty") "`t"
+							. (A_EventInfo?A_EventInfo:"empty") "`n"
+				, % a_scriptDir "\" A_ScriptName " timeStampall.txt"
+		if LVInsertADD
+		LV_Insert(1 , Optionen, A_DD "." Month(A_MM) "." a_YYYY "  " A_Hour ":" A_Min ":" A_Sec
+							, (A_ThisLabel?A_ThisLabel:"System")
+							, ("Sonnenuntergang (system) [ " thisF2Counter " ]")
+							, (A_ThisFunc?A_ThisFunc:"empty")
+							, (A_ThisHotkey?A_ThisHotkey:"empty")
+							, (A_PriorHotkey?A_PriorHotkey:"empty")
+							, (A_PriorKey?A_PriorKey:"empty")
+							, (A_TimeSinceThisHotkey?ATimeSinceThisHotkey:"empty")
+							, (A_TimeSincePriorHotkey?ATimeSincePriorHotkey:"empty")
+							, (A_GuiControl?A_GuiControl:"empty")
+							, (A_GuiEvent?A_GuiEvent:"empty")
+							, (A_EventInfo?A_EventInfo:"empty"))
+		else
+		LV_Modify(LV_Add("", A_DD "." Month(A_MM) "." a_YYYY "  " A_Hour ":" A_Min ":" A_Sec
+							, (A_ThisLabel?A_ThisLabel:"System")
+							, ("Sonnenuntergang (system) [ " thisF2Counter " ]")
+							, (A_ThisFunc?A_ThisFunc:"empty")
+							, (A_ThisHotkey?A_ThisHotkey:"empty")
+							, (A_PriorHotkey?A_PriorHotkey:"empty")
+							, (A_PriorKey?A_PriorKey:"empty")
+							, (A_TimeSinceThisHotkey?ATimeSinceThisHotkey:"empty")
+							, (A_TimeSincePriorHotkey?ATimeSincePriorHotkey:"empty")
+							, (A_GuiControl?A_GuiControl:"empty")
+							, (A_GuiEvent?A_GuiEvent:"empty")
+							, (A_EventInfo?A_EventInfo:"empty")), "Vis")
+		LVModifyCol()
+		GuiControl, +Redraw, ListView2
+		thisSETCounter++
+
+ 	loopProgress()
+	nMalBlinkenContinue := 1
+	nMalBlinken(6)
+	Winset, redraw
+	GuiControl, +Redraw, ListView1
+	GuiControl, +Redraw, ListView2
+
+	return " `tSUNSET" 
+	} else {
+	if (A_ThisLabel="F2") {
+		thisF2Counter := F2Counter()
+		try run,% SETfile,, hide, AusgabeVarPID
+		timeStampSETall .= A_DD "." Month(A_MM) "." a_YYYY " Sonnenuntergang " A_Hour ":" A_Min ":" A_Sec "`n"
+
+		thisATimeSinceThisHotkey := A_TimeSinceThisHotkey
+		ATimeSinceThisHotkey := subStr(ConvertToHHMMSSMS(thisATimeSinceThisHotkey),1,8)
+
+		thisATimeSincePriorHotkey := A_TimeSincePriorHotkey
+		ATimeSincePriorHotkey := subStr(ConvertToHHMMSSMS(thisATimeSincePriorHotkey),1,8)
+	GuiControl, -Redraw, ListView2
+		fileAppend,% "Sonnenuntergang:`t" A_DD "." Month(A_MM) "." a_YYYY "  " A_Hour ":" A_Min ":" A_Sec ":" A_MSec " Uhr`t"
+							. (A_ThisLabel?A_ThisLabel:"System") "`t"
+							. ("Sonnenuntergang (User) [ " thisF2Counter " ]") "`t"
+							. (A_ThisFunc?A_ThisFunc:"empty") "`t"
+							. (A_ThisHotkey?A_ThisHotkey:"empty") "`t"
+							. (A_PriorHotkey?A_PriorHotkey:"empty") "`t"
+							. (A_PriorKey?A_PriorKey:"empty") "`t"
+							. (A_TimeSinceThisHotkey?ATimeSinceThisHotkey:"empty") "`t"
+							. (A_TimeSincePriorHotkey?ATimeSincePriorHotkey:"empty") "`t"
+							. (A_GuiControl?A_GuiControl:"empty") "`t"
+							. (A_GuiEvent?A_GuiEvent:"empty") "`t"
+							. (A_EventInfo?A_EventInfo:"empty") "`n"
+				, % a_scriptDir "\" A_ScriptName " timeStampall.txt"
+		if LVInsertADD
+		LV_Insert(1 , Optionen, A_DD "." Month(A_MM) "." a_YYYY "  " A_Hour ":" A_Min ":" A_Sec
+							, (A_ThisLabel?A_ThisLabel:"System")
+							, ("Sonnenuntergang (User) [ " thisF2Counter " ]")
+							, (A_ThisFunc?A_ThisFunc:"empty")
+							, (A_ThisHotkey?A_ThisHotkey:"empty")
+							, (A_PriorHotkey?A_PriorHotkey:"empty")
+							, (A_PriorKey?A_PriorKey:"empty")
+							, (A_TimeSinceThisHotkey?ATimeSinceThisHotkey:"empty")
+							, (A_TimeSincePriorHotkey?ATimeSincePriorHotkey:"empty")
+							, (A_GuiControl?A_GuiControl:"empty")
+							, (A_GuiEvent?A_GuiEvent:"empty")
+							, (A_EventInfo?A_EventInfo:"empty"))
+		else
+		LV_Modify(LV_Add("", A_DD "." Month(A_MM) "." a_YYYY "  " A_Hour ":" A_Min ":" A_Sec
+							, (A_ThisLabel?A_ThisLabel:"System")
+							, ("Sonnenuntergang (User) [ " thisF2Counter " ]")
+							, (A_ThisFunc?A_ThisFunc:"empty")
+							, (A_ThisHotkey?A_ThisHotkey:"empty")
+							, (A_PriorHotkey?A_PriorHotkey:"empty")
+							, (A_PriorKey?A_PriorKey:"empty")
+							, (A_TimeSinceThisHotkey?ATimeSinceThisHotkey:"empty")
+							, (A_TimeSincePriorHotkey?ATimeSincePriorHotkey:"empty")
+							, (A_GuiControl?A_GuiControl:"empty")
+							, (A_GuiEvent?A_GuiEvent:"empty")
+							, (A_EventInfo?A_EventInfo:"empty")), "Vis")
+		LVModifyCol()
+		GuiControl, -Redraw, ListView2
+		thisSETCounter++
+
+ 	loopProgress()
+	nMalBlinkenContinue := 1
+	nMalBlinken(6)
+	Winset, redraw
+	GuiControl, +Redraw, ListView1
+	GuiControl, +Redraw, ListView2
+
+		return " `tSUNSET"
+	} else { 															; nur ein trigger täglich möglich
+	if !inStr(timeStampSETall, A_DD "." Month(A_MM) "." a_YYYY " Sonnenuntergang " A_Hour ":" A_Min) && (A_ThisLabel="start") {
+		thisF2Counter := F2Counter()
+		try run,% SETfile,, hide, AusgabeVarPID
+		timeStampSETall .= A_DD "." Month(A_MM) "." a_YYYY " Sonnenuntergang " A_Hour ":" A_Min ":" A_Sec "`n"
+
+		thisATimeSinceThisHotkey := A_TimeSinceThisHotkey
+		ATimeSinceThisHotkey := subStr(ConvertToHHMMSSMS(thisATimeSinceThisHotkey),1,8)
+
+		thisATimeSincePriorHotkey := A_TimeSincePriorHotkey
+		ATimeSincePriorHotkey := subStr(ConvertToHHMMSSMS(thisATimeSincePriorHotkey),1,8)
+	GuiControl, -Redraw, ListView2
+		fileAppend,% "Sonnenuntergang:`t" A_DD "." Month(A_MM) "." a_YYYY "  " A_Hour ":" A_Min ":" A_Sec ":" A_MSec " Uhr`t"
+							. (A_ThisLabel?A_ThisLabel:"System") "`t"
+							. ("Sonnenuntergang (System) [ " thisF2Counter " ]") "`t" ; wenn vorher User F2 gedrückt hat
+							. (A_ThisFunc?A_ThisFunc:"empty") "`t"
+							. (A_ThisHotkey?A_ThisHotkey:"empty") "`t"
+							. (A_PriorHotkey?A_PriorHotkey:"empty") "`t"
+							. (A_PriorKey?A_PriorKey:"empty") "`t"
+							. (A_TimeSinceThisHotkey?ATimeSinceThisHotkey:"empty") "`t"
+							. (A_TimeSincePriorHotkey?ATimeSincePriorHotkey:"empty") "`t"
+							. (A_GuiControl?A_GuiControl:"empty") "`t"
+							. (A_GuiEvent?A_GuiEvent:"empty") "`t"
+							. (A_EventInfo?A_EventInfo:"empty") "`n"
+				, % a_scriptDir "\" A_ScriptName " timeStampall.txt"
+		if LVInsertADD
+		LV_Insert(1 , Optionen, A_DD "." Month(A_MM) "." a_YYYY "  " A_Hour ":" A_Min ":" A_Sec
+							, (A_ThisLabel?A_ThisLabel:"System")
+							, ("Sonnenuntergang (System) [ " thisF2Counter " ]")
+							, (A_ThisFunc?A_ThisFunc:"empty")
+							, (A_ThisHotkey?A_ThisHotkey:"empty")
+							, (A_PriorHotkey?A_PriorHotkey:"empty")
+							, (A_PriorKey?A_PriorKey:"empty")
+							, (A_TimeSinceThisHotkey?ATimeSinceThisHotkey:"empty")
+							, (A_TimeSincePriorHotkey?ATimeSincePriorHotkey:"empty")
+							, (A_GuiControl?A_GuiControl:"empty")
+							, (A_GuiEvent?A_GuiEvent:"empty")
+							, (A_EventInfo?A_EventInfo:"empty"))
+		else
+		LV_Modify(LV_Add("", A_DD "." Month(A_MM) "." a_YYYY "  " A_Hour ":" A_Min ":" A_Sec
+							, (A_ThisLabel?A_ThisLabel:"System")
+							, ("Sonnenuntergang (System) [ " thisF2Counter " ]")
+							, (A_ThisFunc?A_ThisFunc:"empty")
+							, (A_ThisHotkey?A_ThisHotkey:"empty")
+							, (A_PriorHotkey?A_PriorHotkey:"empty")
+							, (A_PriorKey?A_PriorKey:"empty")
+							, (A_TimeSinceThisHotkey?ATimeSinceThisHotkey:"empty")
+							, (A_TimeSincePriorHotkey?ATimeSincePriorHotkey:"empty")
+							, (A_GuiControl?A_GuiControl:"empty")
+							, (A_GuiEvent?A_GuiEvent:"empty")
+							, (A_EventInfo?A_EventInfo:"empty")), "Vis")
+		LVModifyCol()
+		GuiControl, -Redraw, ListView2
+		thisSETCounter++
+
+ 	loopProgress()
+	nMalBlinkenContinue := 1
+	nMalBlinken(6)
+	Winset, redraw
+	GuiControl, +Redraw, ListView1
+	GuiControl, +Redraw, ListView2
+
+		return " `tSUNSET"
+}}}}
+
+F2Counter() {
+static  thisF2Counter
+thisF2Counter++
+return thisF2Counter
+}
+;////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+;////////////////////////////////////////////////////////////////////////////////////////////////////////
+	thisGefahrenmeldung(Gefahrenmeldungfile) {
+			global
+	if outOfOrder
+		return
+		ToggleGUI := 0
+		NoTimeCounter := 1 ; unterbindet GUI Timeout
+		if ToggleGUI := (ToggleGUI:=!ToggleGUI)
+		{
+		  if (NoTimeCounter=0)
+		  {
+		  atickCount := a_tickCount
+		  GuiLiveTime:=(.299*60*1000)
+		  Gui, Show
+		  thisGUITimeout()
+		}}
+	if !inStr(timeStampGefahrenmeldungall, A_DD "." Month(A_MM) "." a_YYYY " Gefahrenmeldung") {
+		try run,% Gefahrenmeldungfile,, hide, AusgabeVarPID
+		timeStampGefahrenmeldungall .= A_DD "." Month(A_MM) "." a_YYYY " Gefahrenmeldung " A_Hour ":" A_Min ":" A_Sec "`n"
+
+		thisATimeSinceThisHotkey := A_TimeSinceThisHotkey
+		ATimeSinceThisHotkey := subStr(ConvertToHHMMSSMS(thisATimeSinceThisHotkey),1,8)
+
+		thisATimeSincePriorHotkey := A_TimeSincePriorHotkey
+		ATimeSincePriorHotkey := subStr(ConvertToHHMMSSMS(thisATimeSincePriorHotkey),1,8)
+	GuiControl, -Redraw, ListView2
+		fileAppend,% "Gefahrenmeldung:`t" A_DD "." Month(A_MM) "." a_YYYY "  " A_Hour ":" A_Min ":" A_Sec ":" A_MSec " Uhr`t"
+							. (A_ThisLabel?A_ThisLabel:"System") "`t"
+							. "Sturmwarnung`t"
+							. (A_ThisFunc?A_ThisFunc:"empty") "`t"
+							. (A_ThisHotkey?A_ThisHotkey:"empty") "`t"
+							. (A_PriorHotkey?A_PriorHotkey:"empty") "`t"
+							. (A_PriorKey?A_PriorKey:"empty") "`t"
+							. (A_TimeSinceThisHotkey?ATimeSinceThisHotkey:"empty") "`t"
+							. (A_TimeSincePriorHotkey?ATimeSincePriorHotkey:"empty") "`t"
+							. (A_GuiControl?A_GuiControl:"empty") "`t"
+							. (A_GuiEvent?A_GuiEvent:"empty") "`t"
+							. (A_EventInfo?A_EventInfo:"empty") "`n"
+				, % a_scriptDir "\" A_ScriptName " timeStampall.txt"
+		if LVInsertADD
+		LV_Insert(1 , Optionen, A_DD "." Month(A_MM) "." a_YYYY "  " A_Hour ":" A_Min ":" A_Sec
+							, (A_ThisLabel?A_ThisLabel:"System")
+							, "Sturmwarnung"
+							, (A_ThisFunc?A_ThisFunc:"empty")
+							, (A_ThisHotkey?A_ThisHotkey:"empty")
+							, (A_PriorHotkey?A_PriorHotkey:"empty")
+							, (A_PriorKey?A_PriorKey:"empty")
+							, (A_TimeSinceThisHotkey?ATimeSinceThisHotkey:"empty")
+							, (A_TimeSincePriorHotkey?ATimeSincePriorHotkey:"empty")
+							, (A_GuiControl?A_GuiControl:"empty")
+							, (A_GuiEvent?A_GuiEvent:"empty")
+							, (A_EventInfo?A_EventInfo:"empty"))
+		else
+		LV_Modify(LV_Add("", A_DD "." Month(A_MM) "." a_YYYY "  " A_Hour ":" A_Min ":" A_Sec
+							, (A_ThisLabel?A_ThisLabel:"System")
+							, "Sturmwarnung"
+							, (A_ThisFunc?A_ThisFunc:"empty")
+							, (A_ThisHotkey?A_ThisHotkey:"empty")
+							, (A_PriorHotkey?A_PriorHotkey:"empty")
+							, (A_PriorKey?A_PriorKey:"empty")
+							, (A_TimeSinceThisHotkey?ATimeSinceThisHotkey:"empty")
+							, (A_TimeSincePriorHotkey?ATimeSincePriorHotkey:"empty")
+							, (A_GuiControl?A_GuiControl:"empty")
+							, (A_GuiEvent?A_GuiEvent:"empty")
+							, (A_EventInfo?A_EventInfo:"empty")), "Vis")
+		LVModifyCol()
+	GuiControl, +Redraw, ListView2
+		thisGefahrenmeldungCounter++
+	return " `tSturmwarnung" 
+	}  else {
+;	if (A_ThisLabel="Gefahrenmeldung") || (A_ThisLabel="apiGefahrenmeldung") || (A_ThisLabel=!"") {
+;	if (A_ThisLabel=!"") {
+		try run,% Gefahrenmeldungfile,, hide, AusgabeVarPID
+		timeStampGefahrenmeldungall .= A_DD "." Month(A_MM) "." a_YYYY " Gefahrenmeldung " A_Hour ":" A_Min ":" A_Sec "`n"
+
+		thisATimeSinceThisHotkey := A_TimeSinceThisHotkey
+		ATimeSinceThisHotkey := subStr(ConvertToHHMMSSMS(thisATimeSinceThisHotkey),1,8)
+
+		thisATimeSincePriorHotkey := A_TimeSincePriorHotkey
+		ATimeSincePriorHotkey := subStr(ConvertToHHMMSSMS(thisATimeSincePriorHotkey),1,8)
+	GuiControl, -Redraw, ListView2
+		fileAppend,% "Sturmwarnung:`t" A_DD "." Month(A_MM) "." a_YYYY "  " A_Hour ":" A_Min ":" A_Sec ":" A_MSec " Uhr`t"
+							. (A_ThisLabel?A_ThisLabel:"System") "`t"
+							. "Sturmwarnung`t"
+							. (A_ThisFunc?A_ThisFunc:"empty") "`t"
+							. (A_ThisHotkey?A_ThisHotkey:"empty") "`t"
+							. (A_PriorHotkey?A_PriorHotkey:"empty") "`t"
+							. (A_PriorKey?A_PriorKey:"empty") "`t"
+							. (A_TimeSinceThisHotkey?ATimeSinceThisHotkey:"empty") "`t"
+							. (A_TimeSincePriorHotkey?ATimeSincePriorHotkey:"empty") "`t"
+							. (A_GuiControl?A_GuiControl:"empty") "`t"
+							. (A_GuiEvent?A_GuiEvent:"empty") "`t"
+							. (A_EventInfo?A_EventInfo:"empty") "`n"
+				, % a_scriptDir "\" A_ScriptName " timeStampall.txt"
+		if LVInsertADD
+		LV_Insert(1 , Optionen, A_DD "." Month(A_MM) "." a_YYYY "  " A_Hour ":" A_Min ":" A_Sec
+							, (A_ThisLabel?A_ThisLabel:"System")
+							, "Sturmwarnung"
+							, (A_ThisFunc?A_ThisFunc:"empty")
+							, (A_ThisHotkey?A_ThisHotkey:"empty")
+							, (A_PriorHotkey?A_PriorHotkey:"empty")
+							, (A_PriorKey?A_PriorKey:"empty")
+							, (A_TimeSinceThisHotkey?ATimeSinceThisHotkey:"empty")
+							, (A_TimeSincePriorHotkey?ATimeSincePriorHotkey:"empty")
+							, (A_GuiControl?A_GuiControl:"empty")
+							, (A_GuiEvent?A_GuiEvent:"empty")
+							, (A_EventInfo?A_EventInfo:"empty"))
+		else
+		LV_Modify(LV_Add("", A_DD "." Month(A_MM) "." a_YYYY "  " A_Hour ":" A_Min ":" A_Sec
+							, (A_ThisLabel?A_ThisLabel:"System")
+							, "Sturmwarnung"
+							, (A_ThisFunc?A_ThisFunc:"empty")
+							, (A_ThisHotkey?A_ThisHotkey:"empty")
+							, (A_PriorHotkey?A_PriorHotkey:"empty")
+							, (A_PriorKey?A_PriorKey:"empty")
+							, (A_TimeSinceThisHotkey?ATimeSinceThisHotkey:"empty")
+							, (A_TimeSincePriorHotkey?ATimeSincePriorHotkey:"empty")
+							, (A_GuiControl?A_GuiControl:"empty")
+							, (A_GuiEvent?A_GuiEvent:"empty")
+							, (A_EventInfo?A_EventInfo:"empty")), "Vis")
+		LVModifyCol()
+	GuiControl, +Redraw, ListView2
+		thisGefahrenmeldungCounter++
+		return " `tSturmwarnung"
+	}   }  ; }
+;////////////////////////////////////////////////////////////////////////////////////////////////////////
+F8::
+empty := "Empty"
+send, ^c
+clipboard := RTRIM(clipboard,a_space)
+send (
+send %clipboard%?%clipboard%:"empty"
+send )%a_space%
+return
+;////////////////////////////////////////////////////////////////////////////////////////////////////////
+	thisxTrigger(xTriggerfile) {
+			global
+	if outOfOrder
+		return
+		ToggleGUI := 0
+		NoTimeCounter := 1 ; unterbindet GUI Timeout
+		if ToggleGUI := (ToggleGUI:=!ToggleGUI)
+		{
+		  if (NoTimeCounter=0)
+		  {
+		  atickCount := a_tickCount
+		  GuiLiveTime:=(.299*60*1000)
+		  Gui, Show
+		  thisGUITimeout()
+		}}
+	if !inStr(timeStampxTriggerall, A_DD "." Month(A_MM) "." a_YYYY " xTrigger") {
+		try run,% xTriggerfile,, hide, AusgabeVarPID
+		timeStampxTriggerall .= A_DD "." Month(A_MM) "." a_YYYY " xTrigger " A_Hour ":" A_Min ":" A_Sec "`n"
+
+		thisATimeSinceThisHotkey := A_TimeSinceThisHotkey
+		ATimeSinceThisHotkey := subStr(ConvertToHHMMSSMS(thisATimeSinceThisHotkey),1,8)
+
+		thisATimeSincePriorHotkey := A_TimeSincePriorHotkey
+		ATimeSincePriorHotkey := subStr(ConvertToHHMMSSMS(thisATimeSincePriorHotkey),1,8)
+
+	GuiControl, -Redraw, ListView2
+		fileAppend,% "xTrigger:`t" A_DD "." Month(A_MM) "." a_YYYY "  " A_Hour ":" A_Min ":" A_Sec ":" A_MSec " Uhr`t"
+							. (A_ThisLabel?A_ThisLabel:"System") "`t"
+							. (A_ThisFunc?A_ThisFunc:"empty") "`t"
+							. (A_ThisHotkey?A_ThisHotkey:"empty") "`t"
+							. (A_PriorHotkey?A_PriorHotkey:"empty") "`t"
+							. (A_PriorKey?A_PriorKey:"empty") "`t"
+							. (A_TimeSinceThisHotkey?ATimeSinceThisHotkey:"empty") "`t"
+							. (A_TimeSincePriorHotkey?ATimeSincePriorHotkey:"empty") "`t"
+							. (A_GuiControl?A_GuiControl:"empty") "`t"
+							. (A_GuiEvent?A_GuiEvent:"empty") "`t"
+							. (A_EventInfo?A_EventInfo:"empty") "`n"
+				, % a_scriptDir "\" A_ScriptName " timeStampall.txt"
+		if LVInsertADD
+		LV_Insert(1 , Optionen, A_DD "." Month(A_MM) "." a_YYYY "  " A_Hour ":" A_Min ":" A_Sec
+							, (A_ThisLabel?A_ThisLabel:"System")
+							, "xTrigger"
+							, (A_ThisFunc?A_ThisFunc:"empty")
+							, (A_ThisHotkey?A_ThisHotkey:"empty")
+							, (A_PriorHotkey?A_PriorHotkey:"empty")
+							, (A_PriorKey?A_PriorKey:"empty")
+							, (A_TimeSinceThisHotkey?ATimeSinceThisHotkey:"empty")
+							, (A_TimeSincePriorHotkey?ATimeSincePriorHotkey:"empty")
+							, (A_GuiControl?A_GuiControl:"empty")
+							, (A_GuiEvent?A_GuiEvent:"empty")
+							, (A_EventInfo?A_EventInfo:"empty"))
+		else
+		LV_Modify(LV_Add("", A_DD "." Month(A_MM) "." a_YYYY "  " A_Hour ":" A_Min ":" A_Sec
+							, (A_ThisLabel?A_ThisLabel:"System")
+							, "xTrigger"
+							, (A_ThisFunc?A_ThisFunc:"empty")
+							, (A_ThisHotkey?A_ThisHotkey:"empty")
+							, (A_PriorHotkey?A_PriorHotkey:"empty")
+							, (A_PriorKey?A_PriorKey:"empty")
+							, (A_TimeSinceThisHotkey?ATimeSinceThisHotkey:"empty")
+							, (A_TimeSincePriorHotkey?ATimeSincePriorHotkey:"empty")
+							, (A_GuiControl?A_GuiControl:"empty")
+							, (A_GuiEvent?A_GuiEvent:"empty")
+							, (A_EventInfo?A_EventInfo:"empty")), "Vis")
+		LVModifyCol()
+	GuiControl, +Redraw, ListView2
+		thisGefahrenmeldungCounter++
+	return " `txTrigger" 
+	}  else {
+;	if (A_ThisLabel="xTrigger") || (A_ThisLabel="apixTrigger") || (A_ThisLabel=!"") {
+;	if (A_ThisLabel=!"") {
+		try run,% xTriggerfile,, hide, AusgabeVarPID
+		timeStampxTriggerall .= A_DD "." Month(A_MM) "." a_YYYY " xTrigger " A_Hour ":" A_Min ":" A_Sec "`n"
+
+
+subStr(ConvertToHHMMSSMS(Sonnenuntergang),4,2)
+
+		thisATimeSinceThisHotkey := A_TimeSinceThisHotkey
+		ATimeSinceThisHotkey := subStr(ConvertToHHMMSSMS(thisATimeSinceThisHotkey),1,8)
+
+		thisATimeSincePriorHotkey := A_TimeSincePriorHotkey
+		ATimeSincePriorHotkey := subStr(ConvertToHHMMSSMS(thisATimeSincePriorHotkey),1,8)
+	GuiControl, -Redraw, ListView2
+		fileAppend,% "xTrigger:`t" A_DD "." Month(A_MM) "." a_YYYY "  " A_Hour ":" A_Min ":" A_Sec ":" A_MSec " Uhr`t"
+							. (A_ThisLabel?A_ThisLabel:"System") "`t"
+							. "xTrigger`t"
+							. (A_ThisFunc?A_ThisFunc:"empty") "`t"
+							. (A_ThisHotkey?A_ThisHotkey:"empty") "`t"
+							. (A_PriorHotkey?A_PriorHotkey:"empty") "`t"
+							. (A_PriorKey?A_PriorKey:"empty") "`t"
+							. (A_TimeSinceThisHotkey?ATimeSinceThisHotkey:"empty") "`t"
+							. (A_TimeSincePriorHotkey?ATimeSincePriorHotkey:"empty") "`t"
+							. (A_GuiControl?A_GuiControl:"empty") "`t"
+							. (A_GuiEvent?A_GuiEvent:"empty") "`t"
+							. (A_EventInfo?A_EventInfo:"empty") "`n"
+				, % a_scriptDir "\" A_ScriptName " timeStampall.txt"
+		if LVInsertADD
+		LV_Insert(1 , Optionen, A_DD "." Month(A_MM) "." a_YYYY "  " A_Hour ":" A_Min ":" A_Sec
+							, (A_ThisLabel?A_ThisLabel:"System")
+							, "xTrigger"
+							, (A_ThisFunc?A_ThisFunc:"empty")
+							, (A_ThisHotkey?A_ThisHotkey:"empty")
+							, (A_PriorHotkey?A_PriorHotkey:"empty")
+							, (A_PriorKey?A_PriorKey:"empty")
+							, (A_TimeSinceThisHotkey?ATimeSinceThisHotkey:"empty")
+							, (A_TimeSincePriorHotkey?ATimeSincePriorHotkey:"empty")
+							, (A_GuiControl?A_GuiControl:"empty")
+							, (A_GuiEvent?A_GuiEvent:"empty")
+							, (A_EventInfo?A_EventInfo:"empty"))
+		else
+		LV_Modify(LV_Add("", A_DD "." Month(A_MM) "." a_YYYY "  " A_Hour ":" A_Min ":" A_Sec
+							, (A_ThisLabel?A_ThisLabel:"System")
+							, "xTrigger"
+							, (A_ThisFunc?A_ThisFunc:"empty")
+							, (A_ThisHotkey?A_ThisHotkey:"empty")
+							, (A_PriorHotkey?A_PriorHotkey:"empty")
+							, (A_PriorKey?A_PriorKey:"empty")
+							, (A_TimeSinceThisHotkey?ATimeSinceThisHotkey:"empty")
+							, (A_TimeSincePriorHotkey?ATimeSincePriorHotkey:"empty")
+							, (A_GuiControl?A_GuiControl:"empty")
+							, (A_GuiEvent?A_GuiEvent:"empty")
+							, (A_EventInfo?A_EventInfo:"empty")), "Vis")
+		LVModifyCol()
+	GuiControl, +Redraw, ListView2
+		thisGefahrenmeldungCounter++
+		return " `txTrigger"
+	}   }  ; }
+;////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+
+;////////////////////////////////////////////////////////////////////////////////////////////////////////
+Gefahrenmeldung(thisReason) {
+global
+thisGefahrenmeldung(Gefahrenmeldungfile)
+return ""
+}
+;////////////////////////////////////////////////////////////////////////////////////////////////////////
+xTrigger(thisReason) {
+global
+thisxTrigger(xTriggerfile)
+return ""
+}
+;////////////////////////////////////////////////////////////////////////////////////////////////////////
+; 
+
+
+LVModifyCol() {
+global
+;Gui, Show, hide
+;return
+if GUISizeToggle 
+{
+	GuiControl, -Redraw, ListView2
+	AScreenWidth180 := (A_ScreenWidth-220)
+	AScreenWidth200 := (A_ScreenWidth-200)
+;	GuiControl, Move,ListView2, w%AScreenWidth180%  r7
+	Loop, % LV_GetCount("Columns")
+	LV_ModifyCol(A_Index, "AutoHdr")
+/*
+	LV_ModifyCol(1,(wa*1.9)/xx)
+	LV_ModifyCol(2,(wa*1.9)/xx)
+	LV_ModifyCol(3,(wa*6)/xx)
+	LV_ModifyCol(4,(wa*14)/xx)
+;		LV_ModifyCol(3, (wa*13.5)/xx)	; Name
+;		LV_ModifyCol(3, (3, (wa*14.)/xx))	; Name
+;		LV_ModifyCol(4, 0)	; A_ThisFunc
+		LV_ModifyCol(5, 0)	; A_ThisHotkey
+		LV_ModifyCol(6, 0)	; A_PriorHotkey
+		LV_ModifyCol(7, 0)	; A_PriorKey
+		LV_ModifyCol(8, 0)	; A_TimeSinceThisHotkey
+		LV_ModifyCol(9, 0)	; A_TimeSincePriorHotkey
+		LV_ModifyCol(10, 0)	; A_GuiControl
+		LV_ModifyCol(11, 0)	; A_GuiEvent
+		LV_ModifyCol(12, 0)	; A_EventInfo
+*/
+	GuiControl, +Redraw, ListView2
+	Gui, Show ; , w%AScreenWidth200%  h%AScreenHeight300%
+;x:=(wa*10)/xx,y:=(ha*10)/xx,w:=(wa*65)/xx,h:=(ha*80)/xx
+;gui,show,x%x% y%y% w%w% h%h% ,TEST		
+} else {
+	GuiControl, -Redraw, ListView2
+	AScreenHeight300 := (A_ScreenHeight-300)
+;	GuiControl, Move,ListView2, w545 r7
+	Loop, % LV_GetCount("Columns")
+	LV_ModifyCol(A_Index, "AutoHdr")
+/*
+;	LV_ModifyCol(1,(wa*1.9)/xx)
+;	LV_ModifyCol(2,(wa*1.9)/xx)
+;	LV_ModifyCol(3,(wa*6)/xx)
+;	LV_ModifyCol(4,(wa*14)/xx)
+;		LV_ModifyCol(1, "AutoHdr")	; Timestamp
+;		LV_ModifyCol(2, "AutoHdr")	; Action
+;		LV_ModifyCol(3, (wa*13.5)/xx)	; Name
+*/
+
+		LV_ModifyCol(4, 0)	; A_ThisFunc
+		LV_ModifyCol(5, 0)	; A_ThisHotkey
+		LV_ModifyCol(6, 0)	; A_PriorHotkey
+		LV_ModifyCol(7, 0)	; A_PriorKey
+		LV_ModifyCol(8, 0)	; A_TimeSinceThisHotkey
+		LV_ModifyCol(9, 0)	; A_TimeSincePriorHotkey
+		LV_ModifyCol(10, 0)	; A_GuiControl
+		LV_ModifyCol(11, 0)	; A_GuiEvent
+		LV_ModifyCol(12, 0)	; A_EventInfo
+	GuiControl, +Redraw, ListView2
+;	Gui, Show, w565 h%AScreenHeight300%
+x:=(wa*10)/xx,y:=(ha*10)/xx,w:=(wa*65)/xx,h:=(ha*80)/xx
+gui,show ; ,x%x% y%y% w%w% h%h% ,TEST		
+}}
+
+;////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+
+SunriseSunset(mm,dd){  ; tabelle: cologne
+sunrise=
+(
+08:32	08:06	07:15	07:06	06:04	05:21	05:20	05:56	06:43	07:30	07:22	08:10
+08:32	08:05	07:13	07:04	06:02	05:20	05:20	05:57	06:45	07:32	07:23	08:11
+08:32	08:03	07:10	07:02	06:00	05:19	05:21	05:59	06:46	07:33	07:25	08:13
+08:32	08:02	07:08	06:59	05:58	05:19	05:22	06:00	06:48	07:35	07:27	08:14
+08:32	08:00	07:06	06:57	05:56	05:18	05:23	06:02	06:50	07:37	07:28	08:15
+08:31	07:59	07:04	06:55	05:55	05:18	05:24	06:03	06:51	07:38	07:30	08:17
+08:31	07:57	07:02	06:53	05:53	05:17	05:24	06:05	06:53	07:40	07:32	08:18
+08:31	07:55	07:00	06:51	05:51	05:17	05:25	06:06	06:54	07:41	07:34	08:19
+08:30	07:54	06:57	06:48	05:50	05:16	05:26	06:08	06:56	07:43	07:35	08:20
+08:30	07:52	06:55	06:46	05:48	05:16	05:27	06:09	06:57	07:45	07:37	08:21
+08:29	07:50	06:53	06:44	05:46	05:16	05:28	06:11	06:59	07:46	07:39	08:22
+08:28	07:48	06:51	06:42	05:45	05:15	05:29	06:12	07:00	07:48	07:40	08:23
+08:28	07:46	06:49	06:40	05:43	05:15	05:30	06:14	07:02	07:50	07:42	08:24
+08:27	07:45	06:46	06:38	05:42	05:15	05:32	06:15	07:04	07:51	07:44	08:25
+08:26	07:43	06:44	06:36	05:40	05:15	05:33	06:17	07:05	07:53	07:45	08:26
+08:25	07:41	06:42	06:33	05:39	05:15	05:34	06:18	07:07	07:55	07:47	08:27
+08:25	07:39	06:40	06:31	05:37	05:15	05:35	06:20	07:08	07:56	07:49	08:27
+08:24	07:37	06:37	06:29	05:36	05:15	05:36	06:22	07:10	07:58	07:50	08:28
+08:23	07:35	06:35	06:27	05:35	05:15	05:38	06:23	07:11	08:00	07:52	08:29
+08:22	07:33	06:33	06:25	05:33	05:15	05:39	06:25	07:13	08:01	07:54	08:29
+08:21	07:31	06:31	06:23	05:32	05:15	05:40	06:26	07:14	08:03	07:55	08:30
+08:19	07:29	06:29	06:21	05:31	05:15	05:41	06:28	07:16	08:05	07:57	08:30
+08:18	07:27	06:26	06:19	05:30	05:16	05:43	06:29	07:18	08:06	07:58	08:31
+08:17	07:25	06:24	06:17	05:29	05:16	05:44	06:31	07:19	08:08	08:00	08:31
+08:16	07:23	06:22	06:15	05:27	05:16	05:46	06:32	07:21	08:10	08:01	08:32
+08:15	07:21	07:20	06:13	05:26	05:17	05:47	06:34	07:22	08:11	08:03	08:32
+08:13	07:19	07:17	06:11	05:25	05:17	05:48	06:36	07:24	08:13	08:04	08:32
+08:12	07:17	07:15	06:09	05:24	05:18	05:50	06:37	07:25	08:15	08:06	08:32
+08:11		07:13	06:07	05:23	05:18	05:51	06:39	07:27	07:16	08:07	08:32
+08:09		07:11	06:05	05:23	05:19	05:53	06:40	07:29	07:18	08:09	08:32
+08:08		07:08		05:22		05:54	06:42		07:20		08:32
+)
+
+sunset=
+(
+16:38	17:24	18:13	20:05	20:54	21:38	21:51	21:21	20:20	19:13	17:09	16:31
+16:39	17:26	18:15	20:07	20:56	21:39	21:51	21:19	20:18	19:10	17:07	16:30
+16:40	17:28	18:17	20:08	20:57	21:40	21:51	21:17	20:16	19:08	17:05	16:30
+16:41	17:29	18:19	20:10	20:59	21:41	21:50	21:16	20:14	19:06	17:04	16:29
+16:42	17:31	18:20	20:12	21:00	21:42	21:50	21:14	20:11	19:04	17:02	16:29
+16:43	17:33	18:22	20:13	21:02	21:43	21:49	21:12	20:09	19:02	17:00	16:29
+16:45	17:35	18:24	20:15	21:04	21:44	21:49	21:10	20:07	18:59	16:59	16:28
+16:46	17:36	18:25	20:17	21:05	21:45	21:48	21:09	20:05	18:57	16:57	16:28
+16:47	17:38	18:27	20:18	21:07	21:46	21:47	21:07	20:02	18:55	16:56	16:28
+16:49	17:40	18:29	20:20	21:08	21:46	21:47	21:05	20:00	18:53	16:54	16:28
+16:50	17:42	18:30	20:22	21:10	21:47	21:46	21:03	19:58	18:51	16:53	16:28
+16:51	17:44	18:32	20:23	21:11	21:48	21:45	21:01	19:56	18:49	16:51	16:27
+16:53	17:45	18:34	20:25	21:13	21:48	21:44	20:59	19:53	18:46	16:50	16:27
+16:54	17:47	18:35	20:26	21:14	21:49	21:43	20:58	19:51	18:44	16:48	16:27
+16:56	17:49	18:37	20:28	21:16	21:49	21:43	20:56	19:49	18:42	16:47	16:28
+16:57	17:51	18:39	20:30	21:17	21:50	21:42	20:54	19:47	18:40	16:46	16:28
+16:59	17:52	18:40	20:31	21:19	21:50	21:41	20:52	19:44	18:38	16:44	16:28
+17:00	17:54	18:42	20:33	21:20	21:51	21:39	20:50	19:42	18:36	16:43	16:28
+17:02	17:56	18:44	20:35	21:22	21:51	21:38	20:48	19:40	18:34	16:42	16:29
+17:04	17:58	18:45	20:36	21:23	21:51	21:37	20:46	19:38	18:32	16:41	16:29
+17:05	17:59	18:47	20:38	21:24	21:52	21:36	20:44	19:35	18:30	16:40	16:29
+17:07	18:01	18:49	20:39	21:26	21:52	21:35	20:42	19:33	18:28	16:39	16:30
+17:09	18:03	18:50	20:41	21:27	21:52	21:34	20:39	19:31	18:26	16:38	16:30
+17:10	18:05	18:52	20:43	21:28	21:52	21:32	20:37	19:28	18:24	16:37	16:31
+17:12	18:06	18:54	20:44	21:30	21:52	21:31	20:35	19:26	18:22	16:36	16:32
+17:14	18:08	19:55	20:46	21:31	21:52	21:30	20:33	19:24	18:20	16:35	16:32
+17:15	18:10	19:57	20:48	21:32	21:52	21:28	20:31	19:22	18:18	16:34	16:33
+17:17	18:12	19:59	20:49	21:33	21:52	21:27	20:29	19:19	18:16	16:33	16:34
+17:19		20:00	20:51	21:35	21:52	21:25	20:27	19:17	17:14	16:32	16:35
+17:20		20:02	20:52	21:36	21:52	21:24	20:25	19:15	17:13	16:32	16:36
+17:22		20:04		21:37		21:22	20:22		17:11		16:37
+)
+
+for x,y in strsplit(sunrise,"`n","`r")
+	for a,b in strsplit(y,"`t")
+		if (x=dd and a=mm)
+			res :=    b
+
+for x,y in strsplit(sunset,"`n","`r")
+	for a,b in strsplit(y,"`t")
+		if (x=dd and a=mm)
+return 	res .=    "`t" b
+}
+
+
+;////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+
+SunriseSunsetSchaltjahr(mm,dd) {  ; tabelle: cologne
+sunrise=
+(
+08:32	08:06	07:15	07:06	06:04	05:21	05:20	05:56	06:43	07:30	07:22	08:10
+08:32	08:05	07:13	07:04	06:02	05:20	05:20	05:57	06:45	07:32	07:23	08:11
+08:32	08:03	07:10	07:02	06:00	05:19	05:21	05:59	06:46	07:33	07:25	08:13
+08:32	08:02	07:08	06:59	05:58	05:19	05:22	06:00	06:48	07:35	07:27	08:14
+08:32	08:00	07:06	06:57	05:56	05:18	05:23	06:02	06:50	07:37	07:28	08:15
+08:31	07:59	07:04	06:55	05:55	05:18	05:24	06:03	06:51	07:38	07:30	08:17
+08:31	07:57	07:02	06:53	05:53	05:17	05:24	06:05	06:53	07:40	07:32	08:18
+08:31	07:55	07:00	06:51	05:51	05:17	05:25	06:06	06:54	07:41	07:34	08:19
+08:30	07:54	06:57	06:48	05:50	05:16	05:26	06:08	06:56	07:43	07:35	08:20
+08:30	07:52	06:55	06:46	05:48	05:16	05:27	06:09	06:57	07:45	07:37	08:21
+08:29	07:50	06:53	06:44	05:46	05:16	05:28	06:11	06:59	07:46	07:39	08:22
+08:28	07:48	06:51	06:42	05:45	05:15	05:29	06:12	07:00	07:48	07:40	08:23
+08:28	07:46	06:49	06:40	05:43	05:15	05:30	06:14	07:02	07:50	07:42	08:24
+08:27	07:45	06:46	06:38	05:42	05:15	05:32	06:15	07:04	07:51	07:44	08:25
+08:26	07:43	06:44	06:36	05:40	05:15	05:33	06:17	07:05	07:53	07:45	08:26
+08:25	07:41	06:42	06:33	05:39	05:15	05:34	06:18	07:07	07:55	07:47	08:27
+08:25	07:39	06:40	06:31	05:37	05:15	05:35	06:20	07:08	07:56	07:49	08:27
+08:24	07:37	06:37	06:29	05:36	05:15	05:36	06:22	07:10	07:58	07:50	08:28
+08:23	07:35	06:35	06:27	05:35	05:15	05:38	06:23	07:11	08:00	07:52	08:29
+08:22	07:33	06:33	06:25	05:33	05:15	05:39	06:25	07:13	08:01	07:54	08:29
+08:21	07:31	06:31	06:23	05:32	05:15	05:40	06:26	07:14	08:03	07:55	08:30
+08:19	07:29	06:29	06:21	05:31	05:15	05:41	06:28	07:16	08:05	07:57	08:30
+08:18	07:27	06:26	06:19	05:30	05:16	05:43	06:29	07:18	08:06	07:58	08:31
+08:17	07:25	06:24	06:17	05:29	05:16	05:44	06:31	07:19	08:08	08:00	08:31
+08:16	07:23	06:22	06:15	05:27	05:16	05:46	06:32	07:21	08:10	08:01	08:32
+08:15	07:21	07:20	06:13	05:26	05:17	05:47	06:34	07:22	08:11	08:03	08:32
+08:13	07:19	07:17	06:11	05:25	05:17	05:48	06:36	07:24	08:13	08:04	08:32
+08:12	07:17	07:15	06:09	05:24	05:18	05:50	06:37	07:25	08:15	08:06	08:32
+08:11	07:16	07:13	06:07	05:23	05:18	05:51	06:39	07:27	07:16	08:07	08:32
+08:09		07:11	06:05	05:23	05:19	05:53	06:40	07:29	07:18	08:09	08:32
+08:08		07:08		05:22		05:54	06:42		07:20		08:32
+)
+
+sunset=
+(
+16:38	17:24	18:13	20:05	20:54	21:38	21:51	21:21	20:20	19:13	17:09	16:31
+16:39	17:26	18:15	20:07	20:56	21:39	21:51	21:19	20:18	19:10	17:07	16:30
+16:40	17:28	18:17	20:08	20:57	21:40	21:51	21:17	20:16	19:08	17:05	16:30
+16:41	17:29	18:19	20:10	20:59	21:41	21:50	21:16	20:14	19:06	17:04	16:29
+16:42	17:31	18:20	20:12	21:00	21:42	21:50	21:14	20:11	19:04	17:02	16:29
+16:43	17:33	18:22	20:13	21:02	21:43	21:49	21:12	20:09	19:02	17:00	16:29
+16:45	17:35	18:24	20:15	21:04	21:44	21:49	21:10	20:07	18:59	16:59	16:28
+16:46	17:36	18:25	20:17	21:05	21:45	21:48	21:09	20:05	18:57	16:57	16:28
+16:47	17:38	18:27	20:18	21:07	21:46	21:47	21:07	20:02	18:55	16:56	16:28
+16:49	17:40	18:29	20:20	21:08	21:46	21:47	21:05	20:00	18:53	16:54	16:28
+16:50	17:42	18:30	20:22	21:10	21:47	21:46	21:03	19:58	18:51	16:53	16:28
+16:51	17:44	18:32	20:23	21:11	21:48	21:45	21:01	19:56	18:49	16:51	16:27
+16:53	17:45	18:34	20:25	21:13	21:48	21:44	20:59	19:53	18:46	16:50	16:27
+16:54	17:47	18:35	20:26	21:14	21:49	21:43	20:58	19:51	18:44	16:48	16:27
+16:56	17:49	18:37	20:28	21:16	21:49	21:43	20:56	19:49	18:42	16:47	16:28
+16:57	17:51	18:39	20:30	21:17	21:50	21:42	20:54	19:47	18:40	16:46	16:28
+16:59	17:52	18:40	20:31	21:19	21:50	21:41	20:52	19:44	18:38	16:44	16:28
+17:00	17:54	18:42	20:33	21:20	21:51	21:39	20:50	19:42	18:36	16:43	16:28
+17:02	17:56	18:44	20:35	21:22	21:51	21:38	20:48	19:40	18:34	16:42	16:29
+17:04	17:58	18:45	20:36	21:23	21:51	21:37	20:46	19:38	18:32	16:41	16:29
+17:05	17:59	18:47	20:38	21:24	21:52	21:36	20:44	19:35	18:30	16:40	16:29
+17:07	18:01	18:49	20:39	21:26	21:52	21:35	20:42	19:33	18:28	16:39	16:30
+17:09	18:03	18:50	20:41	21:27	21:52	21:34	20:39	19:31	18:26	16:38	16:30
+17:10	18:05	18:52	20:43	21:28	21:52	21:32	20:37	19:28	18:24	16:37	16:31
+17:12	18:06	18:54	20:44	21:30	21:52	21:31	20:35	19:26	18:22	16:36	16:32
+17:14	18:08	19:55	20:46	21:31	21:52	21:30	20:33	19:24	18:20	16:35	16:32
+17:15	18:10	19:57	20:48	21:32	21:52	21:28	20:31	19:22	18:18	16:34	16:33
+17:17	18:12	19:59	20:49	21:33	21:52	21:27	20:29	19:19	18:16	16:33	16:34
+17:19	18:13	20:00	20:51	21:35	21:52	21:25	20:27	19:17	17:14	16:32	16:35
+17:20		20:02	20:52	21:36	21:52	21:24	20:25	19:15	17:13	16:32	16:36
+17:22		20:04		21:37		21:22	20:22		17:11		16:37
+)
+
+for x,y in strsplit(sunrise,"`n","`r")
+	for a,b in strsplit(y,"`t")
+		if (x=dd and a=mm)
+			res :=    b
+
+for x,y in strsplit(sunset,"`n","`r")
+	for a,b in strsplit(y,"`t")
+		if (x=dd and a=mm)
+return 	res .=    "`t" b
+}
+;////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+; https://www.autohotkey.com/boards/viewtopic.php?p=251379#p251379
+; Die Sommerzeit beginnt in Deutschland am letzten Sonntag im März und endet am letzten Sonntag im Oktober
+; Sommerzeit beginnt am letzten Sonntag im März und endet am letzten Sonntag im Oktober
+;MsgBox % IsSummerTime("20180228")			; Winter
+;MsgBox % IsSummerTime("20180401")			; Sommer
+;MsgBox % IsSummerTime(A_YYYY A_MM A_DD)		; Heute (20181204) Winter
+;MsgBox % IsSummerTime("20180931")			; Sommer
+;MsgBox % IsSummerTime("20181101")			; Winter
+;////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+_TagNachtZeiten() {
+global
+; LastSunday(A_YYYY "03") "`n" LastSunday(A_YYYY "10") 
+return 	(IsSummerTime(A_YYYY A_MM A_DD)=1) 
+
+	? TagNachtZeitenMEZ() " MEsZ bis " SubStr(LastSunday(A_YYYY "10"), 7, 2) "." Month(SubStr(LastSunday(A_YYYY "10"), 5, 2)) " <> " 
+ 	. "MESZ bis " SubStr(LastSunday(A_YYYY "03"), 7, 2) "." Month(SubStr(LastSunday(A_YYYY "03"), 5, 2))
+
+	: TagNachtZeitenMEZ() " MEsZ bis " SubStr(LastSunday(A_YYYY "03"), 7, 2) "." Month(SubStr(LastSunday(A_YYYY "03"), 5, 2)) " <> "
+	. "MEZ bis " SubStr(LastSunday(A_YYYY "10"), 7, 2) "." Month(SubStr(LastSunday(A_YYYY "10"), 5, 2)) 
+}
+
+TagNachtZeiten__() {
+global
+; LastSunday(A_YYYY "03") "`n" LastSunday(A_YYYY "10") 
+return 	(IsSummerTime(A_YYYY A_MM A_DD)=1) 
+	? TagNachtZeitenMEZ()  " [ ME Sommer Z bis " SubStr(LastSunday(A_YYYY "10"), 7, 2) "." Month(SubStr(LastSunday(A_YYYY "10"), 5, 2)) " ] <> " 
+				.  " [ ME Winter Z bis " SubStr(LastSunday(A_YYYY "03"), 7, 2) "." Month(SubStr(LastSunday(A_YYYY "03"), 5, 2)) " ]"
+	: TagNachtZeitenMEZ()  " [ ME Winter Z bis " SubStr(LastSunday(A_YYYY "03"), 7, 2) "." Month(SubStr(LastSunday(A_YYYY "03"), 5, 2)) " ] <> "
+				. " [ ME Sommer Z bis " SubStr(LastSunday(A_YYYY "10"), 7, 2) "." Month(SubStr(LastSunday(A_YYYY "10"), 5, 2)) " ]" 
+}
+
+TagNachtZeiten() {
+global
+; LastSunday(A_YYYY "03") "`n" LastSunday(A_YYYY "10") 
+return 	(IsSummerTime(A_YYYY A_MM A_DD)=1) 
+	? TagNachtZeitenMESZ()  " Sommerzeit [ MESZ bis " SubStr(LastSunday(A_YYYY "10"), 7, 2) "." Month(SubStr(LastSunday(A_YYYY "10"), 5, 2)) " ]" 
+	: TagNachtZeitenMEZ()  " Winterzeit [ MEZ bis " SubStr(LastSunday(A_YYYY "03"), 7, 2) "." Month(SubStr(LastSunday(A_YYYY "03"), 5, 2)) " ]"
+}
+;////////////////////////////////////////////////////////////////////////////////////////////////////////
+thisJahresZeit() {
+global
+; LastSunday(A_YYYY "03") "`n" LastSunday(A_YYYY "10") 
+return 	(IsSummerTime(A_YYYY A_MM A_DD)=1) 
+;	? "Sommerzeit"
+;	: "Winterzeit"
+;	? "Sommerzeit [ MESZ ]"
+;	: "Winterzeit [ MEZ ]"
+	? "[ MESZ Sommerzeit ]"
+	: "[ MEZ Winterzeit ]"
+}
+JahresZeitSommerOderWinterZeit() {
+global
+; LastSunday(A_YYYY "03") "`n" LastSunday(A_YYYY "10") 
+return 	(IsSummerTime(A_YYYY A_MM A_DD)=1) 
+	? "Sommerzeit"
+	: "Winterzeit"
+;	? "Sommerzeit [ MESZ ]"
+;	: "Winterzeit [ MEZ ]"
+;	? "[ MESZ Sommerzeit ]"
+;	: "[ MEZ Winterzeit ]"
+}
+;////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+IsSummerTime(Date)
+{
+	if (Date >= LastSunday(A_YYYY "03")) && (Date < LastSunday(A_YYYY "10"))
+		return 1
+	return 0
+}
+;////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+LastSunday(Date)
+{
+	Date += 31, D
+	Date := SubStr(Date, 1, 6)
+	Date += -1, Day
+	FormatTime, WD, %Date%, WDay
+	Date += -(WD - 1), D
+	return SubStr(Date, 1, 8)
+}
+
+; SubStr(LastSunday(A_YYYY "03"), 7, 2) ; kalendertag Sommeranfang
+; SubStr(LastSunday(A_YYYY "03"), 5, 2) ; monat 
+; SubStr(LastSunday(A_YYYY "10"), 7, 2) ; kalendertag Winteranfang
+; SubStr(LastSunday(A_YYYY "10"), 5, 2) ; monat 
+;////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+TagNachtZeitenMESZ() {
+global
+thisAhour := 0 ; test
+Ahour := A_hour
+Ahour := thisAhour ? thisAhour : Ahour
+if (Ahour>=18) && (Ahour<=21)
+return MainArray["TagNachtZeit"] := "Abend 18 bis 22 Uhr"
+if (Ahour>=15) && (Ahour<=17)
+return MainArray["TagNachtZeit"] := "Nachmittag 15 bis 18 Uhr"
+if (Ahour>=13) && (Ahour<=14)
+return MainArray["TagNachtZeit"] := "Mittags 13 bis 15 Uhr"
+if (Ahour>=11) && (Ahour<=12)
+return MainArray["TagNachtZeit"] := "Vormittag 11 bis 13 Uhr"
+if (Ahour>=07) && (Ahour<=10)
+return MainArray["TagNachtZeit"] := "Morgen 7:00 bis 11 Uhr"
+else 
+return MainArray["TagNachtZeit"] := "Nacht 22 bis 7 Uhr"
+}
+;////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+TagNachtZeitenMEZ() {
+global
+thisAhour := 0 ; test
+Ahour := A_hour
+Ahour := thisAhour ? thisAhour : Ahour
+if (Ahour>=17) && (Ahour<=20)
+return MainArray["TagNachtZeit"] := "Abend 17 bis 21 Uhr"
+if (Ahour>=14) && (Ahour<=16)
+return MainArray["TagNachtZeit"] := "Nachmittag 14 bis 17 Uhr"
+if (Ahour>=12) && (Ahour<=13)
+return MainArray["TagNachtZeit"] := "Mittag 12 bis 14 Uhr"
+if (Ahour>=10) && (Ahour<=11)
+return MainArray["TagNachtZeit"] := "Vormittag 10 bis 12 Uhr"
+if (Ahour>=06) && (Ahour<=09)
+return MainArray["TagNachtZeit"] := "Morgen 6 bis 10 Uhr"
+else 
+return MainArray["TagNachtZeit"] := "Nacht 21 bis 6 Uhr"
+}
+;////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+;https://www.autohotkey.com/boards/viewtopic.php?p=213907#p213907 by just me
+
+ConvertToMilliseconds(HHMMSSMS)
+{
+   Sekunden := A_YYYY . "0101" . StrReplace(SubStr(HHMMSSMS, 1, 8), ":")
+   Sekunden -= A_YYYY, S
+   Return (Sekunden * 1000) + SubStr(HHMMSSMS, 10)
+}
+
+ConvertToHHMMSSMS(Millisekunden)
+{
+   Zeitstempel := A_YYYY ; nur der Deutlichkeit halber, AHK rechnet auch mit leeren Variablen
+   Zeitstempel += % (Millisekunden // 1000), S
+   FormatTime, HHMMSS, %Zeitstempel%, HH:mm:ss
+   Return (HHMMSS . Format(",{:03}", Mod(Millisekunden, 1000)))
+}
+
+
+
+UPDATEDSCRIPT() {
+FileGetAttrib,attribs,%A_ScriptFullPath%
+            IfInString,attribs,A
+             {
+                FileSetAttrib,-A,%A_ScriptFullPath%
+                SplashTextOn,,,Updated script,
+                Sleep,1500 
+                Reload             
+}}
+;SetTimer,UPDATEDSCRIPT,500
+;Return
+
+
+
+
