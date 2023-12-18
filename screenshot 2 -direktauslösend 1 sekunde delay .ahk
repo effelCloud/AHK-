@@ -6,19 +6,29 @@ SetKeyDelay 20
 SetTitleMatchMode, 2
 #NoTrayIcon
 
+sleep, 2000
 
-;msgbox %  A_Args[1]
-runFile := A_Args[1]?A_Args[1]:0
-sleep 2100
-
-
-
-
-
+ANow := A_DD "." Month(A_MM) "." a_YYYY " " A_Hour "-" A_Min "-" A_Sec "-" A_MSec
 ;F12:: ; je bildschirm ein screenshot
-   File := A_Now "-Monitor-1.jpg"
-  hBM := hWnd_to_hBmp()  ; Capture fullscreen
+   File := ANow "-Monitor-2.jpg"
+;  hBM := hWnd_to_hBmp()  ; Capture fullscreen
 ;SysGet, X, MonitorWorkArea, 1
+SysGet, X, MonitorWorkArea, 2
+Array := [XLEFT, XTOP, XRIGHT-XLEFT, XBOTTOM-XTOP]
+hBM := hWnd_to_hBmp( -1, False, Array )
+   GDIP("Startup")
+   SavePicture(hBM, File)
+   GDIP("Shutdown")
+   DllCall("DeleteObject", "Ptr", hBM)
+; try   Run %File%
+
+;//////////////////////////////
+
+ANow := A_DD "." Month(A_MM) "." a_YYYY " " A_Hour "-" A_Min "-" A_Sec "-" A_MSec
+;F12:: ; je bildschirm ein screenshot
+   File := ANow "-Monitor-1.jpg"
+;  hBM := hWnd_to_hBmp()  ; Capture fullscreen
+SysGet, X, MonitorWorkArea, 1
 ;SysGet, X, MonitorWorkArea, 2
 Array := [XLEFT, XTOP, XRIGHT-XLEFT, XBOTTOM-XTOP]
 hBM := hWnd_to_hBmp( -1, False, Array )
@@ -26,16 +36,12 @@ hBM := hWnd_to_hBmp( -1, False, Array )
    SavePicture(hBM, File)
    GDIP("Shutdown")
    DllCall("DeleteObject", "Ptr", hBM)
-if runFile 
-try   Run %File%
+; try   Run %File%
+
+;//////////////////////////////
 exitapp
 Return
 
-
-
-
-
-/*
 
 F11::  ; Suffers from Aero effects
    File := A_Now ".jpg"
@@ -44,11 +50,15 @@ F11::  ; Suffers from Aero effects
    SavePicture(hBM, File)
    GDIP("Shutdown")
    DllCall("DeleteObject", "Ptr", hBM)
-if runFile 
    Run %File%
 Return
 
+Month(thisMonth) {
+		Month := strSplit("Jan,Feb,Mrz,Apr,Mai,Jun,Jul,Aug,Sep,Okt,Nov,Dez",",")
+		return Month[thisMonth]
+}
 
+/*
 res := hWnd_to_hBmp( -1 )                                   ; Fullscreen capture. 
 hWnd_to_hBmp()                                       ; Same as above
 hWnd_to_hBmp( WinExist("A") )                        ; Capture active window
